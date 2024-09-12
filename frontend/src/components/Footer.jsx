@@ -31,21 +31,21 @@ const Footer = () => {
             <h2 className="text-xl font-bold pb-4 uppercase">Editor Picks</h2>
             <ul className="space-y-6">
               <li className="flex gap-3 items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
-                <img src={editorImage1} alt="Editor Pick 1" className="w-28 md:w-24 md:h-16object-cover" />
+                <img src={editorImage1} alt="Editor Pick 1" className="w-28 md:w-24 md:h-16 object-cover" />
                 <div>
                   <h4 className="hover:text-blue-500">Modern Monochrome Home</h4>
                   <p className="text-sm text-gray-400">August 7, 2019</p>
                 </div>
               </li>
               <li className="flex gap-3 items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
-                <img src={editorImage2} alt="Editor Pick 2" className="w-28 md:w-24 md:h-16object-cover" />
+                <img src={editorImage2} alt="Editor Pick 2" className="w-28 md:w-24 md:h-16 object-cover" />
                 <div>
                   <h4 className="hover:text-blue-500">How To Use Basic Design</h4>
                   <p className="text-sm text-gray-400">August 7, 2019</p>
                 </div>
               </li>
               <li className="flex gap-3 items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
-                <img src={editorImage3} alt="Editor Pick 3" className="w-28 md:w-24 md:h-16object-cover" />
+                <img src={editorImage3} alt="Editor Pick 3" className="w-28 md:w-24 md:h-16 object-cover" />
                 <div>
                   <h4 className="hover:text-blue-500">Urban Kitchen with Granite Tops</h4>
                   <p className="text-sm text-gray-400">August 7, 2019</p>
@@ -59,7 +59,7 @@ const Footer = () => {
             <h2 className="text-xl font-bold mb-4 uppercase">Popular Posts</h2>
             <ul className="space-y-6">
               <li className="flex gap-3 items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
-                <img src={popularImage1} alt="Popular Post 1" className="w-28 md:w-24 md:h-16object-cover" />
+                <img src={popularImage1} alt="Popular Post 1" className="w-28 md:w-24 md:h-16 object-cover" />
                 <div>
                   <h4 className="hover:text-blue-500">Discover the Most Magical Sunset in Santorini</h4>
                   <p className="text-sm text-gray-400">August 7, 2019</p>
@@ -73,7 +73,7 @@ const Footer = () => {
                 </div>
               </li>
               <li className="flex gap-3 items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
-                <img src={popularImage3} alt="Popular Post 3" className="w-28 md:w-24 md:h-16object-cover" />
+                <img src={popularImage3} alt="Popular Post 3" className="w-28 md:w-24 md:h-16 object-cover" />
                 <div>
                   <h4 className="hover:text-blue-500">Computer Filters Noise to Make You a Better Listener</h4>
                   <p className="text-sm text-gray-400">August 7, 2019</p>
