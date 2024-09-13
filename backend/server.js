@@ -9,7 +9,7 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 const port = process.env.PORT || 5000;
 connectDB();
 const app = express();
-
+const categoryRoutes = require('./routes/categoryRoutes');
 app.use(cors({
   origin: 'http://localhost:5173', // Replace with your frontend domain
   credentials: true, // Allow credentials
@@ -24,7 +24,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use('/api/categories', categoryRoutes);
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
