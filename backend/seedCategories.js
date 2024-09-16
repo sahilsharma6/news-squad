@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
-const Category = require('./models/category.Model'); 
+import mongoose from 'mongoose';
+import Category from './models/category.Model';
+
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost/news-squad', {

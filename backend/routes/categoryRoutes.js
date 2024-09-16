@@ -1,6 +1,7 @@
-const express = require('express');
 const router = express.Router();
-const categoryController = require('../controllers/categoryController');
+
+import express from 'express';
+import categoryController from '../controllers/categoryController.js';
 
 // Route to create a new category
 router.post('/', categoryController.createCategory);

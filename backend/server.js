@@ -9,7 +9,8 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 const port = process.env.PORT || 5000;
 connectDB();
 const app = express();
-const categoryRoutes = require('./routes/categoryRoutes');
+import categoryRoutes from './routes/categoryRoutes.js';
+
 app.use(cors({
   origin: 'http://localhost:5173', // Replace with your frontend domain
   credentials: true, // Allow credentials
