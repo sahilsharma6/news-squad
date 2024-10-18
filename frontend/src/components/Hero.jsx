@@ -7,7 +7,7 @@ import img4 from "../assets/img4.jpg";
 const Hero = () => {
   return (
     <>
-      <div className="flex flex-col sm:flex-row flex-auto my-12 gap-1 items-center justify-center w-[90%] sm:w-[80%] h-[415px] sm:h-[450px] overflow-hidden mx-auto">
+      <div className="flex flex-col sm:flex-row flex-auto my-12 gap-1 items-center justify-center  h-[415px] sm:h-[450px] overflow-hidden mx-auto">
         <div className="sm:overflow-hidden relative flex-1 w-full sm:w-[60%] h-[60%] sm:h-full group">
           <img
             className="w-full h-full object-cover transform transition duration-500 sm:group-hover:scale-110"
