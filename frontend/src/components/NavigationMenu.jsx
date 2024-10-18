@@ -6,7 +6,7 @@ import GadgetsSubmenu from "./GadgetsSubmenu";
 
 export default function NavigationMenu() {
   const [activeComponent, setActiveComponent] = useState(null);
-
+  const [search, setSearch] = useState(false);
   const renderComponent = () => {
     switch (activeComponent) {
       case "FASHION":
@@ -69,14 +69,30 @@ export default function NavigationMenu() {
               ))}
             </div>
           </div>
-          <div className="flex items-center">
+          <div className="md:flex w-full items-center justify-end hidden relative">
             <button
               type="button"
+              onClick={() => setSearch(!search)}
               className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               <span className="sr-only">Search</span>
               <Search className="h-6 w-6" aria-hidden="true" />
             </button>
+
+            {search && (
+              <div className="absolute left-0 top-10 w-full mt-1 p-4 border border-gray-300 rounded-lg bg-white shadow-lg z-[99999]">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    className="w-full mt-2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                  <button className="hover:text-sky-600 duration-300">
+                    Search
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

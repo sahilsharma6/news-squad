@@ -1,11 +1,12 @@
 import React from "react";
 import NavigationMenu from "./NavigationMenu";
+import HamburgerMenu from "./HamburgerMenu";
 
 const Header = () => {
   return (
     <div className="font-sans">
-      <div className="max-w-screen-xl mx-auto px-4">
-        <header className="flex justify-between items-center py-5 bg-white shadow-md flex-wrap">
+      <div className="max-w-screen-xl mx-auto px-4 ">
+        <header className="md:flex justify-between hidden  items-center py-5 bg-white shadow-md flex-wrap">
           <div className="flex flex-col items-start mb-2 pl-24">
             <span className="text-2xl font-bold text-transparent bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text">
               NEWS SQUAD
@@ -31,7 +32,7 @@ const Header = () => {
         </header>
 
         <NavigationMenu />
-
+        <HamburgerMenu />
         <div className="flex items-center py-2 bg-gray-100 flex-wrap">
           <span className="bg-black text-white text-xs py-1 px-2 mr-4 rounded">
             TRENDING NOW
