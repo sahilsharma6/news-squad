@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import NavigationMenu from "./NavigationMenu";
 
 const Header = () => {
   return (
@@ -9,7 +10,9 @@ const Header = () => {
             <span className="text-2xl font-bold text-transparent bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text">
               NEWS SQUAD
             </span>
-            <p className="text-xs text-gray-600 mt-1 pl-5">the art of publishing</p>
+            <p className="text-xs text-gray-600 mt-1 pl-5">
+              the art of publishing
+            </p>
           </div>
 
           <div className="text-center my-2">
@@ -27,26 +30,7 @@ const Header = () => {
           </div>
         </header>
 
-        <nav className="flex justify-center py-2 bg-white border-t border-b border-gray-300 font-bold flex-wrap pr-96">
-          <a href="#news" className="mx-4 my-2 text-base text-black hover:text-blue-500 hover:border-b-2 hover:border-blue-500">
-            NEWS
-          </a>
-          <a href="#fashion" className="mx-4 my-2 text-base text-black hover:text-blue-500 hover:border-b-2 hover:border-blue-500">
-            FASHION
-          </a>
-          <a href="#gadgets" className="mx-4 my-2 text-base text-black hover:text-blue-500 hover:border-b-2 hover:border-blue-500">
-            GADGETS
-          </a>
-          <a href="#lifestyle" className="mx-4 my-2 text-base text-black hover:text-blue-500 hover:border-b-2 hover:border-blue-500">
-            LIFESTYLE
-          </a>
-          <a href="#video" className="mx-4 my-2 text-base text-black hover:text-blue-500 hover:border-b-2 hover:border-blue-500">
-            VIDEO
-          </a>
-          <a href="#features" className="mx-4 my-2 text-base text-black hover:text-blue-500 hover:border-b-2 hover:border-blue-500">
-            FEATURES
-          </a>
-        </nav>
+        <NavigationMenu />
 
         <div className="flex items-center py-2 bg-gray-100 flex-wrap">
           <span className="bg-black text-white text-xs py-1 px-2 mr-4 rounded">
