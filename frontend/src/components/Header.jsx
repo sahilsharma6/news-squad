@@ -33,14 +33,14 @@ const Header = () => {
 
         <NavigationMenu />
         <HamburgerMenu />
-        <div className="flex items-center py-2 bg-gray-100 flex-wrap">
+        {/* <div className="flex items-center py-2 bg-gray-100 flex-wrap">
           <span className="bg-black text-white text-xs py-1 px-2 mr-4 rounded">
             TRENDING NOW
           </span>
           <span className="text-base text-gray-800">
             Another Big Apartment Project Slated for Broad Ripple Company
           </span>
-        </div>
+        </div> */}
       </div>
     </div>
   );
