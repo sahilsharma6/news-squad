@@ -39,6 +39,10 @@ const Hero = () => {
                 </button>
                 <p className="text-xs sm:text-base">
                 Discover the Most Magical Sunset in Santorini
+<<<<<<< HEAD
+=======
+                sam
+>>>>>>> 9ec866ad232901ba253445aadd066978180bad85
                   
                 </p>
               </div>
