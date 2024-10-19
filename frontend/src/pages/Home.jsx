@@ -1,14 +1,15 @@
 import React from "react";
 import Hero from "../components/Hero";
-import NewsLayout from "../components/content1";
-import RightSidebar from "../components/Connect";
-import NewsLayout2 from "../components/content2";
-import ModernSection from "../components/content3";
-import HouseDesignSection from "../components/content4";
-import Perform from "../components/content5";
-import Latest from "../components/content6";
-import Performan from "../components/content7";
-import Recentcomment from "../components/content8";
+import NewsLayout from "../components/DontMiss-Comp";
+import RightSidebar from "../components/Connect-comp";
+import NewsLayout2 from "../components/LifeStyle-Comp";
+import ModernSection from "../components/Modern-Comp";
+import HouseDesignSection from "../components/HouseDesign-Comp";
+import Perform from "../components/Perform-Comp";
+import Latest from "../components/Article.Comp";
+import Performan from "../components/Popular-Comp";
+import Recentcomment from "../components/Recent-Comp";
+import Holiday from "@/components/Holiday-Comp";
 const Home = () => {
   return (
     <>
@@ -43,7 +44,7 @@ const Home = () => {
         <Perform/>
         </div>
         <div className="w-[30%]">
-          
+        <Holiday/>
         </div>
         </div>
         <div className="flex w-full pt-5 pl-2">

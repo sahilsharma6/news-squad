@@ -25,8 +25,8 @@ const NewsLayout2 = () => {
       className="w-full h-48 object-cover"
     />
     <div className="mt-4">
-      <span className="text-sm bg-black text-white px-2 py-1 inline-block mb-2">Architecture</span>
-      <h2 className="mt-2 text-xl font-semibold">Now Is the Time to Think About Your Small-Business Success</h2>
+      <span className="text-sm bg-black text-white px-2 py-1 inline-block mb-2 hover:bg-green-600">Architecture</span>
+      <h2 className="mt-2 text-xl font-semibold hover:text-green-600">Now Is the Time to Think About Your Small-Business Success</h2>
       <p className="text-sm text-gray-600">Armin Vans - June 19, 2019</p>
       <p className="mt-2 text-gray-700">
         We woke reasonably late following the feast and free-flowing wine the night before...
@@ -42,8 +42,8 @@ const NewsLayout2 = () => {
       className="w-full h-48 object-cover"
     />
     <div className="mt-4">
-      <span className="text-sm bg-black text-white px-2 py-1 inline-block mb-2">Architecture</span>
-      <h2 className="mt-2 text-xl font-semibold">Radio Air Time Marketing: A New Strategy for the Economy</h2>
+      <span className="text-sm bg-black text-white px-2 py-1 inline-block mb-2  hover:bg-green-600">Architecture</span>
+      <h2 className="mt-2 text-xl font-semibold hover:text-green-600">Radio Air Time Marketing: A New Strategy for the Economy</h2>
       <p className="text-sm text-gray-600">Armin Vans - June 19, 2019</p>
       <p className="mt-2 text-gray-700">
         We woke reasonably late following the feast and free-flowing wine the night before...
@@ -65,7 +65,7 @@ const NewsLayout2 = () => {
       className="w-20 h-20 object-cover mr-4"
     />
     <div>
-      <h3 className="text-sm ">Best Things You Can Do on a Solo Mountain Climb</h3>
+      <h3 className="text-sm hover:text-green-600">Best Things You Can Do on a Solo Mountain Climb</h3>
       <p className="text-xs text-gray-600">August 7, 2019</p>
     </div>
   </div>
@@ -78,7 +78,7 @@ const NewsLayout2 = () => {
       className="w-20 h-20 object-cover mr-4"
     />
     <div>
-      <h3 className="text-sm ">Creative Decorating with Houseplants, from Floor to Ceiling</h3>
+      <h3 className="text-sm hover:text-green-600">Creative Decorating with Houseplants, from Floor to Ceiling</h3>
       <p className="text-xs text-gray-600">August 7, 2019</p>
     </div>
   </div>
@@ -91,7 +91,7 @@ const NewsLayout2 = () => {
       className="w-20 h-20 object-cover mr-4"
     />
     <div>
-      <h3 className="text-sm ">How to Burn Calories with Pleasant Activities</h3>
+      <h3 className="text-sm hover:text-green-600">How to Burn Calories with Pleasant Activities</h3>
       <p className="text-xs text-gray-600">August 7, 2019</p>
     </div>
   </div>
@@ -106,7 +106,7 @@ const NewsLayout2 = () => {
       className="w-20 h-20 object-cover mr-4"
     />
     <div>
-      <h3 className="text-sm">Best Things You Can Do on a Solo Mountain Climb</h3>
+      <h3 className="text-sm hover:text-green-600">Best Things You Can Do on a Solo Mountain Climb</h3>
       <p className="text-xs text-gray-600">August 7, 2019</p>
     </div>
   </div>
@@ -119,7 +119,7 @@ const NewsLayout2 = () => {
       className="w-20 h-20 object-cover mr-4"
     />
     <div>
-      <h3 className="text-sm ">Creative Decorating with Houseplants, from Floor to Ceiling</h3>
+      <h3 className="text-sm hover:text-green-600">Creative Decorating with Houseplants, from Floor to Ceiling</h3>
       <p className="text-xs text-gray-600">August 7, 2019</p>
     </div>
   </div>
@@ -132,7 +132,7 @@ const NewsLayout2 = () => {
       className="w-20 h-20 object-cover mr-4"
     />
     <div>
-      <h3 className="text-sm">How to Burn Calories with Pleasant Activities</h3>
+      <h3 className="text-sm hover:text-green-600">How to Burn Calories with Pleasant Activities</h3>
       <p className="text-xs text-gray-600">August 7, 2019</p>
     </div>
   </div>

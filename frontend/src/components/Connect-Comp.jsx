@@ -11,9 +11,10 @@ const RightSidebar = () => {
             STAY CONNECTED
           </span>
           <br className=""></br>
-          <div className="pt-2">
-            <hr className=" border-black pt-2" />
-          </div>
+          <div className="pt-1">
+  <hr className="border-black  pt-2 border-double" />
+</div>
+
         </h2>
 
         <ul className="space-y-4">

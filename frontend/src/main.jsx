@@ -3,19 +3,32 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, createRoutesFromElements, RouterProvider,Route} from "react-router-dom";
 import App from "./App.jsx";
 import "./index.css";
-import ArticlePage from "./pages/ArticlePage.jsx";
 import Home from "./pages/Home.jsx";
-import NewsLayout from "./components/content1.jsx";
-const router = 
-createBrowserRouter(
-  [
+import DashboardLayout from "./pages/Dashboard.jsx";
+import DashboardHome from "./components/DashboardHome.jsx";
+import FashionPosts from "./pages/FashionPosts.jsx";
+import ContentEditor from "./components/Editor.jsx";
+import ArticlePage from "./pages/ArticlePage.jsx";
+const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     errorElement: <div>Error</div>,
     children: [
       { path: "/", element: <Home /> },
-      { path: "article/:id", element: <ArticlePage /> },
+      { path: "/:title", element: <ArticlePage /> },
+      { path: "/category/fashion", element: <FashionPosts /> },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      { path: "/dashboard", element: <DashboardHome /> },
+      {
+        path: "/dashboard/create-article",
+        element: <ContentEditor />,
+      },
     ],
   },
 ]

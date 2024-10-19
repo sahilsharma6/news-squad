@@ -8,7 +8,7 @@ import popularImage2 from "../assets/blog-1.jpg";
 import popularImage3 from "../assets/blog-1.jpg";
 import img1 from "../assets/girls1.jpg";
 import img2 from "../assets/boy1.jpg";
-import NewsLayout from '../components/content1';
+import NewsLayout from '../components/DontMiss-Comp';
 
 const ArticlePage = () => {
     return (
@@ -155,6 +155,7 @@ const ArticlePage = () => {
 
                         </div>
                     </div>
+                    <NewsLayout/>
                 </div>
                 
 

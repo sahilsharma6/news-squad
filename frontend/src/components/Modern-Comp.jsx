@@ -19,8 +19,8 @@ const ModernSection = () => {
             className="w-full h-30 object-cover"
           />
           <div className="mt-2">
-            <span className="text-sm bg-black text-white px-2 py-1">Make it Modern</span>
-            <h3 className="mt-2 text-sm ">Urban Kitchen with Granite Tops, Exposed Bulb Lights and Island</h3>
+            <span className="text-sm bg-black text-white px-2 py-1 hover:bg-blue-500">Make it Modern</span>
+            <h3 className="mt-2 text-sm  hover:text-blue-500">Urban Kitchen with Granite Tops, Exposed Bulb Lights and Island</h3>
           </div>
         </div>
 
@@ -32,8 +32,8 @@ const ModernSection = () => {
             className="w-full h-30 object-cover"
           />
           <div className="mt-2">
-            <span className="text-sm bg-black text-white px-2 py-1">Make it Modern</span>
-            <h3 className="mt-2 text-sm ">Modern Bathroom with Metro Rocks, Large Plant and Neutral Tiles</h3>
+            <span className="text-sm bg-black text-white px-2 py-1  hover:bg-blue-500">Make it Modern</span>
+            <h3 className="mt-2 text-sm hover:text-blue-500">Modern Bathroom with Metro Rocks, Large Plant and Neutral Tiles</h3>
           </div>
         </div>
 
@@ -45,8 +45,8 @@ const ModernSection = () => {
             className="w-full h-30 object-cover"
           />
           <div className="mt-2">
-            <span className="text-sm bg-black text-white px-2 py-1">Make it Modern</span>
-            <h3 className="mt-2 text-sm ">Luxe Hallway with Chess Table Flooring and Large Rounded Windows</h3>
+            <span className="text-sm bg-black text-white px-2 py-1  hover:bg-blue-500">Make it Modern</span>
+            <h3 className="mt-2 text-sm hover:text-blue-500">Luxe Hallway with Chess Table Flooring and Large Rounded Windows</h3>
           </div>
         </div>
 
@@ -58,8 +58,8 @@ const ModernSection = () => {
             className="w-full h-30 object-cover"
           />
           <div className="mt-2">
-            <span className="text-sm bg-black text-white px-2 py-1">Make it Modern</span>
-            <h3 className="mt-2 text-sm ">Man Agrees to Complete $50,000 Hereford Lighthouse Paint Job</h3>
+            <span className="text-sm bg-black text-white px-2 py-1  hover:bg-blue-500">Make it Modern</span>
+            <h3 className="mt-2 text-sm hover:text-blue-500">Man Agrees to Complete $50,000 Hereford Lighthouse Paint Job</h3>
           </div>
         </div>
       </div>

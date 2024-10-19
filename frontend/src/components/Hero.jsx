@@ -20,7 +20,7 @@ const Hero = () => {
             </button>
             <p className="text-sm sm:text-base md:text-lg ">
               WordPress News Magazine Charts the Most Chic and Fashionable Women
-              of New York City
+              of New York City USA
             </p>
             <p className="text-[10px]">August 7, 2019</p>
           </div>
@@ -39,6 +39,7 @@ const Hero = () => {
                 </button>
                 <p className="text-xs sm:text-base">
                 Discover the Most Magical Sunset in Santorini
+                sam
                   
                 </p>
               </div>

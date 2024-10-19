@@ -36,7 +36,11 @@ const NewsLayout = () => {
       <div className="px-6 flex-1">         
         {/* Navbar */}         
         <div className="flex items-center justify-between border-b pb-1 mb-2 w-full">           
-          <h1 className="  text-black bg-yellow-500 text-sm p-2 ">DON'T MISS</h1>           
+          <h1 className="  text-black bg-yellow-500 text-sm p-2 ">DON'T MISS</h1> 
+          <div className="pt-1">
+  
+</div>
+          
           <nav className="relative">             
             <div className="flex items-center space-x-2">             
               <a href="#" className="text-gray-500 hover:text-yellow-500">All</a>    
@@ -79,7 +83,7 @@ const NewsLayout = () => {
               alt="Main article"               
               className="w-full h-auto rounded-md"             
             />             
-            <h2 className="text-lg font-bold mt-2">               
+            <h2 className="text-lg font-bold mt-2 hover:text-yellow-400">               
               Interior Designer and Maude Interiors by Yvonne Designs             
             </h2>             
             <p className="text-gray-500 mb-1">Armin Vans - August 7, 2019</p>             
@@ -98,7 +102,7 @@ const NewsLayout = () => {
                   className="w-16 h-16 object-cover rounded-md mr-2"                 
                 />                 
                 <div>                   
-                  <h3 className="text-md font-bold">{article.title}</h3>                   
+                  <h3 className="text-md hover:text-yellow-500">{article.title}</h3>                   
                   <p className="text-gray-500">{article.date}</p>                 
                 </div>               
               </div>             
