@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import GadgetsModel from "./models/GadgetsModel.js";
+import GadgetsModel from "./models/categoryModel.js";
 import dummyData from "./data/Gadgets.js";
 import readline from 'readline-sync'
 
