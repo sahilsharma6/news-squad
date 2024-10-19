@@ -155,11 +155,16 @@ const ArticlePage = () => {
 
                         </div>
                     </div>
-                    <NewsLayout/>
                 </div>
-                
+
 
             </div>
+
+
+
+                    <NewsLayout/>
+             
+                
             
         </>
     )
