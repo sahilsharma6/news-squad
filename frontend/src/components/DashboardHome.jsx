@@ -15,7 +15,7 @@ import { PieChartComponent } from "./PieChart";
 
 export default function DashboardHome() {
   return (
-    <main className="flex-1 p-8 overflow-auto ">
+    <main className="flex-1 p-8 max-w-screen-xl ">
       {/* Top Bar */}
       <div className="flex justify-between items-center mb-8">
         <div className="relative">
