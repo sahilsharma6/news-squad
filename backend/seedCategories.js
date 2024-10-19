@@ -3,7 +3,7 @@ import Category from './models/category.Model';
 
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost/news-squad', {
+mongoose.connect('mongodb://localhost:27017/news-squad', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
