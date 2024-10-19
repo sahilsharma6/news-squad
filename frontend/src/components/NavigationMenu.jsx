@@ -35,7 +35,7 @@ export default function NavigationMenu() {
                   className=" group"
                 >
                   <Link
-                    to={`/${item.toLowerCase()}`}
+                    to={`/category/${item.toLowerCase()}`}
                     className={`inline-flex items-center px-1 pt-1 pb-2 border-b-2 text-base font-semibold ${
                       item === "NEWS"
                         ? "border-blue-500 text-gray-900"
