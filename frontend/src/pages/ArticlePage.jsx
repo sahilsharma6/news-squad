@@ -8,10 +8,7 @@ import popularImage2 from "../assets/blog-1.jpg";
 import popularImage3 from "../assets/blog-1.jpg";
 import img1 from "../assets/girls1.jpg";
 import img2 from "../assets/boy1.jpg";
-<<<<<<< HEAD
-=======
 import NewsLayout from '../HomeC/Cotent1';
->>>>>>> 9ec866ad232901ba253445aadd066978180bad85
 
 const ArticlePage = () => {
     return (
@@ -158,7 +155,6 @@ const ArticlePage = () => {
 
                         </div>
                     </div>
-<<<<<<< HEAD
                 </div>
 
 
@@ -166,14 +162,10 @@ const ArticlePage = () => {
 
 
 
-=======
                     <NewsLayout/>
-                </div>
+             
                 
-
-            </div>
             
->>>>>>> 9ec866ad232901ba253445aadd066978180bad85
         </>
     )
 }

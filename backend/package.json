@@ -26,10 +26,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-<<<<<<< HEAD
     "nodemon": "^3.1.0"
-=======
-    "nodemon": "^3.1.7"
->>>>>>> 9ec866ad232901ba253445aadd066978180bad85
   }
 }

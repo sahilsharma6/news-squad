@@ -12,16 +12,23 @@ mongoose.connect('mongodb://127.0.0.1:27017/new-squad-official',{
 ).catch((err)=>console.log(err)
 )
 
-const opt=readline.question('Enter the operation name : ');
+// const opt=readline.question('Enter the operation name : ');
+const opt='add'
 
 const Add=()=>{
+    GadgetsModel.find()
+    .then((dt)=>console.log(dt)
+    )
 GadgetsModel.insertMany(dummyData)
     .then(() => console.log("Dummy data inserted successfully"))
     .catch((err) => console.error("Error inserting dummy data:", err));
 }
 
 const del=()=>{
-    const _id=readline.question('Enter the id: ')
+    // const _id=readline.question('Enter the id: ')
+    GadgetsModel.find()
+    .then((dt)=>console.log(dt)
+    )
     GadgetsModel.deleteOne({_id})
     .then((data)=>console.log('deleted ' ,data)
     ).catch((err)=>console.log('errr')

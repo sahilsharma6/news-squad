@@ -64,7 +64,7 @@ const CategoriesSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const CategoriesModel = mongoose.model("Categories", GadgetsSchema);
+const category = mongoose.model("Category", CategoriesSchema);
 
-export default CategoriesModel;
+export default  category;
 
