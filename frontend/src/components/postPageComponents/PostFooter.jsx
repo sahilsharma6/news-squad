@@ -22,11 +22,11 @@ const PostFooter = () => {
   }
 
   return (
-    <div className='m-4 p-2 w-1/2 flex flex-col gap-6 justify-center items-start bg-white'>
+    <div className='p-2 w-full flex flex-col gap-6 justify-center items-start bg-white'>
       <div className='w-full flex gap-x-2 border-y-2 border-dotted p-8'>
-        <div className='w-52 h-12 border-2 border-dotted flex justify-evenly items-center'>
+        <div className='w-20 lg:w-52 h-12 border-2 border-dotted flex justify-evenly items-center'>
           <p><BsFillShareFill /></p>
-          <p className='font-medium'>Share</p>
+          <p className='hidden lg:block md:font-medium'>Share</p>
         </div>
         <div className='w-12 h-12 bg-blue-600 flex justify-center items-center rounded-md'>
           <FaFacebookF size={20} color='white' />
@@ -51,11 +51,11 @@ const PostFooter = () => {
           <p>{postData.nextArticle}</p>
         </div>
       </div>
-      <div className='w-full flex gap-x-2 p-4 border-2 border-dotted'>
-        <div className='w-1/2 flex justify-center items-start'>
+      <div className='w-full flex flex-col lg:flex-row lg:gap-x-2 p-4 border-2 border-dotted'>
+        <div className='w-full lg:w-1/2 flex justify-center items-start'>
           <img src={authorImg} alt="authorImg" />
         </div>
-        <div className='flex flex-col gap-y-2'> 
+        <div className='flex flex-col justify-center items-center lg:items-start gap-y-2'> 
           <p className='font-medium'>{postData.author}</p>
           <Link to="http://www.tagdiv.com">
               <p className='text-sm text-gray-400'>http://www.tagdiv.com</p>

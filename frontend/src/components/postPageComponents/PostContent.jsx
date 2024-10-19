@@ -18,7 +18,7 @@ const PostContent = () => {
     }
 
     return (
-        <div className='m-4 p-2 w-1/2 flex flex-col gap-y-6 justify-center items-start bg-white'>
+        <div className='p-2 w-full flex flex-col gap-y-6 justify-center items-start bg-white'>
             <div className='flex flex-col gap-y-6'>
                 <p>{postData.des1}</p>
                 <p className='font-medium'>{postData.des2}</p>
@@ -27,14 +27,14 @@ const PostContent = () => {
             <img src={girls} alt="girls" />
             <p className='text-md text-gray-400'>Adderall and flirting with bulimia in an attempt to whittle herself</p>
             <p>{postData.des4}</p>
-            <div className='w-full flex flex-row'>
-                <div className='w-1/2 flex flex-col gap-y-6 px-8 text-md'>
+            <div className='w-full flex flex-col lg:flex-row'>
+                <div className='w-full lg:w-1/2 flex flex-col gap-y-6 lg:px-8 text-md'>
                     <p>{postData.des5}</p>
                     <p>{postData.des6}</p>
                     <p>{postData.des7}</p>
                 </div>
-                <div className='w-1/3'>
-                    <img src={boy} alt="boy" className='w-full' />
+                <div className='w-full lg:w-60'>
+                    <img src={boy} alt="boy" />
                     <p className='text-gray-500 text-md'>City Guide for Vienna</p>
                 </div>
             </div>
