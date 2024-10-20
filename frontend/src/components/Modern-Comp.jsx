@@ -1,5 +1,33 @@
 import React from 'react';
 
+// Sample data for modern articles
+const modernArticles = [
+  {
+    id: 1,
+    imgSrc: "https://via.placeholder.com/300x200",
+    altText: "Urban Kitchen",
+    title: "Urban Kitchen with Granite Tops, Exposed Bulb Lights and Island",
+  },
+  {
+    id: 2,
+    imgSrc: "https://via.placeholder.com/300x200",
+    altText: "Modern Bathroom",
+    title: "Modern Bathroom with Metro Rocks, Large Plant and Neutral Tiles",
+  },
+  {
+    id: 3,
+    imgSrc: "https://via.placeholder.com/300x200",
+    altText: "Luxe Hallway",
+    title: "Luxe Hallway with Chess Table Flooring and Large Rounded Windows",
+  },
+  {
+    id: 4,
+    imgSrc: "https://via.placeholder.com/300x200",
+    altText: "Lighthouse Paint Job",
+    title: "Man Agrees to Complete $50,000 Hereford Lighthouse Paint Job",
+  },
+];
+
 const ModernSection = () => {
   return (
     <div className="container mx-auto p-6">
@@ -10,61 +38,30 @@ const ModernSection = () => {
 
       {/* Articles Grid */}
       <div className="grid grid-cols-2 gap-6">
-        {/* Article 1 */}
-        <div className="flex flex-col">
-          <img
-            src="https://via.placeholder.com/300x200"
-            alt="Urban Kitchen"
-            className="w-full h-auto object-cover"
-          />
-          <div className="mt-2">
-            <span className="text-sm bg-black text-white px-2 py-1 hover:bg-blue-500">Make it Modern</span>
-            <h3 className="mt-2 text-sm hover:text-blue-500">Urban Kitchen with Granite Tops, Exposed Bulb Lights and Island</h3>
+        {modernArticles.map((article) => (
+          <div key={article.id} className="flex flex-col relative">
+          {/* Make it Modern label */}
+          <div className="relative">
+            <span style={{ fontSize: '10px' }} className="absolute bottom-0 left-0 text-xs bg-black text-white px-2 py-1 hover:bg-blue-500 rounded-sm">
+              Make it Modern
+            </span>
+            <img
+              src={article.imgSrc}
+              alt={article.altText}
+              className="w-full h-auto object-cover"
+            />
           </div>
-        </div>
-
-        {/* Article 2 */}
-        <div className="flex flex-col">
-          <img
-            src="https://via.placeholder.com/300x200"
-            alt="Modern Bathroom"
-            className="w-full h-auto object-cover"
-          />
-          <div className="mt-2">
-            <span className="text-sm bg-black text-white px-2 py-1 hover:bg-blue-500">Make it Modern</span>
-            <h3 className="mt-2 text-sm hover:text-blue-500">Modern Bathroom with Metro Rocks, Large Plant and Neutral Tiles</h3>
+        
+            <div className="mt-2">
+              <h3 className="mt-2 text-sm hover:text-blue-500">
+                {article.title}
+              </h3>
+            </div>
           </div>
-        </div>
-
-        {/* Article 3 */}
-        <div className="flex flex-col">
-          <img
-            src="https://via.placeholder.com/300x200"
-            alt="Luxe Hallway"
-            className="w-full h-auto object-cover"
-          />
-          <div className="mt-2">
-            <span className="text-sm bg-black text-white px-2 py-1 hover:bg-blue-500">Make it Modern</span>
-            <h3 className="mt-2 text-sm hover:text-blue-500">Luxe Hallway with Chess Table Flooring and Large Rounded Windows</h3>
-          </div>
-        </div>
-
-        {/* Article 4 */}
-        <div className="flex flex-col">
-          <img
-            src="https://via.placeholder.com/300x200"
-            alt="Lighthouse Paint Job"
-            className="w-full h-auto object-cover"
-          />
-          <div className="mt-2">
-            <span className="text-sm bg-black text-white px-2 py-1 hover:bg-blue-500">Make it Modern</span>
-            <h3 className="mt-2 text-sm hover:text-blue-500">Man Agrees to Complete $50,000 Hereford Lighthouse Paint Job</h3>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
 };
 
 export default ModernSection;
-

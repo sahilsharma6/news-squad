@@ -64,16 +64,19 @@ const articles = [
 const ArticleItem = ({ article }) => {
   return (
     <div className="bg-white mb-1">
+      <div className="relative">
       <img
         src={article.image}
         alt={article.title}
         className="w-full h-48 object-cover"
       />
-      <div className="p-4">
-        <div className="text-xs uppercase text-gray-500 mb-1">
-          <span className="bg-gray-800 text-white px-2 py-1 rounded-md">
+      <span className="absolute bottom-0 left-0 text-xs bg-gray-800 text-white px-2 py-1 rounded-md">
             {article.category}
           </span>
+          </div>
+      <div className="p-4">
+        <div className="text-xs uppercase text-gray-500 mb-1">
+          
         </div>
         <h2 className="text-lg font-semibold hover:text-blue-500">
           {article.title}

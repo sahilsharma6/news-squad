@@ -62,13 +62,16 @@ const NewsLayout2 = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Article 1 */}
         <div className="flex flex-col">
+        <div className="relative">
           <img
             src={img1}
             alt="Article 1"
             className="w-full h-48 object-cover"
           />
+          <span className="absolute bottom-0 left-0 text-xs bg-black text-white px-2 py-1 inline-block mb-2 hover:bg-green-600">Architecture</span>
+          </div>
           <div className="mt-4">
-            <span className="text-sm bg-black text-white px-2 py-1 inline-block mb-2 hover:bg-green-600">Architecture</span>
+            
             <h2 className="mt-2 text-xl font-semibold hover:text-green-600">Now Is the Time to Think About Your Small-Business Success</h2>
             <p className="text-sm text-gray-600">Armin Vans - June 19, 2019</p>
             <p className="mt-2 text-gray-700">
@@ -79,13 +82,15 @@ const NewsLayout2 = () => {
 
         {/* Article 2 */}
         <div className="flex flex-col">
+        <div className="relative">
           <img
-            src="https://via.placeholder.com/500x300"
-            alt="Article 2"
+            src={img1}
+            alt="Article 1"
             className="w-full h-48 object-cover"
           />
+          <span className="absolute bottom-0 left-0 text-xs bg-black text-white px-2 py-1 inline-block mb-2 hover:bg-green-600">Architecture</span>
+          </div>
           <div className="mt-4">
-            <span className="text-sm bg-black text-white px-2 py-1 inline-block mb-2 hover:bg-green-600">Architecture</span>
             <h2 className="mt-2 text-xl font-semibold hover:text-green-600">Radio Air Time Marketing: A New Strategy for the Economy</h2>
             <p className="text-sm text-gray-600">Armin Vans - June 19, 2019</p>
             <p className="mt-2 text-gray-700">
