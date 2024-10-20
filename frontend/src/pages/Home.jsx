@@ -10,51 +10,75 @@ import Latest from "../components/Article.Comp";
 import Performan from "../components/Popular-Comp";
 import Recentcomment from "../components/Recent-Comp";
 import Holiday from "@/components/Holiday-Comp";
+
 const Home = () => {
   return (
     <>
-      <div className="mx-[10%]">
+      <div className="md:mx-[10%] block">
         <Hero />
-        <div className="flex w-full pt-5 pl-2">
-          <div className="w-[70%]">
+
+        {/* First Section */}
+        <div className="flex flex-col md:flex-row w-full pt-5">
+          <div className="w-full md:w-[70%]">
             <NewsLayout />
           </div>
-          <div className="w-[30%]">
+          <div className="w-full md:w-[30%] hidden md:block">
             <RightSidebar />
           </div>
         </div>
-        <div className="flex w-full pt-5 pl-2">
-        <div className="w-[70%]">
-        <NewsLayout2/>
+
+        {/* Second Section */}
+        <div className="flex flex-col md:flex-row w-full pt-5">
+          <div className="w-full md:w-[70%]">
+            <NewsLayout2 />
+          </div>
+          <div className="w-full md:w-[30%] hidden md:block">
+            <ModernSection />
+          </div>
         </div>
-        <div className="w-[30%]">
-          <ModernSection/>
+
+        {/* Third Section */}
+        <div className="flex flex-col md:flex-row w-full pt-5">
+          <div className="w-full md:w-[70%]">
+            <HouseDesignSection />
+          </div>
+          <div className="w-full md:w-[30%] hidden md:block"></div>
         </div>
+
+        {/* Mobile Sidebar */}
+        <div className="w-full md:hidden">
+          <RightSidebar />
         </div>
-        <div className="flex w-full pt-5 pl-2">
-        <div className="w-[70%]">
-        <HouseDesignSection/>
+        <div className="w-full md:hidden">
+          <ModernSection />
         </div>
-        <div className="w-[30%]">
-          
+
+        {/* Fourth Section */}
+        <div className="flex flex-col md:flex-row w-full pt-5">
+          <div className="w-full md:w-[70%]">
+            <Perform />
+          </div>
+          <div className="w-full md:w-[30%] hidden md:block">
+            <Holiday />
+          </div>
         </div>
+        <div className="w-full md:hidden">
+          <Holiday />
         </div>
-        <div className="flex w-full pt-5 pl-2">
-        <div className="w-[70%]">
-        <Perform/>
+
+        {/* Fifth Section */}
+        <div className="flex flex-col md:flex-row w-full pt-5">
+          <div className="w-full md:w-[70%]">
+            <Latest />
+          </div>
+          <div className="w-full md:w-[30%] hidden md:block">
+            <Performan />
+            <Recentcomment />
+          </div>
         </div>
-        <div className="w-[30%]">
-        <Holiday/>
-        </div>
-        </div>
-        <div className="flex w-full pt-5 pl-2">
-        <div className="w-[70%]">
-        <Latest/>
-        </div>
-        <div className="w-[30%]">
-        <Performan/>
-        <Recentcomment/>
-        </div>
+        <div className="w-full md:hidden">
+          <Performan />
+          <Recentcomment />
         </div>
       </div>
     </>

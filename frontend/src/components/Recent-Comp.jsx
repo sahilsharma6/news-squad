@@ -1,7 +1,7 @@
 
 const Recentcomment=()=>{
     return(
-        <div>
+        <div className="container mx-auto p-4">
             <div className="border-b mb-4 pb-2">
         <h2 className="text-white text-sm p-2 inline-block  bg-black">Recent Comment</h2>
       </div>
