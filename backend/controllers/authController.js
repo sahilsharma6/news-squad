@@ -10,7 +10,7 @@ export const signIn = async (req, res) => {
     const { email, password } = req.body;
 
   
-
+ 
     if (!email || !password) {
       return res.status(400).json({
         status: "fail",
@@ -18,7 +18,9 @@ export const signIn = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ email });
+
+
 
     if (!user) {
       return res.status(400).json({
@@ -50,6 +52,7 @@ export const signIn = async (req, res) => {
       token,
     });
   } catch (err) {
+    console.log(err)
     return res.status(400).json({
       status: "fail",
       message: err.message,
