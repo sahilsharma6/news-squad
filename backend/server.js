@@ -9,25 +9,40 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 const port = process.env.PORT || 5000;
 connectDB();
 const app = express();
+
 import categoryRoutes from "./routes/categoryRoutes.js";
 import imageUploadRoute from "./routes/imageUpload.js";
+import postRoutes from "./routes/postRoutes.js"
+import authRoute from "./routes/authRoute.js"
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace with your frontend domain
+    origin: "http://localhost:5173",
     credentials: true, // Allow credentials
   })
 );
+
+
 // app.use(cors({
 //   origin: 'https://travelsquads.com',
 //   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 //   credentials: true
 // }));
 
+
+// middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+
+// routes
+app.use("/api/auth",authRoute)
+app.use("/api/posts",postRoutes)
 app.use("/api/categories", categoryRoutes);
 app.use("/api/upload-image", imageUploadRoute);
+
+
 app.get("/", (req, res) => {
   res.send("API is running...");
 });

@@ -35,7 +35,9 @@ export default function NavigationMenu() {
                   className=" group"
                 >
                   <Link
-                    to={`/category/${item.toLowerCase()}`}
+                    to={
+                      item === "NEWS" ? "/" : `/category/${item.toLowerCase()}`
+                    }
                     className={`inline-flex items-center px-1 pt-1 pb-2 border-b-2 text-base font-semibold ${
                       item === "NEWS"
                         ? "border-blue-500 text-gray-900"
@@ -93,6 +95,13 @@ export default function NavigationMenu() {
                 </div>
               </div>
             )}
+
+            <Link
+              to="/signin"
+              className="ml-4 inline-block p-2 bg-blue-500 text-white font-bold rounded transition duration-300 hover:bg-blue-600"
+            >
+              Register/SignIn
+            </Link>
           </div>
         </div>
       </div>

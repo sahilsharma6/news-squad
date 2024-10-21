@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
     cb(null, uploadsDir);
   },
   filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname); // Get the file extension
+    const ext = path.extname(file.originalname); 
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     cb(null, `imgUrl-${uniqueSuffix}${ext}`);
   },
