@@ -1,12 +1,12 @@
 export const hamburgerMenu = [
   {
     label: "NEWS",
-    route: "/news",
+    route: "/",
     dropdown: false,
   },
   {
     label: "FASHION",
-    route: "/fashion",
+    route: "/category/fashion",
     dropdown: true,
     subItems: [
       { label: "All", route: "/fashion/all" },

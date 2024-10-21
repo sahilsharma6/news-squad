@@ -4,7 +4,7 @@ export default function HorizontalBlogPosts({ post }) {
       <img
         src={post.image}
         alt={post.title}
-        className="w-full h-48 object-cover"
+        className="w-full h-24 object-cover"
       />
       <div className="p-4">
         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mb-2">

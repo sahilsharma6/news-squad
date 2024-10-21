@@ -101,7 +101,7 @@ export default function FilterableBlog() {
       : blogPosts.filter((post) => post.category === activeCategory);
 
   return (
-    <div className="w-full bg-white z-[999999]">
+    <div className="w-full max-h-fit  bg-white z-[999999]">
       <div className="flex">
         <Sidebar
           categories={categories}

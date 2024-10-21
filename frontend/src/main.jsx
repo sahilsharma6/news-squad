@@ -9,6 +9,10 @@ import DashboardHome from "./components/DashboardHome.jsx";
 import FashionPosts from "./pages/FashionPosts.jsx";
 import ContentEditor from "./components/Editor.jsx";
 import ArticlePage from "./pages/ArticlePage.jsx";
+import SignIn from "./pages/SignIn.jsx";
+import Register from "./pages/Register.jsx";
+
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,8 +22,18 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/:title", element: <ArticlePage /> },
       { path: "/category/fashion", element: <FashionPosts /> },
+      
     ],
   },
+  {
+    path: "/signin",
+    element: <SignIn/>, 
+  },
+  {
+    path: "/register",
+    element: <Register/>, 
+  },
+
   {
     path: "/dashboard",
     element: <DashboardLayout />,
