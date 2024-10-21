@@ -1,4 +1,4 @@
-import NewsLayout from "./components/DontMiss-Comp";
+import NewsLayout from "./components/DontMissComp";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { Outlet } from "react-router-dom";
