@@ -75,7 +75,7 @@ const LatestNews = (props) => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         {newsData.map((newsItem) => (
-          <Link to={`${newsItem.category}`}>
+          <Link key={newsItem.id} to={`/${newsItem.title}`}>
             <div key={newsItem.id} className="flex flex-col">
               <div className="relative">
                 <img

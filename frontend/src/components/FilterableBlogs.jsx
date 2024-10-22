@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import HorizontalBlogPosts from "./HorizontalBlogPosts";
+import PropTypes from "prop-types";
 
 const categories = [
   "All",
@@ -101,7 +101,7 @@ export default function FilterableBlog() {
       : blogPosts.filter((post) => post.category === activeCategory);
 
   return (
-    <div className="w-full bg-white z-[999999]">
+    <div className="w-full max-h-fit  bg-white z-[999999]">
       <div className="flex">
         <Sidebar
           categories={categories}
@@ -142,3 +142,11 @@ function Sidebar({ categories, activeCategory, setActiveCategory }) {
     </aside>
   );
 }
+
+
+Sidebar.propTypes={
+  categories:PropTypes.string.isRequired,
+  activeCategory:PropTypes.string.isRequired,
+  setActiveCategory:PropTypes.string.isRequired
+}
+

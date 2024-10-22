@@ -43,9 +43,14 @@ export default function HamburgerMenu() {
                     {item.label}
                   </Link>
                   {item.dropdown && (
-                    <button onClick={() => toggleDropdown(item.label)}>
+                    <div
+                      onClick={() => toggleDropdown(item.label)}
+                      role="button"
+                      tabIndex={0}
+                      className="cursor-pointer"
+                    >
                       <ChevronDown className="text-black" />
-                    </button>
+                    </div>
                   )}
                 </div>
                 {item.dropdown && openDropdown === item.label && (
