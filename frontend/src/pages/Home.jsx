@@ -2,14 +2,14 @@ import React from "react";
 import Hero from "../components/Hero";
 import NewsLayout from "../components/DontMissComp";
 import RightSidebar from "../components/ConnectComp";
-import NewsLayout2 from "../components/LifeStyle-Comp";
-import ModernSection from "../components/Modern-Comp";
-import HouseDesignSection from "../components/HouseDesign-Comp";
-import Perform from "../components/Perform-Comp";
+import NewsLayout2 from "../components/LifeStyleComp";
+import ModernSection from "../components/ModernComp";
+import HouseDesignSection from "../components/HouseDesignComp";
+import Perform from "../components/PerformanceComp";
 import Latest from "../components/Article.Comp";
-import Performan from "../components/Popular-Comp";
-import Recentcomment from "../components/Recent-Comp";
-import Holiday from "@/components/Holiday-Comp";
+import Performan from "../components/PopularComp";
+import Recentcomment from "../components/RecentComp";
+import Holiday from "../components/HolidayComp";
 
 const Home = () => {
   return (
