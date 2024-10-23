@@ -1,4 +1,4 @@
-import React from "react";
+
 import Hero from "../components/Hero";
 import NewsLayout from "../components/DontMissComp";
 import RightSidebar from "../components/ConnectComp";
@@ -9,7 +9,10 @@ import Perform from "../components/PerformanceComp";
 import Latest from "../components/Article.Comp";
 import Performan from "../components/PopularComp";
 import Recentcomment from "../components/RecentComp";
+
 import Holiday from "../components/HolidayComp";
+
+
 
 const Home = () => {
   return (
@@ -82,7 +85,7 @@ const Home = () => {
         </div>
       </div>
     </>
-  );
+  )
 };
 
 export default Home;

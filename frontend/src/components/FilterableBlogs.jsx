@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import HorizontalBlogPosts from "./HorizontalBlogPosts";
+import PropTypes from "prop-types";
 
 const categories = [
   "All",
@@ -142,3 +142,11 @@ function Sidebar({ categories, activeCategory, setActiveCategory }) {
     </aside>
   );
 }
+
+
+Sidebar.propTypes={
+  categories:PropTypes.string.isRequired,
+  activeCategory:PropTypes.string.isRequired,
+  setActiveCategory:PropTypes.string.isRequired
+}
+
