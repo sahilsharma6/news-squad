@@ -9,7 +9,8 @@ import Perform from "../components/PerformanceComp";
 import Latest from "../components/Article.Comp";
 import Performan from "../components/PopularComp";
 import Recentcomment from "../components/RecentComp";
-import Holiday from "@/components/HolidayComp";
+
+import Holiday from "../components/HolidayComp";
 
 
 
