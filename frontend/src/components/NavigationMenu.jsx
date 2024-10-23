@@ -71,11 +71,11 @@ export default function NavigationMenu() {
               ))}
             </div>
           </div>
-          <div className="md:flex w-full items-center justify-end hidden relative">
+          <div className="md:flex  w-full items-center justify-end hidden relative">
             <button
               type="button"
               onClick={() => setSearch(!search)}
-              className="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="p-1 rounded-full text-gray-400 w-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               <span className="sr-only">Search</span>
               <Search className="h-6 w-6" aria-hidden="true" />
