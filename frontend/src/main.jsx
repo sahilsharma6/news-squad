@@ -11,6 +11,7 @@ import FashionPosts from "./pages/FashionPosts.jsx";
 import ContentEditor from "./components/Editor.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Register from "./pages/Register.jsx";
+import LifeStyle from "./pages/LifeStyle.jsx";
 import Gadgets from "./pages/Gadgets.jsx";
 
 
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/:title", element: <ArticlePage /> },
       { path: "/category/fashion", element: <FashionPosts /> },
+      { path: "/category/lifestyle", element: <LifeStyle/> },
       {
         path:"category/gadgets",
         element: <Gadgets />

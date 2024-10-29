@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 // Sample data for articles
@@ -44,7 +45,7 @@ const HouseDesignSection = () => {
             <img
               src={article.imgSrc}
               alt={article.altText}
-              className="md:w-full h-40 object-cover" // Adjust width here
+              className="md:w-full h-40 " // Adjust width here
             />
             <span className=" bg-black text-white px-2 py-1 absolute bottom-0 left-0 text-xs ">{article.category}</span>
             </div>
@@ -62,5 +63,3 @@ const HouseDesignSection = () => {
 };
 
 export default HouseDesignSection;
-
-
