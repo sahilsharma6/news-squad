@@ -11,6 +11,7 @@ import ContentEditor from "./components/Editor.jsx";
 import ArticlePage from "./pages/ArticlePage.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Register from "./pages/Register.jsx";
+import LifeStyle from "./pages/LifeStyle.jsx";
 
 
 const router = createBrowserRouter([
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/:title", element: <ArticlePage /> },
       { path: "/category/fashion", element: <FashionPosts /> },
-      
+      { path: "/category/lifestyle", element: <LifeStyle/> }
     ],
   },
   {

@@ -15,7 +15,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.0",
     "multer": "^1.4.5-lts.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "travels": "file:"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
