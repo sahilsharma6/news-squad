@@ -1,21 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState , useEffect} from "react";
 import { Search } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import FilterableBlog from "./FilterableBlogs";
+import { Link } from "react-router-dom";
+import FilterableBlog from "./FilterableBlogs"
+import profilepic from "../assets/profile-user.png";;
 import GadgetsSubmenu from "./GadgetsSubmenu";
-import profilepic from "../assets/profile-user.png";
+import { useNavigate } from "react-router-dom";
+
 
 export default function NavigationMenu() {
   const [activeComponent, setActiveComponent] = useState(null);
   const [search, setSearch] = useState(false);
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
   const navigateTo = useNavigate();
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token); 
+    setIsLoggedIn(!!token);
   }, []);
 
   const renderComponent = () => {
@@ -24,47 +28,47 @@ export default function NavigationMenu() {
         return <FilterableBlog />;
       case "GADGETS":
         return <GadgetsSubmenu />;
+
       default:
         return null;
     }
   };
 
-  const menuItems = [
-    { id: 1, name: "NEWS" },
-    { id: 2, name: "FASHION" },
-    { id: 3, name: "GADGETS" },
-    { id: 4, name: "LIFESTYLE" },
-  ];
+
+
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     navigateTo("/");
-  };
+  }
+  const menuItems = ["NEWS", "FASHION", "GADGETS", "LIFESTYLE"];
 
   return (
     <nav className="border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          <div className="flex">
+        <div className="flex justify-between  items-center">
+          <div className="flex ">
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               {menuItems.map((item) => (
                 <div
-                  key={item.id}
-                  onMouseEnter={() => setActiveComponent(item.name)}
+                  key={item}
+                  onMouseEnter={() => setActiveComponent(item)}
                   onMouseLeave={() => setActiveComponent(null)}
-                  className="group relative"
+                  className=" group"
                 >
                   <Link
-                    to={item.name === "NEWS" ? "/" : `/category/${item.name.toLowerCase()}`}
+                    to={
+                      item === "NEWS" ? "/" : `/category/${item.toLowerCase()}`
+                    }
                     className={`inline-flex items-center px-1 pt-1 pb-2 border-b-2 text-base font-semibold ${
-                      item.name === "NEWS"
+                      item === "NEWS"
                         ? "border-blue-500 text-gray-900"
                         : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
                     }`}
                   >
-                    {item.name}
-                    {["FASHION", "GADGETS"].includes(item.name) && (
+                    {item}
+                    {["FASHION", "GADGETS"].includes(item) && (
                       <svg
                         className="ml-2 h-5 w-5 text-gray-400"
                         xmlns="http://www.w3.org/2000/svg"
@@ -80,19 +84,20 @@ export default function NavigationMenu() {
                       </svg>
                     )}
                   </Link>
-                  {activeComponent === item.name && ["FASHION", "GADGETS"].includes(item.name) && (
-                    <div className="absolute left-0 w-full mt-1 p-4 border border-gray-300 rounded-lg bg-white shadow-lg z-[99999]">
-                      {renderComponent()}
-                    </div>
-                  )}
+                  {activeComponent === item &&
+                    ["FASHION", "GADGETS"].includes(item) && (
+                      <div className="absolute left-0 w-full mt-1 p-4 border border-gray-300 rounded-lg bg-white shadow-lg z-[99999]">
+                        {renderComponent()}
+                      </div>
+                    )}
                 </div>
               ))}
             </div>
           </div>
-          <div className="md:flex w-full items-center justify-end hidden relative">
+          <div className="md:flex  w-full items-center justify-end hidden relative">
             <button
               type="button"
-              onClick={() => setSearch((prev) => !prev)}
+              onClick={() => setSearch(!search)}
               className="p-1 rounded-full text-gray-400 w-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               <span className="sr-only">Search</span>
@@ -107,20 +112,22 @@ export default function NavigationMenu() {
                     placeholder="Search..."
                     className="w-full mt-2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
-                  <button className="hover:text-sky-600 duration-300">Search</button>
+                  <button className="hover:text-sky-600 duration-300">
+                    Search
+                  </button>
                 </div>
               </div>
             )}
 
-            <div className="relative">
+<div className="relative">
               <img
-                src={profilepic} 
+                src={profilepic}
                 alt="Profile"
                 className="w-10 h-10 rounded-full cursor-pointer"
                 onClick={() => setDropdownOpen((prev) => !prev)}
               />
               {dropdownOpen && (
-                <div className="absolute right-0 w-48 mt-2 p-2 border border-gray-300 rounded-lg bg-white shadow-lg z-[99999]">
+                <div className="absolute right-0 w-48 mt-2 p-2 border border-gray-300 rounded-lg bg-white shadow-lg z-50">
                   {isLoggedIn ? (
                     <>
                       <Link to="/profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</Link>

@@ -3,7 +3,6 @@ import asyncHandler from "./asyncHandler.js";
 import User from "../models/userModel.js";
 import mongoose from 'mongoose';
 
-// Middleware to protect routes
 const protect = asyncHandler(async (req, res, next) => {
   const token = req.headers.authorization && req.headers.authorization.startsWith('Bearer')
     ? req.headers.authorization.split(' ')[1]
