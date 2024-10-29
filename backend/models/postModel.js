@@ -7,12 +7,11 @@ const postSchema = new mongoose.Schema(
     category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
     featuredImage: { type: String },
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
-    // views: 
-    // likes
-    // tags
-    // userId
-    // introdescription
-
+    views: {type: Number, default:0},
+    likes :{type:Number, default:0},
+    tags: [{type:String}],
+    userId : [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    introDescription :{type:String }
   },
   { timestamps: true }
 );

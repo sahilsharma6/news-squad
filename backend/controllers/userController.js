@@ -1,12 +1,15 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import User from "../models/userModel.js";
+import bcrypt from "bcrypt";
+
+
 
 
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  Private
-exports.getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+export const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id).select("-password");
 
   if (user) {
     res.json({
@@ -14,7 +17,7 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      isAdmin: user.isAdmin,
+      role: user.role === "admin",
     });
   } else {
     res.status(404);
@@ -22,13 +25,10 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-
-
-
 // @desc    Update user profile
 // @route   PUT /api/users/profile
 // @access  Private
-exports.updateUserProfile = asyncHandler(async (req, res) => {
+export const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
@@ -37,7 +37,6 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
     user.email = req.body.email || user.email;
 
     if (req.body.password) {
-
       user.password = await bcrypt.hash(req.body.password, 10);
     }
 
@@ -48,7 +47,7 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
       email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
+      role: updatedUser.role === "admin",
     });
   } else {
     res.status(404);
@@ -56,23 +55,18 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-
-
 // @desc    Get all users
 // @route   GET /api/users
 // @access  Private/Admin
-exports.getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
+export const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({}).select("-password");
   res.json(users);
 });
-
-
-
 
 // @desc    Delete user
 // @route   DELETE /api/users/:id
 // @access  Private/Admin
-exports.deleteUser = asyncHandler(async (req, res) => {
+export const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
   if (user) {
@@ -84,31 +78,24 @@ exports.deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
-
-
-
 // @desc    Get user by ID
 // @route   GET /api/users/:id
 // @access  Private/Admin
-exports.getUserById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id);
+export const getUserById = asyncHandler(async (req, res) => {
+  // const user = await User.findById(req.params.id).select('-password'); 
 
-  if (user) {
-    return res.json(user);
-  } else {
-    res.status(404);
-    throw new Error("User not found");
-  }
+  // if (user) {
+  //   return res.json(user);
+  // } else {
+  //   res.status(404);
+  //   throw new Error("User not found");
+  // }
 });
-
-
-
-
 
 // @desc    Update user
 // @route   PUT /api/users/:id
 // @access  Private/Admin
-exports.updateUser = asyncHandler(async (req, res) => {
+export const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
   if (user) {
@@ -117,7 +104,6 @@ exports.updateUser = asyncHandler(async (req, res) => {
     user.email = req.body.email || user.email;
 
     if (req.body.password) {
-      // Hash the password before saving
       user.password = await bcrypt.hash(req.body.password, 10);
     }
 
@@ -128,10 +114,12 @@ exports.updateUser = asyncHandler(async (req, res) => {
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
       email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
+      isAdmin: updatedUser.role === "admin",
     });
   } else {
     res.status(404);
     throw new Error("User not found");
   }
 });
+
+
