@@ -55,12 +55,12 @@ const LifestyleSection = () => {
       </div>
 
       {/* Articles Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4  mt-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4  mt-8 p-1">
         {articles.map((article, index) => (
-          <div key={index} className="relative group">
-            <img src={article.image} alt={article.title} className="w-max h-72 object-cover" />
+          <div key={index} className="relative group mr-1">
+            <img src={article.image} alt={article.title} className="w-max md:h-96 object-cover" />
             <div className={`absolute inset-0 ${article.overlayColor} opacity-75 group-hover:opacity-50 transition duration-300`}></div>
-            <div className="absolute bottom-0 left-0 p-4 text-white z-10">
+            <div className="absolute bottom-0 left-0 pt-2 text-white z-10">
               <span className="text-sm">{article.category}</span>
               <h2 className="font-bold text-lg mt-2">{article.title}</h2>
               <p className="text-sm mt-1">

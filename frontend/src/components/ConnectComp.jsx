@@ -1,6 +1,9 @@
 import React from "react";
 import { FaFacebookF, FaTwitter, FaYoutube } from "react-icons/fa";
-import img2 from "../assets/blog-1.jpg";
+import Advertisement from "./Advertisement";
+import { BiSolidLike } from "react-icons/bi";
+import { SlUserFollowing } from "react-icons/sl";
+
 const RightSidebar = () => {
   return (
     <div className="h-full">
@@ -23,37 +26,27 @@ const RightSidebar = () => {
               <FaFacebookF className="text-blue-700" size={24} />
               <span>24,856 Fans</span>
             </div>
-            <span className="text-sm font-semibold">LIKE</span>
+            <button className="text-sm font-semibold"><BiSolidLike size={25}/></button>
           </li>
           <li className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <FaTwitter className="text-blue-500" size={24} />
               <span>3,913 Followers</span>
             </div>
-            <span className="text-sm font-semibold">FOLLOW</span>
+            <button className="text-sm font-semibold"><SlUserFollowing size={25} /></button>
           </li>
           <li className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <FaYoutube className="text-red-600" size={24} />
               <span>22,100 Subscribers</span>
             </div>
-            <span className="text-sm font-semibold">SUBSCRIBE</span>
+            <button className="text-sm font-semibold hover:bg-red-600 hover:text-white p-1 rounded-sm">SUBSCRIBE</button>
           </li>
         </ul>
       </div>
 
       {/* Advertisement Section */}
-      <div className="mb-8">
-        <h2 className="text-gray-500 text-center text-sm">- Advertisement -</h2>
-        <div className="flex justify-center mt-4">
-          {/* Replace this img src with your image path */}
-          <img
-            src={img2}
-            alt="Advertisement"
-            className="w-full h-auto max-w-[300px]"
-          />
-        </div>
-      </div>
+      <Advertisement />
     </div>
   );
 };

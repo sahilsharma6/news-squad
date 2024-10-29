@@ -1,4 +1,4 @@
-import React from "react";
+
 import Hero from "../components/Hero";
 import NewsLayout from "../components/DontMissComp";
 import RightSidebar from "../components/ConnectComp";

@@ -16,13 +16,13 @@ const articles = [
     description: "We woke reasonably late following the feast and free-flowing wine the night before...",
     image: img1,
   },
-  {
-    title: "Rumors, Gossip and Unfounded Truths: Every Moto Release Story",
-    date: "August 7, 2019",
-    author: "Armin Vans",
-    description: "We woke reasonably late following the feast and free-flowing wine the night before...",
-    image: img1,
-  },
+  // {
+  //   title: "Rumors, Gossip and Unfounded Truths: Every Moto Release Story",
+  //   date: "August 7, 2019",
+  //   author: "Armin Vans",
+  //   description: "We woke reasonably late following the feast and free-flowing wine the night before...",
+  //   image: img1,
+  // },
 ];
 
 const Mustread = () => {
