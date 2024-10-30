@@ -4,7 +4,7 @@ import express from "express";
 import * as categoryController from "../controllers/categoryController.js";
 
 // Route to create a new category
-router.post("/", categoryController.createCategory);
+router.post("/",  categoryController.createCategory);
 
 // Route to get all categories
 router.get("/", categoryController.getAllCategories);

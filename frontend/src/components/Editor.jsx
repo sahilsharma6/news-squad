@@ -11,6 +11,8 @@ export default function ContentEditor() {
   };
   return (
     <div className="flex flex-col">
+
+      //title, category list, 
       <Editor
         apiKey="bqv0d5kacgdmmfvh831hja4oddj56rtg7dcn4o11mph4fxej"
         onInit={(evt, editor) => (editorRef.current = editor)}

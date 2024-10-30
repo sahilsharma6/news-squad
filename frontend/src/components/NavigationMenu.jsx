@@ -1,12 +1,27 @@
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { Search } from "lucide-react";
 import { Link } from "react-router-dom";
-import FilterableBlog from "./FilterableBlogs";
+import FilterableBlog from "./FilterableBlogs"
+import profilepic from "../assets/profile-user.png";;
 import GadgetsSubmenu from "./GadgetsSubmenu";
+import { useNavigate } from "react-router-dom";
+
 
 export default function NavigationMenu() {
   const [activeComponent, setActiveComponent] = useState(null);
   const [search, setSearch] = useState(false);
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigateTo = useNavigate();
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
   const renderComponent = () => {
     switch (activeComponent) {
       case "FASHION":
@@ -19,7 +34,15 @@ export default function NavigationMenu() {
     }
   };
 
-  const menuItems = ["NEWS", "FASHION", "GADGETS", "LIFESTYLE", "VIDEO"];
+
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigateTo("/");
+  }
+  const menuItems = ["NEWS", "FASHION", "GADGETS", "LIFESTYLE"];
 
   return (
     <nav className="border-b border-gray-200">
@@ -96,12 +119,27 @@ export default function NavigationMenu() {
               </div>
             )}
 
-            <Link
-              to="/signin"
-              className="ml-4 inline-block p-2 bg-blue-500 text-white font-bold rounded transition duration-300 hover:bg-blue-600"
-            >
-              Register/SignIn
-            </Link>
+<div className="relative">
+              <img
+                src={profilepic}
+                alt="Profile"
+                className="w-10 h-10 rounded-full cursor-pointer"
+                onClick={() => setDropdownOpen((prev) => !prev)}
+              />
+              {dropdownOpen && (
+                <div className="absolute right-0 w-48 mt-2 p-2 border border-gray-300 rounded-lg bg-white shadow-lg z-50">
+                  {isLoggedIn ? (
+                    <>
+                      <Link to="/profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</Link>
+                      <Link to="/dashboard" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Admin Dashboard</Link>
+                      <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
+                    </>
+                  ) : (
+                    <Link to="/signin" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Sign In</Link>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

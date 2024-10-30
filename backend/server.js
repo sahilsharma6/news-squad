@@ -11,23 +11,19 @@ const port = process.env.PORT || 5000;
 connectDB();
 const app = express();
 
-// import categoryRoutes from './routes/categoryRoutes.js';
-
-app.use(cors({
-  origin: 'http://localhost:5173', // Replace with your frontend domain
-  credentials: true, // Allow credentials
-}));
 import categoryRoutes from "./routes/categoryRoutes.js";
 import imageUploadRoute from "./routes/imageUpload.js";
 import postRoutes from "./routes/postRoutes.js"
 import authRoute from "./routes/authRoute.js"
+import userRoutes from "./routes/userRoutes.js"
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true, // Allow credentials
-  })
-);
+
+app.use(cors({
+  origin: 'http://localhost:5173', 
+  credentials: true, 
+}));
+
+
 
 
 // app.use(cors({
@@ -51,6 +47,7 @@ app.use("/api/auth",authRoute)
 app.use("/api/posts",postRoutes)
 app.use("/api/categories", categoryRoutes);
 app.use("/api/upload-image", imageUploadRoute);
+app.use("/api", userRoutes);
 
 
 app.get("/", (req, res) => {
