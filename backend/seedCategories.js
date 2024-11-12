@@ -1,40 +1,35 @@
-import mongoose from 'mongoose';
-import Category from './models/categoryModel.js';
-
+import mongoose from "mongoose";
+import Category from "./models/categoryModel.js"; // Adjust the path as needed
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/news-squad', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+mongoose.connect("mongodb://localhost:27017/newssquad", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-// Define categories
 const categories = [
-    { categoryName: "Politics", description: "News related to government, elections, and political affairs." },
-    { categoryName: "Business", description: "Financial markets, corporate news, and economic updates." },
-    { categoryName: "Technology", description: "Latest advancements in tech, gadgets, and innovation." },
-    { categoryName: "Health", description: "News about medical breakthroughs, healthcare policies, and wellness tips." },
-    { categoryName: "Science", description: "Updates on scientific research, discoveries, and space exploration." },
-    { categoryName: "Sports", description: "Coverage of sports events, players, and major tournaments." },
-    { categoryName: "Entertainment", description: "Celebrity news, movies, TV shows, and pop culture." },
-    { categoryName: "World", description: "International news and global events." },
-    { categoryName: "Lifestyle", description: "Fashion, travel, food, and personal development." },
-    { categoryName: "Environment", description: "Climate change, wildlife, and sustainability." },
-    { categoryName: "Education", description: "News on schools, universities, and education policies." },
-    { categoryName: "Opinion", description: "Editorials, opinions, and analysis pieces." }
+  { _id: "6730d55777b0626758f6f677", name: "Fashion" },
+  { _id: "6730d55777b0626758f6f678", name: "Style" },
+  { _id: "6730d55777b0626758f6f679", name: "Shoes" },
+  { _id: "6730d55777b0626758f6f680", name: "Events" },
+  { _id: "6730d55777b0626758f6f681", name: "Architecture" },
+  { _id: "6730d55777b0626758f6f682", name: "Vogue" },
+  { _id: "6730d55777b0626758f6f683", name: "Health and Fitness" },
+  { _id: "6730d55777b0626758f6f684", name: "Travel and Gadget" },
+  { _id: "6730d55777b0626758f6f685", name: "Recipe" },
+  { _id: "6730d55777b0626758f6f686", name: "Music" },
 ];
 
-// Insert categories into the database
 const seedCategories = async () => {
-    try {
-        await Category.insertMany(categories);
-        console.log("Categories have been added successfully.");
-        mongoose.connection.close(); // Close the connection after seeding
-    } catch (error) {
-        console.error("Error seeding categories:", error);
-        mongoose.connection.close();
-    }
+  try {
+    await Category.deleteMany(); // Clear existing categories if needed
+    await Category.insertMany(categories);
+    console.log("Categories seeded successfully!");
+  } catch (error) {
+    console.error("Error seeding categories:", error);
+  } finally {
+    mongoose.connection.close(); // Close the connection
+  }
 };
 
-// Run the function
 seedCategories();
