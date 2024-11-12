@@ -28,7 +28,19 @@ const router = createBrowserRouter([
       { path: "/category/lifestyle", element: <LifeStyle/> },
       {
         path:"category/gadgets",
-        element: <Gadgets />
+        element: <Gadgets param='gadgets'/>
+      },
+      {
+        path:"category/mobile-phones",
+        element: <Gadgets param='mobile-phones'/>
+      },
+      {
+        path:"category/photography",
+        element: <Gadgets param='photography'/>
+      },
+      {
+        path:"category/reviews",
+        element: <Gadgets param='reviews'/>
       },
       
     ],
