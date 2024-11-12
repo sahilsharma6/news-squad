@@ -29,6 +29,7 @@ const protect = asyncHandler(async (req, res, next) => {
 const admin = asyncHandler(async (req, res) => {
   if (req.user && req.user.role === "admin") {
     return res.status(200).json({isAdmin: true});
+    next();
   } else {
     return res.status(403).json({ message: "Not authorized as an admin" });
   }

@@ -1,13 +1,9 @@
 import mongoose from 'mongoose';
-import Category from './models/category.Model';
+import Category from './models/categoryModel.js';
 
 
 // Connect to MongoDB
-<<<<<<< HEAD
 mongoose.connect('mongodb://localhost:27017/news-squad', {
-=======
-mongoose.connect('mongodb://localhost/news-squad', {
->>>>>>> 9ec866ad232901ba253445aadd066978180bad85
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });

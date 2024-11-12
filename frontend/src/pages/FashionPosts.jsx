@@ -1,13 +1,15 @@
 import React from "react";
 import LatestNews from "@/components/LatestNews";
 import { Link } from "react-router-dom";
+import ModernSection from "@/components/ModernComp";
 
 const FashionPosts = () => {
   return (
     <>
       {/* top */}
+
       <div
-        className="relative w-full h-[450px] bg-cover bg-center"
+        className="relative w-full h-[450px] bg-cover bg-center "
         style={{
           backgroundImage:
             "url(https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2019/08/38.jpg)",
@@ -57,10 +59,14 @@ const FashionPosts = () => {
         </div>
       </div>
 
-      <div className="flex ">
+      <div className="flex md:mx-[10%]">
         <div className="w-[70%]">
           {" "}
           <LatestNews />
+        </div>
+        <div className="w-[30%]">
+          <ModernSection/>
+
         </div>
       </div>
     </>
