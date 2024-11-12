@@ -5,7 +5,7 @@ import Post from "../models/postModel.js";
 // @route   GET /api/posts
 // @access  Public
 const getPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({});
+  const posts = await Post.find({}).populate('category', 'name'); // Populate category name
   res.json(posts);
 });
 
@@ -13,10 +13,9 @@ const getPosts = asyncHandler(async (req, res) => {
 // @route   GET /api/posts/:id
 // @access  Public
 const getPostsById = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id);
+  const post = await Post.findById(req.params.id).populate('category', 'name'); // Populate category name
 
   if (post) {
-
     post.views = (post.views || 0) + 1;
     await post.save();
     return res.json(post);
@@ -30,7 +29,7 @@ const getPostsById = asyncHandler(async (req, res) => {
 // @route   GET /api/posts/category/:category
 // @access  Public
 const getPostByCategory = asyncHandler(async (req, res) => {
-  const posts = await Post.find({ category: req.params.category });
+  const posts = await Post.find({ category: req.params.category }).populate('category', 'name'); // Populate category name
 
   if (posts.length > 0) {
     return res.json(posts);
@@ -47,9 +46,8 @@ const createPost = asyncHandler(async (req, res) => {
   const post = new Post({
     title: req.body.title,
     content: req.body.content,
-    author: req.user._id, 
+    author: req.user._id,
     category: req.body.category,
-   
   });
 
   const createdPost = await post.save();
