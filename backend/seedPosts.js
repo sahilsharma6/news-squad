@@ -1,16 +1,23 @@
 import mongoose from "mongoose";
-import Post from "./models/postModel.js"; // Adjust path based on project structure
-import Category from "./models/categoryModel.js"; // Adjust path based on project structure
-
-const categoriesData = [
-  { _id: "6730d55777b0626758f6f677", name: "Fashion" },
-  { _id: "6730d55777b0626758f6f678", name: "Style" },
-  { _id: "6730d55777b0626758f6f679", name: "Shoes" },
-  { _id: "6730d55777b0626758f6f680", name: "Events" },
-];
+import Post from "./models/postModel.js"; // Adjust path based on your project structure
+import Category from "./models/categoryModel.js"; // Adjust path based on your project structure
 
 const newsDataJson = [
   {
+    views: 120,
+    likes: 45,
+    tags: ["fashion", "influencers", "instagram", "outfits"],
+    userId: ["60d5f3b8c0f8c32bc8b3b002"],
+    title: "Fashion Outfit Ideas From the Biggest Instagram Influencers",
+    image:
+      "https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2019/08/22-1024x684.jpg.webp",
+    author: "Armin Vans",
+    content:
+      "This is a sample content for the fashion outfit ideas from Instagram influencers. Stay tuned for more updates.",
+    introDescription:
+      "Fashion ideas from the biggest influencers on Instagram.",
+    category: "Fashion",
+  }, {
     views: 120,
     likes: 45,
     tags: ["fashion", "influencers", "instagram", "outfits"],
@@ -210,48 +217,39 @@ const newsDataJson = [
     introDescription: "Top picks for over-the-ankle shoes this winter season.",
     category: "Shoes",
   },
-  // ... more posts
+  // Add additional posts as needed
 ];
 
-const seedDatabase = async () => {
+const seedPosts = async () => {
   try {
-    // Connect to MongoDB
     await mongoose.connect("mongodb://localhost:27017/newssquad", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
 
-    // Clear existing data
-    await Category.deleteMany({});
     await Post.deleteMany({});
 
-    // Insert categories into the database
-    const insertedCategories = await Category.insertMany(categoriesData);
-    console.log("Categories successfully seeded!");
-
-    // Map categories by name to their ObjectIds
-    const categoryMap = insertedCategories.reduce((map, category) => {
+    // Fetch categories to get their ObjectIds
+    const categories = await Category.find({});
+    const categoryMap = categories.reduce((map, category) => {
       map[category.name] = category._id;
       return map;
     }, {});
 
-    // Update each post's category field with the correct ObjectId
+    // Update posts with the correct category ObjectId
     const updatedNewsData = newsDataJson.map((post) => ({
       ...post,
       category: categoryMap[post.category] || null,
     }));
 
-    // Insert posts into the database
     await Post.insertMany(updatedNewsData);
-    console.log("Posts successfully seeded!");
 
-    // Close the connection
-    mongoose.connection.close();
+    console.log("Posts successfully seeded!");
   } catch (error) {
-    console.error("Error seeding database:", error);
+    console.error("Error seeding posts:", error);
+  } finally {
     mongoose.connection.close();
   }
 };
 
-// Run the seed function
-seedDatabase();
+seedPosts();
