@@ -13,14 +13,16 @@ const LatestNews = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/posts");  // Adjust this to your API endpoint
-        setNewsData(response.data);  // Assuming your API returns an array of news articles
+        const response = await axios.get("http://localhost:5000/api/posts/category/Fashion");
+        console.log(response.data);
+        setNewsData(response.data.posts);
         setLoading(false);
       } catch (error) {
         setError("Failed to load news");
         setLoading(false);
       }
     };
+    
 
     fetchNews();
   }, []);  // Empty dependency array to run once when the component mounts
