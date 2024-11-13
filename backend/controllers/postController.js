@@ -6,58 +6,51 @@ import Post from "../models/postModel.js";
 // @route   GET /api/posts
 // @access  Public
 const getPosts = asyncHandler(async (req, res) => {
-  const { category, page = 1, limit = 4 } = req.query;
-  
+  const { page = 1, limit = 34 } = req.query;
+
   const pageNum = parseInt(page);
   const limitNum = parseInt(limit);
 
-  let query = {};
-  
-  if (category) {
-    console.log(category);
-   const CategoryId = await Category.findOne({name:category });
-
-    // console.log(CategoryId);
-    
-    if (!CategoryId) {
-      return res.json({ res: true, message: "Cannot find the data", find: false });
-    }
-    query.category = CategoryId._id;
-  }
-
   try {
-    // console.log('q',query);
-    
-    const totalPosts = await Post.countDocuments(query); 
-      // console.log('t',totalPosts);
-      
-    const posts = await Post.find(query)
-      .skip((pageNum - 1) * limitNum) 
-      .limit(limitNum); 
+   
+    const totalPosts = await Post.countDocuments();
 
+
+    const posts = await Post.find()
+      .populate('category', 'name') 
+      .skip((pageNum - 1) * limitNum) 
+      .limit(limitNum);
+
+    // Check if posts are found
     if (!posts.length) {
-      return res.json({ res: true, message: "Cannot find the data", find: false });
+      return res.json({
+        res: true,
+        message: "Cannot find the data",
+        find: false,
+      });
     }
 
+   
     res.json({
       posts,
       currentPage: pageNum,
       totalPages: Math.ceil(totalPosts / limitNum),
       totalPosts,
-      find: true
+      find: true,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching posts:", error);
     res.status(500).json({ message: "Server Error" });
   }
 });
+
 
 
 // @desc    Fetch a post by ID
 // @route   GET /api/posts/:id
 // @access  Public
 const getPostsById = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id).populate('category', 'name'); // Populate category name
+  const post = await Post.findById(req.params.id).populate('category', 'name'); 
 
   if (post) {
     post.views = (post.views || 0) + 1;

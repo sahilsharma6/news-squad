@@ -135,28 +135,28 @@ const newsDataJson = [
     likes: 150,
     tags: ["health", "wellness", "workouts", "mindfulness"],
     userId: ["60d5f3b8c0f8c32bc8b3b022"],
-    title: "Health and Fitness: Building a Mindful Workout Routine",
+    title: "Health & Fitness: Building a Mindful Workout Routine",
     image:
       "https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2023/05/mindful-workout-1024x684.jpg.webp",
     author: "James Anderson",
     content:
       "Learn how to incorporate mindfulness into your daily workouts to boost physical and mental well-being. From breathing techniques to workout sequences, we cover it all.",
     introDescription: "Boost your workout routine with mindfulness.",
-    category: "Health and Fitness",
+    category: "Health & Fitness",
   },
   {
     views: 290,
     likes: 95,
     tags: ["nutrition", "wellness", "diets", "lifestyle"],
     userId: ["60d5f3b8c0f8c32bc8b3b023"],
-    title: "Top Health and Fitness Trends to Watch in 2024",
+    title: "Top Health & Fitness Trends to Watch in 2024",
     image:
       "https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2023/06/fitness-trends-1024x684.jpg.webp",
     author: "Laura Kim",
     content:
-      "Stay up-to-date with the most popular health and fitness trends of 2024, from plant-based diets to digital health apps.",
-    introDescription: "Explore the latest trends in health and fitness.",
-    category: "Health and Fitness",
+      "Stay up-to-date with the most popular Health & Fitness trends of 2024, from plant-based diets to digital health apps.",
+    introDescription: "Explore the latest trends in Health & Fitness.",
+    category: "Health & Fitness",
   },
   {
     views: 210,
@@ -170,7 +170,7 @@ const newsDataJson = [
     content:
       "Planning a trip? Discover the best travel gadgets that will make your adventure more convenient and memorable.",
     introDescription: "Essential gadgets for your next journey.",
-    category: "Travel and Gadget",
+    category: "Travel",
   },
   {
     views: 175,
@@ -184,7 +184,7 @@ const newsDataJson = [
     content:
       "Whether you’re headed to the mountains or the beach, this guide covers the top travel gear to pack for every destination.",
     introDescription: "Top travel gear recommendations for every trip.",
-    category: "Travel and Gadget",
+    category: "Travel",
   },
   {
     views: 180,
