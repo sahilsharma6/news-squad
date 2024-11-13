@@ -57,7 +57,7 @@ const Latest = () => {
       try {
         setLoading(true);
         const response = await api.get("/posts");  // Fetching posts from the API
-        setNewsData(response.data);  // Assuming your API returns an array of articles
+        setNewsData(response.data.posts);  // Assuming your API returns an array of articles
       } catch (err) {
         console.error("Error fetching data:", err);  // Logs error to console
         setError("Failed to load news. Please try again later.");
@@ -78,6 +78,8 @@ const Latest = () => {
   }
 
   // Pagination Logic: Calculate the current posts to display
+  console.log('nData',newsData);
+  
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = newsData.slice(indexOfFirstPost, indexOfLastPost);

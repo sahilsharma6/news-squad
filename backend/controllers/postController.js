@@ -1,13 +1,57 @@
 import asyncHandler from "../middleware/asyncHandler.js";
+import Category from "../models/categoryModel.js";
 import Post from "../models/postModel.js";
 
 // @desc    Fetch all posts
 // @route   GET /api/posts
 // @access  Public
 const getPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({}).populate('category', 'name'); // Populate category name
-  res.json(posts);
+  const { category, page = 1, limit = 1 } = req.query; // Default page is 1, limit is 10
+  
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+
+  let query = {};
+  
+  if (category) {
+    console.log(category);
+   const CategoryId = await Category.findOne({name:category });
+
+    // console.log(CategoryId);
+    
+    if (!CategoryId) {
+      return res.json({ res: true, message: "Cannot find the data", find: false });
+    }
+    query.category = CategoryId._id;
+  }
+
+  try {
+    // console.log('q',query);
+    
+    const totalPosts = await Post.countDocuments(query); 
+      // console.log('t',totalPosts);
+      
+    const posts = await Post.find(query)
+      .skip((pageNum - 1) * limitNum) 
+      .limit(limitNum); 
+
+    if (!posts.length) {
+      return res.json({ res: true, message: "Cannot find the data", find: false });
+    }
+
+    res.json({
+      posts,
+      currentPage: pageNum,
+      totalPages: Math.ceil(totalPosts / limitNum),
+      totalPosts,
+      find: true
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
 });
+
 
 // @desc    Fetch a post by ID
 // @route   GET /api/posts/:id
