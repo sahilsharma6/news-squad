@@ -6,7 +6,7 @@ import Post from "../models/postModel.js";
 // @route   GET /api/posts
 // @access  Public
 const getPosts = asyncHandler(async (req, res) => {
-  const { category, page = 1, limit = 1 } = req.query; // Default page is 1, limit is 10
+  const { category, page = 1, limit = 4 } = req.query;
   
   const pageNum = parseInt(page);
   const limitNum = parseInt(limit);
@@ -72,16 +72,39 @@ const getPostsById = asyncHandler(async (req, res) => {
 // @desc    Fetch posts by category
 // @route   GET /api/posts/category/:category
 // @access  Public
+
+
 const getPostByCategory = asyncHandler(async (req, res) => {
-  const posts = await Post.find({ category: req.params.category }).populate('category', 'name'); // Populate category name
+  const categoryName = req.params.category;
+  const { page = 1, limit = 4 } = req.query;
+
+  const category = await Category.findOne({ name: categoryName });
+
+  if (!category) {
+    res.status(404);
+    throw new Error("Category not found");
+  }
+
+  const posts = await Post.find({ category: category._id })
+    .populate('category', 'name')
+    .skip((page - 1) * limit)
+    .limit(Number(limit));
+
+  const totalPosts = await Post.countDocuments({ category: category._id });
 
   if (posts.length > 0) {
-    return res.json(posts);
+    res.json({
+      posts,
+      totalPosts,
+    });
   } else {
     res.status(404);
     throw new Error("No posts found for this category");
   }
 });
+
+
+
 
 // @desc    Create a new post
 // @route   POST /api/posts

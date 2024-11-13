@@ -18,11 +18,13 @@ const categories = [
   { _id: "6730d55777b0626758f6f684", name: "Travel and Gadget" },
   { _id: "6730d55777b0626758f6f685", name: "Recipe" },
   { _id: "6730d55777b0626758f6f686", name: "Music" },
+  { _id: "6730d55777b0626758f6f687", name: "Lifestyle" },
+  { _id: "6730d55777b0626758f6f688", name: "Gadgets" },
 ];
 
 const seedCategories = async () => {
   try {
-    await Category.deleteMany(); // Clear existing categories if needed
+    await Category.deleteMany();  
     await Category.insertMany(categories);
     console.log("Categories seeded successfully!");
   } catch (error) {

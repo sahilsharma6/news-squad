@@ -1,31 +1,33 @@
 import { useState, useEffect } from 'react';
 
-const GadgetsMenu = ({param}) => {
+const GadgetsMenu = ({ param }) => {
   const [articles, setArticles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const articlesPerPage = 2;
 
-  useEffect(()=>{
-setCurrentPage(1)
-  },[param])
   useEffect(() => {
-    setArticles([]);
-    fetch(`http://localhost:5000/api/posts?category=${param}&page=${currentPage}&limit=${articlesPerPage}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
+    setCurrentPage(1);
+  }, [param]);  // Reset to page 1 when category changes
 
-        // Check if the data includes posts and pagination info
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/posts/category/Gadgets?page=${currentPage}&limit=${articlesPerPage}`);
+        const data = await response.json();
+        
         if (data && data.posts) {
           setArticles(data.posts);
-          setTotalPages(Math.ceil(data.totalPosts / articlesPerPage));  // Assuming 'totalPosts' is in the response
+          setTotalPages(Math.ceil(data.totalPosts / articlesPerPage));  // Assuming totalPosts is included in the response
         }
-      })
-      .catch(error => console.error('Error fetching articles:', error));
-  }, [currentPage,param]);  // Re-fetch when the page changes
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      }
+    };
+    
+    fetchData();
+  }, [currentPage, param]);  // Re-fetch when currentPage or param changes
 
-  // Handle page change
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -34,16 +36,16 @@ setCurrentPage(1)
     <div>
       {articles.map((article, index) => (
         <article className="overflow-hidden mb-8 flex flex-col sm:flex-row" key={index}>
-          <div className="p-6 sm:w-2/5 bg-white ">
+          <div className="p-6 sm:w-2/5 bg-white">
             <span className="text-blue-400 text-sm font-semibold">{param.toUpperCase()}</span>
             <h4 className="font-bold mt-2 hover:text-blue-400">
               <a href='#'>{article.title}</a>
             </h4>
             <p className="mt-4 text-gray-600 text-xs">{article.content}</p>
-            <span className="text-gray-500 text-xs mt-4 block">{article.createdAt}</span>
+            <span className="text-gray-500 text-xs mt-4 block">{new Date(article.createdAt).toLocaleDateString()}</span>
           </div>
-          <div className="sm:w-3/5  mr-2">
-            <img src={article.featuredImage} alt="Smart home" className="w-full h-full object-cover" />
+          <div className="sm:w-3/5 mr-2">
+            <img src={article.featuredImage} alt={article.title} className="w-full h-full object-cover" />
           </div>
         </article>
       ))}
@@ -65,9 +67,7 @@ setCurrentPage(1)
               <li key={i}>
                 <button
                   onClick={() => paginate(i + 1)}
-                  className={`px-3 py-1 rounded-md ${
-                    currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
-                  }`}
+                  className={`px-3 py-1 rounded-md ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"}`}
                 >
                   {i + 1}
                 </button>
