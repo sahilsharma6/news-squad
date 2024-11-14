@@ -1,34 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-// Sample data for modern articles
-const modernArticles = [
-  {
-    id: 1,
-    imgSrc: "https://via.placeholder.com/300x200",
-    altText: "Urban Kitchen",
-    title: "Urban Kitchen with Granite Tops, Exposed Bulb Lights and Island",
-  },
-  {
-    id: 2,
-    imgSrc: "https://via.placeholder.com/300x200",
-    altText: "Modern Bathroom",
-    title: "Modern Bathroom with Metro Rocks, Large Plant and Neutral Tiles",
-  },
-  {
-    id: 3,
-    imgSrc: "https://via.placeholder.com/300x200",
-    altText: "Luxe Hallway",
-    title: "Luxe Hallway with Chess Table Flooring and Large Rounded Windows",
-  },
-  {
-    id: 4,
-    imgSrc: "https://via.placeholder.com/300x200",
-    altText: "Lighthouse Paint Job",
-    title: "Man Agrees to Complete $50,000 Hereford Lighthouse Paint Job",
-  },
-];
-
+// Modern Section Component to display articles
 const ModernSection = () => {
+  const [posts, setPosts] = useState([]);  // State to store posts
+
+  useEffect(() => {
+    // Fetch posts from the API
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/posts/category/MakeitModern");
+        const data = await response.json();
+        setPosts(data.posts);  // Set posts into the state
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    fetchPosts();  // Call the fetch function when the component mounts
+  }, []);  // Empty dependency array to only run on mount
+
   return (
     <div className="container mx-auto p-6">
       {/* Section Title */}
@@ -37,21 +27,23 @@ const ModernSection = () => {
       </div>
 
       {/* Articles Grid */}
-      <div className="grid grid-cols-2 gap-6">
-        {modernArticles.map((article) => (
-          <div key={article.id} className="flex flex-col relative">
-          {/* Make it Modern label */}
-          <div className="relative">
-            <span style={{ fontSize: '10px' }} className="absolute bottom-0 left-0 text-xs bg-black text-white px-2 py-1 hover:bg-blue-500 rounded-sm">
-              Make it Modern
-            </span>
-            <img
-              src={article.imgSrc}
-              alt={article.altText}
-              className="w-full h-auto object-cover"
-            />
-          </div>
-        
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6">
+        {/* Map over the posts and display each one */}
+        {posts.map((article) => (
+          <div key={article._id} className="flex flex-col relative">
+            {/* "Make it Modern" label */}
+            <div className="relative">
+              <span style={{ fontSize: '10px' }} className="absolute bottom-0 left-0 text-xs bg-black text-white px-2 py-1 hover:bg-blue-500 rounded-sm">
+                Make it Modern
+              </span>
+              <img
+                src={article.imgSrc || 'default-image.jpg'}  // Use default image if none provided
+                alt={article.altText || article.title}  // Fallback to title if altText is missing
+                className="w-full h-48 object-cover"  // Ensure the image covers the space
+              />
+            </div>
+
+            {/* Article title */}
             <div className="mt-2">
               <h3 className="mt-2 text-sm hover:text-blue-500">
                 {article.title}
