@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
-// Modern Section Component to display articles
+
 const ModernSection = () => {
-  const [posts, setPosts] = useState([]);  // State to store posts
+  const [posts, setPosts] = useState([]); 
 
   useEffect(() => {
-    // Fetch posts from the API
+    
     const fetchPosts = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/posts/category/MakeitModern");
         const data = await response.json();
-        setPosts(data.posts);  // Set posts into the state
+  
+        setPosts(data.posts);  
       } catch (error) {
         console.error("Error fetching posts:", error);
       }

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 
 const Performan = () => {
-  const [data, setData] = useState([]); // Ensure data is always an array
+  const [data, setData] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -13,11 +13,10 @@ const Performan = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/posts');
-        console.log(response.data);  // Log the response data to inspect its structure
-
-        // Check if the response data contains a posts key and ensure it's an array
+       
+        
         if (response.data && Array.isArray(response.data.posts)) {
-          setData(response.data.posts); // If posts is an array, set it to data
+          setData(response.data.posts); 
         } else {
           console.error("Expected an array under 'posts', but received:", response.data);
           setError("Data is not in expected format.");
