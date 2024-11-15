@@ -1,4 +1,4 @@
-import express from 'express'; 
+import express from "express";
 import {
   getUserProfile,
   updateUserProfile,
@@ -6,28 +6,27 @@ import {
   deleteUser,
   getUserById,
   updateUser,
+} from "../controllers/userController.js";
 
-} from '../controllers/userController.js';
-
-
-import { protect, admin } from '../middleware/authMiddleware.js';
+import { protect, admin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-
 router
-  .route('/profile')
+  .route("/profile")
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
 router
-  .route('/:id')
+  .route("/:id")
   .delete(protect, admin, deleteUser)
-  .get(protect, admin, getUserById)
+  .get(protect, admin, getUserById);
+
+router
+  .route("/users")
+  .get(getUsers)
+
   .put(protect, admin, updateUser);
 
-  
-
-  router.route("/check-admin").get(protect,admin);
-
+router.route("/check-admin").get(protect, admin);
 
 export default router;

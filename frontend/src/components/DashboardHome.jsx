@@ -12,8 +12,30 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { LineChartComponent } from "./LineChart";
 import { PieChartComponent } from "./PieChart";
-
+import { useEffect, useState } from "react";
+import apiClient from "@/services/apiClient";
 export default function DashboardHome() {
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const { data } = await apiClient.get("/api/profile", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        // console.log(data);
+        setUser(data);
+      } catch (error) {
+        console.error("Failed to load user profile:", error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+  console.log(user);
   return (
     <main className="flex-1 p-8 max-w-screen-xl ">
       {/* Top Bar */}
@@ -36,13 +58,12 @@ export default function DashboardHome() {
           <div className="flex items-center">
             <Avatar>
               <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>RG</AvatarFallback>
+              <AvatarFallback>{user?.username}</AvatarFallback>
             </Avatar>
             <div className="ml-2 mr-2">
-              <p className="text-sm font-medium">Rahul Gupta</p>
-              <p className="text-xs text-gray-500">Web Developer</p>
+              {/* <p className="text-sm font-medium">{user.username}</p> */}
             </div>
-            <ChevronDown className="h-4 w-4 text-gray-500" />
+            {/* <ChevronDown className="h-4 w-4 text-gray-500" /> */}
           </div>
         </div>
       </div>

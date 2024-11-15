@@ -12,13 +12,11 @@ const getPosts = asyncHandler(async (req, res) => {
   const limitNum = parseInt(limit);
 
   try {
-   
     const totalPosts = await Post.countDocuments();
 
-
     const posts = await Post.find()
-      .populate('category', 'name') 
-      .skip((pageNum - 1) * limitNum) 
+      .populate("category", "name")
+      .skip((pageNum - 1) * limitNum)
       .limit(limitNum);
 
     // Check if posts are found
@@ -30,7 +28,6 @@ const getPosts = asyncHandler(async (req, res) => {
       });
     }
 
-   
     res.json({
       posts,
       currentPage: pageNum,
@@ -44,13 +41,11 @@ const getPosts = asyncHandler(async (req, res) => {
   }
 });
 
-
-
 // @desc    Fetch a post by ID
 // @route   GET /api/posts/:id
 // @access  Public
 const getPostsById = asyncHandler(async (req, res) => {
-  const post = await Post.findById(req.params.id).populate('category', 'name'); 
+  const post = await Post.findById(req.params.id).populate("category", "name");
 
   if (post) {
     post.views = (post.views || 0) + 1;
@@ -66,7 +61,6 @@ const getPostsById = asyncHandler(async (req, res) => {
 // @route   GET /api/posts/category/:category
 // @access  Public
 
-
 const getPostByCategory = asyncHandler(async (req, res) => {
   const categoryName = req.params.category;
   const { page = 1, limit = 4 } = req.query;
@@ -79,7 +73,7 @@ const getPostByCategory = asyncHandler(async (req, res) => {
   }
 
   const posts = await Post.find({ category: category._id })
-    .populate('category', 'name')
+    .populate("category", "name")
     .skip((page - 1) * limit)
     .limit(Number(limit));
 
@@ -96,9 +90,6 @@ const getPostByCategory = asyncHandler(async (req, res) => {
   }
 });
 
-
-
-
 // @desc    Create a new post
 // @route   POST /api/posts
 // @access  Private/Admin
@@ -111,7 +102,10 @@ const createPost = asyncHandler(async (req, res) => {
   });
 
   const createdPost = await post.save();
-  res.status(201).json(createdPost);
+  res.status(201).json({
+    success: true,
+    post: createdPost,
+  });
 });
 
 // @desc    Delete a post by ID

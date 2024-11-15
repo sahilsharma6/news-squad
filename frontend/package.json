@@ -49,6 +49,7 @@
     "embla-carousel-react": "^8.3.0",
     "framer-motion": "^11.11.9",
     "frontend": "file:",
+    "html-react-parser": "^5.1.18",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.453.0",
     "next-themes": "^0.3.0",
