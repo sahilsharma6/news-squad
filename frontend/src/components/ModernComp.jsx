@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';  // Importing useNavigate
 
 
 const ModernSection = () => {
+<<<<<<< HEAD
+  const [posts, setPosts] = useState([]);  // State to store posts
+  const navigate = useNavigate();  // Hook to navigate programmatically
+=======
   const [posts, setPosts] = useState([]); 
+>>>>>>> ce64647f0ef853a387bd818ed94535e38c1419c6
 
   useEffect(() => {
     
@@ -31,7 +37,12 @@ const ModernSection = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6">
         {/* Map over the posts and display each one */}
         {posts.map((article) => (
-          <div key={article._id} className="flex flex-col relative">
+          <div
+            key={article._id}
+            className="flex flex-col relative"
+            onClick={() => navigate(`/post/${article._id}`)}  // Use navigate for routing
+            style={{ cursor: 'pointer' }}  // Optional: Change cursor to pointer for UX
+          >
             {/* "Make it Modern" label */}
             <div className="relative">
               <span style={{ fontSize: '10px' }} className="absolute bottom-0 left-0 text-xs bg-black text-white px-2 py-1 hover:bg-blue-500 rounded-sm">
