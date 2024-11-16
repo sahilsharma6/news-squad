@@ -2,9 +2,6 @@ import asyncHandler from "../middleware/asyncHandler.js";
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 
-
-
-
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  Private
@@ -14,14 +11,13 @@ export const getUserProfile = asyncHandler(async (req, res) => {
   if (user) {
     res.json({
       _id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
+      username: user.username,
       email: user.email,
-      role: user.role === "admin",
+      role: user.role,
     });
   } else {
     res.status(404);
-    throw new Error("User not found");
+    // throw new Error("User not found");
   }
 });
 
@@ -82,8 +78,7 @@ export const deleteUser = asyncHandler(async (req, res) => {
 // @route   GET /api/users/:id
 // @access  Private/Admin
 export const getUserById = asyncHandler(async (req, res) => {
-  // const user = await User.findById(req.params.id).select('-password'); 
-
+  // const user = await User.findById(req.params.id).select('-password');
   // if (user) {
   //   return res.json(user);
   // } else {
@@ -121,5 +116,3 @@ export const updateUser = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
-
-

@@ -37,6 +37,17 @@ const DashboardSidebar = () => {
               </Button>
             </Link>
           </li>
+          <li>
+            <Link to={"/dashboard/AllPosts"}>
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-white"
+              >
+                <PenIcon className="mr-2 h-4 w-4" />
+                Articles
+              </Button>
+            </Link>
+          </li>
         </ul>
       </nav>
     </aside>

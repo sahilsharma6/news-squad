@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';  // Importing useNavigate
 
-// Modern Section Component to display articles
+
 const ModernSection = () => {
+<<<<<<< HEAD
   const [posts, setPosts] = useState([]);  // State to store posts
   const navigate = useNavigate();  // Hook to navigate programmatically
+=======
+  const [posts, setPosts] = useState([]); 
+>>>>>>> ce64647f0ef853a387bd818ed94535e38c1419c6
 
   useEffect(() => {
-    // Fetch posts from the API
+    
     const fetchPosts = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/posts/category/MakeitModern");
         const data = await response.json();
-        setPosts(data.posts);  // Set posts into the state
+  
+        setPosts(data.posts);  
       } catch (error) {
         console.error("Error fetching posts:", error);
       }

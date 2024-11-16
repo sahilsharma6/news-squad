@@ -1,21 +1,19 @@
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
-import { Link } from "react-router-dom";
-import FilterableBlog from "./FilterableBlogs"
-import profilepic from "../assets/profile-user.png";;
+import { Link, useLocation } from "react-router-dom"; // Import useLocation hook
+import FilterableBlog from "./FilterableBlogs";
+import profilepic from "../assets/profile-user.png";
 import GadgetsSubmenu from "./GadgetsSubmenu";
 import { useNavigate } from "react-router-dom";
-
 
 export default function NavigationMenu() {
   const [activeComponent, setActiveComponent] = useState(null);
   const [search, setSearch] = useState(false);
-
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigateTo = useNavigate();
-
+  const location = useLocation(); // Hook to get the current location
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,41 +26,38 @@ export default function NavigationMenu() {
         return <FilterableBlog />;
       case "GADGETS":
         return <GadgetsSubmenu />;
-
       default:
         return null;
     }
   };
 
-
-
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     navigateTo("/");
-  }
+  };
+
   const menuItems = ["NEWS", "FASHION", "GADGETS", "LIFESTYLE"];
 
   return (
     <nav className="border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between  items-center">
-          <div className="flex ">
+        <div className="flex justify-between items-center">
+          <div className="flex">
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               {menuItems.map((item) => (
                 <div
                   key={item}
                   onMouseEnter={() => setActiveComponent(item)}
                   onMouseLeave={() => setActiveComponent(null)}
-                  className=" group"
+                  className="group"
                 >
                   <Link
                     to={
                       item === "NEWS" ? "/" : `/category/${item.toLowerCase()}`
                     }
                     className={`inline-flex items-center px-1 pt-1 pb-2 border-b-2 text-base font-semibold ${
-                      item === "NEWS"
+                      location.pathname.includes(item.toLowerCase())
                         ? "border-blue-500 text-gray-900"
                         : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
                     }`}
@@ -94,7 +89,7 @@ export default function NavigationMenu() {
               ))}
             </div>
           </div>
-          <div className="md:flex  w-full items-center justify-end hidden relative">
+          <div className="md:flex w-full items-center justify-end hidden relative">
             <button
               type="button"
               onClick={() => setSearch(!search)}
@@ -119,7 +114,7 @@ export default function NavigationMenu() {
               </div>
             )}
 
-<div className="relative">
+            <div className="relative">
               <img
                 src={profilepic}
                 alt="Profile"

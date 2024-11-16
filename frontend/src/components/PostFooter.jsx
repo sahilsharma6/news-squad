@@ -1,26 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import authorImg from '../assets/authorImg.webp'
+import React from 'react';
+import authorImg from '../assets/authorImg.webp';
 import { BsFillShareFill, BsTwitterX } from "react-icons/bs";
 import { FaFacebookF, FaWhatsapp, FaPinterestP } from "react-icons/fa";
 import { FiInstagram } from "react-icons/fi";
 import { IoLogoYoutube } from "react-icons/io";
 import { Link } from 'react-router-dom';
 
-const PostFooter = () => {
-
-  const [postData, setPostData] = useState('');
-
-  useEffect(() => {
-    fetch('./postData.json')
-      .then((response) => response.json())
-      .then((data) => setPostData(data))
-      .catch((error) => console.error('Error fetching data:', error));
-  }, []);
-
-  if (!postData) {
-    return <div>Loading...</div>;
-  }
-
+const PostFooter = ({ likes, views, tags, previousArticle, nextArticle, author, authorLink, authorDes }) => {
   return (
     <div className='p-2 w-full flex flex-col gap-6 justify-center items-start bg-white'>
       <div className='w-full flex gap-x-2 border-y-2 border-dotted p-8'>
@@ -44,23 +30,23 @@ const PostFooter = () => {
       <div className='w-full flex justify-between items-center'>
         <div className='flex flex-col gap-y-2'>
           <p className='text-gray-400 text-md'>Previous article</p>
-          <p>{postData.previousArticle}</p>
+          <p>{previousArticle}</p>
         </div>
         <div className='flex flex-col gap-y-2'>
           <p className='text-right text-md text-gray-400'>Next Article</p>
-          <p>{postData.nextArticle}</p>
+          <p>{nextArticle}</p>
         </div>
       </div>
       <div className='w-full flex flex-col lg:flex-row lg:gap-x-2 p-4 border-2 border-dotted'>
         <div className='w-full lg:w-1/2 flex justify-center items-start'>
-          <img src={authorImg} alt="authorImg" />
+          <img src={authorImg} alt="author" />
         </div>
         <div className='flex flex-col justify-center items-center lg:items-start gap-y-2'> 
-          <p className='font-medium'>{postData.author}</p>
-          <Link to="http://www.tagdiv.com">
-              <p className='text-sm text-gray-400'>http://www.tagdiv.com</p>
+          <p className='font-medium'>{author}</p>
+          <Link to={authorLink || "#"}>
+            <p className='text-sm text-gray-400'>{authorLink || "http://www.tagdiv.com"}</p>
           </Link>
-          <p className='text-md'>{postData.authorDes}</p>
+          <p className='text-md'>{authorDes}</p>
           <div className='flex gap-x-4'>
             <FaFacebookF />
             <FiInstagram />
@@ -69,8 +55,14 @@ const PostFooter = () => {
           </div>
         </div>
       </div>
+      {/* Likes, views, and tags section */}
+      <div className='flex gap-4 mt-4'>
+        <p>Likes: {likes}</p>
+        <p>Views: {views}</p>
+        <p>Tags: {tags?.join(', ')}</p>
+      </div>
     </div>
   )
 }
 
-export default PostFooter
+export default PostFooter;
