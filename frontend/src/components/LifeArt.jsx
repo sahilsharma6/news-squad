@@ -1,22 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';  // Correct import for useNavigate
+import {
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+} from '@/components/ui/pagination'; // Import the pagination components
 
 const ArticleList = () => {
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5);
+
+  const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const articlesResponse = await axios.get("http://localhost:5000/api/posts/category/Style");
+        const articlesResponse = await axios.get('http://localhost:5000/api/posts/category/Style');
         setNewsData(articlesResponse.data.posts);
         setLoading(false);
       } catch (error) {
-        setError("Failed to load news");
+        setError('Failed to load news');
         setLoading(false);
       }
     };
@@ -35,8 +46,9 @@ const ArticleList = () => {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredNewsData.slice(indexOfFirstPost, indexOfLastPost);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const totalPages = Math.ceil(filteredNewsData.length / postsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="container mx-auto p-4">
@@ -47,7 +59,11 @@ const ArticleList = () => {
             : 'No Date Available';
 
           return (
-            <div key={index} className="flex items-start bg-white p-4 border rounded-md shadow-md">
+            <div 
+              key={index} 
+              className="flex items-start bg-white p-4 border rounded-md shadow-md cursor-pointer"  // Added cursor-pointer for better UX
+              onClick={() => navigate(`/post/${article._id}`)} // Corrected onClick handler
+            >
               <img
                 src={article.image || 'https://via.placeholder.com/150'}
                 alt={article.title}
@@ -74,28 +90,39 @@ const ArticleList = () => {
         })}
       </div>
 
-      <div className="mt-4 flex justify-between">
-        <button
-          className="bg-blue-500 text-white p-2 rounded"
-          disabled={currentPage === 1}
-          onClick={() => paginate(currentPage - 1)}
-        >
-          Previous
-        </button>
+      {/* Pagination Controls */}
+      <div className="mt-4">
+        <Pagination>
+          {/* Previous Button */}
+          <PaginationPrevious
+            className={`px-4 py-2 bg-blue-500 text-white rounded-full transition-all duration-300 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-600'}`}
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </PaginationPrevious>
 
-        <div className="flex items-center">
-          <span className="text-sm">
-            Page {currentPage} of {totalPages}
-          </span>
-        </div>
+          {/* Page Numbers */}
+          {[...Array(totalPages)].map((_, index) => (
+            <PaginationItem key={index}>
+              <PaginationLink
+                className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded-full transition-all duration-300 border`}
+                onClick={() => paginate(index + 1)}
+              >
+                {index + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
 
-        <button
-          className="bg-blue-500 text-white p-2 rounded"
-          disabled={currentPage === totalPages}
-          onClick={() => paginate(currentPage + 1)}
-        >
-          Next
-        </button>
+          {/* Next Button */}
+          <PaginationNext
+            className={`px-4 py-2 bg-blue-500 text-white rounded-full transition-all duration-300 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-600'}`}
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </PaginationNext>
+        </Pagination>
       </div>
     </div>
   );

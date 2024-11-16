@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios"; // Importing axios for API calls
 import { format } from 'date-fns';
+import { useNavigate } from "react-router-dom";  // Import useNavigate instead of Navigate
+
 const Holiday = () => {
   const [recipe, setRecipe] = useState(null);  // State to hold a single recipe
+  const navigate = useNavigate();  // Use the useNavigate hook for programmatic navigation
 
   useEffect(() => {
     // Using async function inside useEffect to fetch one recipe
@@ -22,9 +25,16 @@ const Holiday = () => {
   if (!recipe) {
     return <div className="text-center text-gray-700">Loading recipe...</div>;
   }
+
   const formattedDate = recipe.createdAt ? format(new Date(recipe.createdAt), 'MMMM dd, yyyy') : "No Date Available";
+
+  // Handler for navigation when the recipe card is clicked
+  const handleClick = () => {
+    navigate(`/post/${recipe._id}`);  // Navigate to the recipe's detailed page using the recipe's _id
+  };
+
   return (
-    <div className="max-w-xl mx-auto p-4">
+    <div className="max-w-xl mx-auto p-4" onClick={handleClick}>
       {/* Section Title */}
       <div className="border-b mb-4 pb-2">
         <h2 className="text-white text-sm bg-purple-500 inline-block p-2">
