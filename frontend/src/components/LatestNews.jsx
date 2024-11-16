@@ -59,7 +59,7 @@ const LatestNews = () => {
 
             return (
               <div key={newsItem._id} className="flex flex-col hover:shadow-lg transform hover:scale-105 transition-all duration-300 cursor-pointer">
-                {/* Wrap the entire block inside the Link to make the whole card clickable */}
+            
                 <Link to={`/post/${newsItem._id}`} className="block">
                   <div>
                     <h3 className="text-lg font-bold hover:text-blue-500">{newsItem.title}</h3>

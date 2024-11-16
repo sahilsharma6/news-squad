@@ -6,10 +6,10 @@ import img1 from '../assets/article1.jpg';
 
 const NewsLayout = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [newsData, setNewsData] = useState([]); // Store all news articles
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(""); // Error state
-  const [selectedCategory, setSelectedCategory] = useState("All"); // Filter state for categories
+  const [newsData, setNewsData] = useState([]); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(""); 
+  const [selectedCategory, setSelectedCategory] = useState("All"); 
 
   const categories = ["All", "Style Hunter", "Vogue", "Health & Fitness", "Travel", "Gadgets"];
 
@@ -32,12 +32,12 @@ const NewsLayout = () => {
     fetchNews();
   }, []);
 
-  // Filter the articles based on selected category
+  
   const filteredNewsData = selectedCategory === "All"
     ? newsData
     : newsData.filter(newsItem => newsItem.category?.name === selectedCategory);
 
-  // Show only the first 4 articles after filtering
+ 
   const displayedArticles = filteredNewsData.slice(0, 4);
 
   if (loading) {

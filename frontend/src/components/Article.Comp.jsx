@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";  // Import axios
-import { Link } from "react-router-dom";  // For navigation to individual post pages
-import { format } from "date-fns";  // For formatting the date
+import axios from "axios";  
+import { Link } from "react-router-dom";  
+import { format } from "date-fns";  
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",  // Base URL for API requests
-  timeout: 10000,  // Optional timeout for requests
+  baseURL: "http://localhost:5000/api",  
+  timeout: 10000, 
 });
 
 const ArticleItem = ({ article }) => {
