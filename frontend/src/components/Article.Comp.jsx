@@ -88,12 +88,23 @@ const Latest = () => {
     return <p className="text-center text-xl text-red-600">{error}</p>;
   }
 
+  // Calculate the total number of pages based on posts
+  const totalPages = Math.ceil(newsData.length / postsPerPage);
+
+  // Ensure currentPage is within valid range
+  if (currentPage > totalPages && totalPages > 0) {
+    setCurrentPage(totalPages); // Set to the last page if the current page exceeds total pages
+  }
+
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = newsData.slice(indexOfFirstPost, indexOfLastPost);
-  const totalPages = Math.ceil(newsData.length / postsPerPage);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -103,64 +114,70 @@ const Latest = () => {
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {currentPosts.map((article) => (
-          <ArticleItem key={article._id} article={article} />
-        ))}
-      </div>
+      {newsData.length === 0 ? (
+        <p className="text-center text-xl text-gray-700">No posts available.</p>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {currentPosts.map((article) => (
+            <ArticleItem key={article._id} article={article} />
+          ))}
+        </div>
+      )}
 
-      <div className="flex justify-center items-center mt-8">
-        <Pagination>
-          <PaginationContent>
-            {/* Previous Button */}
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={() => paginate(currentPage - 1)}
-                className={`${
-                  currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
-                }`}
-                disabled={currentPage === 1}
-              />
-            </PaginationItem>
-
-            {/* Page 1 */}
-            <PaginationItem>
-              <PaginationLink
-                onClick={() => paginate(1)}
-                className={`${currentPage === 1 ? "font-bold" : ""}`}
-              >
-                1
-              </PaginationLink>
-            </PaginationItem>
-
-            {/* Ellipsis if needed */}
-            {currentPage > 2 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
-
-            {/* Current Page */}
-            <PaginationItem>
-              <PaginationLink className="font-bold">{currentPage}</PaginationLink>
-            </PaginationItem>
-
-            {/* Ellipsis if there are more pages */}
-            {currentPage < totalPages - 1 && (
+      {newsData.length > 0 && (
+        <div className="flex justify-center items-center mt-8">
+          <Pagination>
+            <PaginationContent>
+              {/* Previous Button */}
               <PaginationItem>
-                <PaginationEllipsis />
+                <PaginationPrevious
+                  onClick={() => paginate(currentPage - 1)}
+                  className={`${
+                    currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+                  }`}
+                  disabled={currentPage === 1}
+                />
               </PaginationItem>
-            )}
 
-            {/* Next Button */}
-            <PaginationItem>
-              <PaginationNext
-                onClick={() => paginate(currentPage + 1)}
-                className={`${
-                  currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""
-                }`}
-                disabled={currentPage === totalPages}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+              {/* Page 1 */}
+              {/* <PaginationItem>
+                <PaginationLink
+                  onClick={() => paginate(1)}
+                  className={`${currentPage === 1 ? "font-bold" : ""}`}
+                >
+                  1
+                </PaginationLink>
+              </PaginationItem> */}
+
+              {/* Ellipsis if needed */}
+              {currentPage > 2 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
+
+              {/* Current Page */}
+              <PaginationItem>
+                <PaginationLink className="font-bold">{currentPage}</PaginationLink>
+              </PaginationItem>
+
+              {/* Ellipsis if there are more pages */}
+              {currentPage < totalPages - 1 && (
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              )}
+
+              {/* Next Button */}
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => paginate(currentPage + 1)}
+                  className={`${
+                    currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""
+                  }`}
+                  disabled={currentPage === totalPages}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 };

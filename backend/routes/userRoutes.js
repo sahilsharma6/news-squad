@@ -8,25 +8,41 @@ import {
   updateUser,
 } from "../controllers/userController.js";
 
-import { protect, admin } from "../middleware/authMiddleware.js";
+import {
+  protect,
+  adminDashboard,
+  adminCRUD,
+} from "../middleware/authMiddleware.js";
 
 const router = express.Router();
+
+router.route("/check-admin").get(protect, (req, res) => {
+  console.log(req);
+  if (req.user && req.user.role === "admin") {
+    return res.status(200).json({ message: "Admin access granted" });
+  } else {
+    return res.status(403).json({ message: "Not authorized as an admin" });
+  }
+});
+
 
 router
   .route("/profile")
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
+
+
 router
   .route("/:id")
-  .delete(protect, admin, deleteUser)
-  .get(protect, admin, getUserById);
+  .delete(protect, adminCRUD, deleteUser)
+  .get(protect, adminCRUD, getUserById);
+
 
 router
   .route("/users")
-  .get(getUsers)
+  .get(protect, adminCRUD, getUsers)
+  .put(protect, adminCRUD, updateUser);
 
-  .put(protect, admin, updateUser);
 
-router.route("/check-admin").get(protect, admin);
 
 export default router;

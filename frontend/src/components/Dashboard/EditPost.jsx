@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import apiClient from "@/services/apiClient";
 import {
@@ -9,15 +11,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import ContentEditor from "../Editor.jsx";
 import { Button } from "../ui/button.jsx";
 
 const EditPost = () => {
-  const { postId } = useParams();
+  const { id } = useParams();
+  const postId = id;
   const navigate = useNavigate();
-  console.log();
 
   const [postData, setPostData] = useState({
     title: "",
@@ -26,43 +26,58 @@ const EditPost = () => {
   });
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [postLoading, setPostLoading] = useState(true);
+
   const fetchCategories = async () => {
     try {
       const result = await apiClient.get("/api/categories");
-      //   setCategories(result.data.categories || []);
+      setCategories(result.data || []); 
     } catch (error) {
-      console.error("Failed to load categories:", error);
+      alert("Failed to load categories:");
+    }
+  };
+
+  const fetchPost = async () => {
+    if (!postId) {
+      console.error("Post ID is undefined.");
+      return;
+    }
+
+    try {
+      const response = await apiClient.get(`/api/posts/${postId}`);
+      const post = response.data;
+      setPostData({
+        title: post.title,
+        content: post.content,
+        selectCategory: post.category ? post.category.name : "",
+      });
+    } catch (error) {
+      console.error("Failed to load post data:", error);
+    } finally {
+      setPostLoading(false);
     }
   };
 
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const response = await apiClient.get(`/api/posts/${postId}`);
-        const post = response.data.post;
-        console.log(response);
-        // Set postData including title and category/subcategory
-        setPostData({
-          title: post.title,
-          content: post.content,
-          selectCategory: post.category.name || "",
-        });
-      } catch (error) {
-        console.error("Failed to load post data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (!postId) {
+      console.error("Post ID is undefined, cannot fetch post data.");
+      return;
+    }
 
     fetchCategories();
     fetchPost();
   }, [postId]);
 
-  const handleCategoryChange = async (value) => {
+  useEffect(() => {
+    if (categories.length > 0 && postData.title) {
+      setIsLoading(false);
+    }
+  }, [categories, postData.title]);
+
+  const handleCategoryChange = (value) => {
     setPostData((prevState) => ({
       ...prevState,
       selectCategory: value,
-      selectSubCategory: "",
     }));
   };
 
@@ -76,29 +91,28 @@ const EditPost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      await apiClient.put(`api/posts/${postId}`, postData, {
+      await apiClient.put(`/api/posts/${postId}`, postData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+      alert("Post updated successfully! Redirecting...");
       setTimeout(() => {
         navigate("/dashboard/AllPosts");
       }, 1000);
     } catch (error) {
-      console.log(error);
+      alert("Error while updating the post:");
     }
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
-      {/* <ToastContainer /> */}
       <h1>Edit Post</h1>
-      <div className="mt-4">
-        {/* <BreadcrumbWithOneSeparator currentPage="Edit Post" /> */}
-      </div>
-
       <form className="flex flex-col mt-4" onSubmit={handleSubmit}>
         <div className="w-1/4 md:w-96 mt-2">
           <label htmlFor="title">Title</label>
@@ -130,17 +144,21 @@ const EditPost = () => {
             <SelectContent className="bg-white border p-3 w-[300px]">
               <SelectGroup>
                 <SelectLabel>Categories</SelectLabel>
-                {categories.map((category) => (
-                  <SelectItem key={category._id} value={category.name}>
-                    {category.name}
-                  </SelectItem>
-                ))}
+                {categories.length > 0 ? (
+                  categories.map((category) => (
+                    <SelectItem key={category._id} value={category.name}>
+                      {category.name}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="">No categories available</SelectItem>
+                )}
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
 
-        <Button className={"w-[100px] mt-4"} onClick={handleSubmit}>
+        <Button className={"w-[100px] mt-4"} type="submit">
           Save
         </Button>
       </form>

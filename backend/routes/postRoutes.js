@@ -6,13 +6,14 @@ import {
   getPostByCategory,
   createPost,
   deletePost,
+  updatePost,
 } from "../controllers/postController.js";
 
 
-import { protect, admin } from "../middleware/authMiddleware.js";
+import { protect, adminCRUD } from "../middleware/authMiddleware.js";
 
-router.route("/").get(getPosts).post(protect, admin, createPost);
-router.route("/:id").get(getPostsById).delete(protect, admin, deletePost);
+router.route("/").get(getPosts).post(protect,adminCRUD, createPost);
+router.route("/:id").get(getPostsById).delete(protect, adminCRUD, deletePost).put(protect, adminCRUD, updatePost);
 router.route("/category/:category").get(getPostByCategory);
 
 export default router;

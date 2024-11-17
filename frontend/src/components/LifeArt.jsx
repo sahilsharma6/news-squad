@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';  // Correct import for useNavigate
 import {
   Pagination,
+  PaginationContent,
   PaginationItem,
   PaginationLink,
   PaginationPrevious,
@@ -43,12 +44,23 @@ const ArticleList = () => {
   }
 
   const filteredNewsData = newsData.filter(newsItem => newsItem.category?.name === 'Style');
+  const totalPosts = filteredNewsData.length;
+  const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+  // Ensure currentPage is within valid range
+  if (currentPage > totalPages && totalPages > 0) {
+    setCurrentPage(totalPages); // Set to the last page if currentPage exceeds totalPages
+  }
+
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredNewsData.slice(indexOfFirstPost, indexOfLastPost);
-  const totalPages = Math.ceil(filteredNewsData.length / postsPerPage);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -91,39 +103,66 @@ const ArticleList = () => {
       </div>
 
       {/* Pagination Controls */}
-      <div className="mt-4">
-        <Pagination>
-          {/* Previous Button */}
-          <PaginationPrevious
-            className={`px-4 py-2 bg-blue-500 text-white rounded-full transition-all duration-300 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-600'}`}
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </PaginationPrevious>
+      {totalPages > 1 && (
+        <div className="mt-4">
+          <Pagination>
+            <PaginationContent>
+              {/* Previous Button */}
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    paginate(currentPage - 1);
+                  }}
+                  className={`${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+                  disabled={currentPage === 1}
+                />
+              </PaginationItem>
 
-          {/* Page Numbers */}
-          {[...Array(totalPages)].map((_, index) => (
-            <PaginationItem key={index}>
-              <PaginationLink
-                className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded-full transition-all duration-300 border`}
-                onClick={() => paginate(index + 1)}
-              >
-                {index + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
+              {/* Page 1 */}
+              <PaginationItem>
+                <PaginationLink
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    paginate(1);
+                  }}
+                  className={`${currentPage === 1 ? 'font-bold' : ''}`}
+                >
+                  1
+                </PaginationLink>
+              </PaginationItem>
 
-          {/* Next Button */}
-          <PaginationNext
-            className={`px-4 py-2 bg-blue-500 text-white rounded-full transition-all duration-300 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-600'}`}
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </PaginationNext>
-        </Pagination>
-      </div>
+              {/* Ellipsis if needed */}
+              {currentPage > 2 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
+
+              {/* Current Page */}
+              <PaginationItem>
+                <PaginationLink href="#" className="font-bold">
+                  {currentPage}
+                </PaginationLink>
+              </PaginationItem>
+
+              {/* Ellipsis if there are more pages */}
+              {currentPage < totalPages - 1 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
+
+              {/* Next Button */}
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    paginate(currentPage + 1);
+                  }}
+                  className={`${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
+                  disabled={currentPage === totalPages}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 };

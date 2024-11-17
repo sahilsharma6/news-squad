@@ -27,20 +27,20 @@ const router = createBrowserRouter([
       { path: "/category/fashion", element: <FashionPosts /> },
       { path: "/category/lifestyle", element: <LifeStyle /> },
       {
-        path: "category/gadgets",
-        element: <Gadgets param="gadgets" />,
+        path:"category/gadgets",
+        element: <Gadgets param='Gadgets'/>
       },
       {
-        path: "category/mobile-phones",
-        element: <Gadgets param="mobile-phones" />,
+        path:"category/mobile-phones",
+        element: <Gadgets param='Mobile-phones'/>
       },
       {
-        path: "category/photography",
-        element: <Gadgets param="photography" />,
+        path:"category/photography",
+        element: <Gadgets param='Photography'/>
       },
       {
-        path: "category/reviews",
-        element: <Gadgets param="reviews" />,
+        path:"category/reviews",
+        element: <Gadgets param='Reviews'/>
       },
     ],
   },

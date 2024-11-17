@@ -32,7 +32,11 @@ const ArticlePage = () => {
   return (
     <div className="flex flex-col lg:flex-row justify-center items-start">
       <div className="w-full p-2 lg:w-[70%] lg:ml-[10%] overflow-x-hidden">
-        <PostHeader title={postData.title} introDescription={postData.introDescription} />
+        <PostHeader 
+          title={postData.title} 
+          introDescription={postData.introDescription} 
+          publishDate={postData.createdAt} 
+        />
         <PostContent content={postData.content} />
         <PostFooter 
           likes={postData.likes} 
@@ -46,7 +50,7 @@ const ArticlePage = () => {
         />
       </div>
       
-      <div className="w-full flex lg:w-[40%] lg:mr-[10%] flex-col justify-center items-center lg:sticky lg:top-0">
+      <div className="w-full flex lg:w-[30%] lg:mr-[10%] flex-col justify-center items-center lg:sticky lg:top-0">
         <Advertisement /> 
         <Performan /> 
         <Recentcomment /> 

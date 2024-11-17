@@ -26,13 +26,13 @@ export default function DashboardLayout() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data);
 
-        if (response.data && response.data.isAdmin !== undefined) {
+        if (response.status === 200 ) {
           setIsAdmin(response.data.isAdmin);
         } else {
           setIsAdmin(false);
         }
+        
       } catch (error) {
         console.error("Error fetching admin status:", error);
         setIsAdmin(false);
