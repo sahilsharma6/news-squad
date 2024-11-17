@@ -38,7 +38,7 @@ const NewsLayout = () => {
     : newsData.filter(newsItem => newsItem.category?.name === selectedCategory);
 
  
-  const displayedArticles = filteredNewsData.slice(0, 4);
+  const displayedArticles = filteredNewsData?.slice(0, 4);
 
   if (loading) {
     return <p>Loading...</p>;

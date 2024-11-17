@@ -66,7 +66,7 @@ const AllPosts = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {posts.length > 0 ? (
+            {posts?.length && posts?.length > 0 ? (
               posts.map((post) => (
                 <TableRow key={post?._id} className="border-b-2 ">
                   <TableCell className="font-medium">{post?.title}</TableCell>
