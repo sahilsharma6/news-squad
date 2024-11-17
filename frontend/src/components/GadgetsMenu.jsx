@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import {Pagination,PaginationPrevious,PaginationNext,PaginationLink,PaginationItem,PaginationEllipsis,PaginationContent}from './ui/pagination'
 
 const GadgetsMenu = ({ param }) => {
   const [articles, setArticles] = useState([]);
@@ -51,39 +52,65 @@ const GadgetsMenu = ({ param }) => {
       ))}
 
       {/* Pagination Controls */}
-      <div className="flex justify-center mt-4">
-        <nav aria-label="Pagination">
-          <ul className="inline-flex items-center space-x-1">
-            <li>
-              <button
-                onClick={() => paginate(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300"
-              >
-                &laquo;
-              </button>
-            </li>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <li key={i}>
-                <button
-                  onClick={() => paginate(i + 1)}
-                  className={`px-3 py-1 rounded-md ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"}`}
-                >
-                  {i + 1}
-                </button>
-              </li>
-            ))}
-            <li>
-              <button
-                onClick={() => paginate(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-300"
-              >
-                &raquo;
-              </button>
-            </li>
-          </ul>
-        </nav>
+       <div className="flex justify-center items-center mt-8">
+        <Pagination className="flex items-center space-x-2">
+          {/* Previous Button */}
+          <PaginationPrevious
+            className={`px-4 py-2 bg-gray-700 text-white rounded-full transition-all duration-300 ${
+              currentPage === 1
+                ? "cursor-not-allowed opacity-50"
+                : "hover:bg-gray-600"
+            }`}
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </PaginationPrevious>
+
+
+          {currentPage > 2 && <PaginationEllipsis />}
+
+          {currentPage > 1 && (
+            <PaginationItem
+              onClick={() => paginate(currentPage - 1)}
+              className="px-4 py-2 border rounded-full text-gray-700 hover:bg-gray-200"
+            >
+              <PaginationLink>{currentPage - 1}</PaginationLink>
+            </PaginationItem>
+          )}
+
+          <PaginationItem
+            active
+            className="px-4 py-2 bg-blue-500 text-white rounded-full"
+          >
+            <PaginationLink>{currentPage}</PaginationLink>
+          </PaginationItem>
+
+          {currentPage < totalPages && (
+            <PaginationItem
+              onClick={() => paginate(currentPage + 1)}
+              className="px-4 py-2 border rounded-full text-gray-700 hover:bg-gray-200"
+            >
+              <PaginationLink>{currentPage + 1}</PaginationLink>
+            </PaginationItem>
+          )}
+
+          {currentPage < totalPages - 1 && <PaginationEllipsis />}
+
+
+          {/* Next Button */}
+          <PaginationNext
+            className={` bg-gray-700 text-white rounded-full transition-all duration-300 ${
+              currentPage === totalPages
+                ? "cursor-not-allowed opacity-50"
+                : "hover:bg-gray-600"
+            }`}
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </PaginationNext>
+        </Pagination>
       </div>
     </div>
   );

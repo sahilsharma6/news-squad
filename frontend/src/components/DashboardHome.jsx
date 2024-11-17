@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent } from "./ui/card";
 import {
   Select,
   SelectContent,
@@ -12,10 +12,59 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { LineChartComponent } from "./LineChart";
 import { PieChartComponent } from "./PieChart";
+import { useEffect, useState } from "react";
+import apiClient from "@/services/apiClient";
 
 export default function DashboardHome() {
+  const [user, setUser] = useState({});
+  const [stats, setStats] = useState({
+    posts: 0,
+    likes: 0,
+    views: 0,
+  });
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const { data } = await apiClient.get("/api/profile", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setUser(data);
+      } catch (error) {
+        console.error("Failed to load user profile:", error);
+      }
+    };
+
+    const fetchPostsData = async () => {
+      try {
+        const { data } = await apiClient.get("/api/posts", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        const totalPosts = data.posts.length;
+        const totalLikes = data.posts.reduce((sum, post) => sum + post.likes, 0);
+        const totalViews = data.posts.reduce((sum, post) => sum + post.views, 0);
+
+        setStats({
+          posts: totalPosts,
+          likes: totalLikes,
+          views: totalViews,
+        });
+      } catch (error) {
+        console.error("Failed to load posts data:", error);
+      }
+    };
+
+    fetchUserProfile();
+    fetchPostsData();
+  }, []);
+
   return (
-    <main className="flex-1 p-8 max-w-screen-xl ">
+    <main className="flex-1 p-8 max-w-screen-xl">
       {/* Top Bar */}
       <div className="flex justify-between items-center mb-8">
         <div className="relative">
@@ -36,13 +85,8 @@ export default function DashboardHome() {
           <div className="flex items-center">
             <Avatar>
               <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>RG</AvatarFallback>
+              <AvatarFallback>{user?.username}</AvatarFallback>
             </Avatar>
-            <div className="ml-2 mr-2">
-              <p className="text-sm font-medium">Rahul Gupta</p>
-              <p className="text-xs text-gray-500">Web Developer</p>
-            </div>
-            <ChevronDown className="h-4 w-4 text-gray-500" />
           </div>
         </div>
       </div>
@@ -63,41 +107,42 @@ export default function DashboardHome() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard
-            title="Clients Added"
-            value="197"
-            change="+2.5%"
+            title="Posts"
+            value={stats.posts}
+            change="+5%"
             isPositive={true}
-            percentage={75}
+            percentage={80}
           />
           <StatCard
-            title="Contracts Signed"
-            value="745"
-            change="+1.5%"
+            title="Likes"
+            value={stats.likes}
+            change="+3%"
             isPositive={false}
             percentage={60}
           />
           <StatCard
-            title="Invoice Sent"
-            value="512"
-            change="+0.5%"
+            title="Views"
+            value={stats.views}
+            change="+1%"
             isPositive={true}
-            percentage={45}
+            percentage={70}
           />
         </div>
       </div>
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-28">
-        <div className="h-[200px]  bg-gray-100 rounded-md flex items-center justify-center">
+        <div className="h-[200px] bg-gray-100 rounded-md flex items-center justify-center">
           <LineChartComponent />
         </div>
-        <div className="h-[200px]  bg-gray-100 rounded-md flex items-center justify-center">
+        <div className="h-[200px] bg-gray-100 rounded-md flex items-center justify-center">
           <PieChartComponent />
         </div>
       </div>
     </main>
   );
 }
+
 function StatCard({ title, value, change, isPositive, percentage }) {
   return (
     <Card>
