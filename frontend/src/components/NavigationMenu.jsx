@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
-import { Link, useLocation } from "react-router-dom"; // Import useLocation hook
+import { Link, useLocation } from "react-router-dom";
 import FilterableBlog from "./FilterableBlogs";
 import profilepic from "../assets/profile-user.png";
 import GadgetsSubmenu from "./GadgetsSubmenu";
@@ -13,7 +13,7 @@ export default function NavigationMenu() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigateTo = useNavigate();
-  const location = useLocation(); // Hook to get the current location
+  const location = useLocation(); 
 
   useEffect(() => {
     const token = localStorage.getItem("token");

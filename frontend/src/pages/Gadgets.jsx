@@ -6,10 +6,10 @@ const Gadgets = ({ param }) => {
   const location = useLocation();
   
   const recentArticles = [
-    { title: "Another Big Apartment Project Slated for Broad Ripple Company", category: "INTERIORS", date: "AUGUST 7, 2019" },
-    { title: "Patricia Urquiola Coats Transparent Glas Tables for Livings", category: "INTERIORS", date: "AUGUST 7, 2019" },
-    { title: "Ambrose Seeks Offers on Downtown Building for Apartments", category: "INTERIORS", date: "AUGUST 7, 2019" },
-    { title: "Taina Blue Retreat is a Converted Tower on the Greek Coast", category: "INTERIORS", date: "AUGUST 7, 2019" },
+    { id: "1", title: "Another Big Apartment Project Slated for Broad Ripple Company", category: "INTERIORS", date: "AUGUST 7, 2019" },
+    { id: "2", title: "Patricia Urquiola Coats Transparent Glas Tables for Livings", category: "INTERIORS", date: "AUGUST 7, 2019" },
+    { id: "3", title: "Ambrose Seeks Offers on Downtown Building for Apartments", category: "INTERIORS", date: "AUGUST 7, 2019" },
+    { id: "4", title: "Taina Blue Retreat is a Converted Tower on the Greek Coast", category: "INTERIORS", date: "AUGUST 7, 2019" },
   ];
 
   const [getRecentArticles, setRecentArticles] = useState(recentArticles);
@@ -56,13 +56,13 @@ const Gadgets = ({ param }) => {
             <div className="bg-white ml-2">
               <h3 className="text-xl font-bold mb-4">Recent Articles</h3>
               <ul className="space-y-4">
-                {getRecentArticles.map((article, index) => (
-                  <li key={index}>
-                    <a href="#" className="block hover:text-blue-800 p-2">
+                {getRecentArticles.map((article) => (
+                  <li key={article.id}>
+                    <Link to={`/post/${article.id}`} className="block hover:text-blue-800 p-2">
                       <h4 className="font-bold">{article.title}</h4>
                       <span className="text-blue-600 text-xs">{article.category}</span>
                       <span className="text-gray-500 text-xs ml-2">{article.date}</span>
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

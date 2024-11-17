@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";  // Import axios
-import { Link } from "react-router-dom";  // For navigation to individual post pages
-import { format } from "date-fns";  // For formatting the date
+import axios from "axios"; // Import axios
+import { Link } from "react-router-dom"; 
+import { format } from "date-fns";
 import {
   Pagination,
   PaginationItem,
@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/pagination"; // Correct imports
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",  // Base URL for API requests
-  timeout: 10000,  // Optional timeout for requests
+  baseURL: "http://localhost:5000/api",
+  timeout: 10000,
 });
 
 const ArticleItem = ({ article }) => {
@@ -31,18 +31,22 @@ const ArticleItem = ({ article }) => {
       <div className="flex flex-col bg-white shadow-md hover:shadow-lg transition-shadow duration-200 rounded-lg overflow-hidden">
         <div className="relative">
           <img
-            src={article.image || "default-image.jpg"}  // Fallback if no image is found
+            src={article.image || "default-image.jpg"} // Fallback if no image is found
             alt={article.title}
             className="w-full h-48 object-cover rounded-t-lg"
           />
           <span className="absolute bottom-0 left-0 text-xs bg-black text-white px-2 py-1 uppercase rounded-tr-lg">
-            {article.category?.name || "Uncategorized"}  {/* Display category name */}
+            {article.category?.name || "Uncategorized"}{" "}
+            {/* Display category name */}
           </span>
         </div>
         <div className="p-4">
-          <h3 className="text-lg font-semibold hover:text-blue-500">{article.title}</h3>
+          <h3 className="text-lg font-semibold hover:text-blue-500">
+            {article.title}
+          </h3>
           <div className="flex justify-between text-sm text-gray-500 mb-2">
-            <span>{article.author || "Unknown Author"}</span> - <span>{formattedDate}</span>
+            <span>{article.author || "Unknown Author"}</span> -{" "}
+            <span>{formattedDate}</span>
           </div>
           <div className="flex justify-between items-center text-sm text-gray-700">
             <span>Views: {article.views || 0}</span>
@@ -57,17 +61,17 @@ const Latest = () => {
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);  // Track current page
-  const [postsPerPage] = useState(5);  // Number of posts per page (adjustable)
+  const [currentPage, setCurrentPage] = useState(1); // Track current page
+  const [postsPerPage] = useState(5); // Number of posts per page (adjustable)
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        const response = await api.get("/posts");  // Fetching posts from the API
-        setNewsData(response.data.posts);  // Assuming your API returns an array of articles
+        const response = await api.get("/posts"); // Fetching posts from the API
+        setNewsData(response.data.posts); // Assuming your API returns an array of articles
       } catch (err) {
-        console.error("Error fetching data:", err);  // Logs error to console
+        console.error("Error fetching data:", err); // Logs error to console
         setError("Failed to load news. Please try again later.");
       } finally {
         setLoading(false);
@@ -75,7 +79,7 @@ const Latest = () => {
     };
 
     fetchNews();
-  }, []);  // Runs once when the component mounts
+  }, []); // Runs once when the component mounts
 
   if (loading) {
     return <p className="text-center text-xl text-gray-700">Loading...</p>;
@@ -116,7 +120,9 @@ const Latest = () => {
           {/* Previous Button */}
           <PaginationPrevious
             className={`px-4 py-2 bg-gray-700 text-white rounded-full transition-all duration-300 ${
-              currentPage === 1 ? "cursor-not-allowed opacity-50" : "hover:bg-gray-600"
+              currentPage === 1
+                ? "cursor-not-allowed opacity-50"
+                : "hover:bg-gray-600"
             }`}
             onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
@@ -135,7 +141,7 @@ const Latest = () => {
           </PaginationItem> */}
 
           {currentPage > 2 && <PaginationEllipsis />}
-          
+
           {currentPage > 1 && (
             <PaginationItem
               onClick={() => paginate(currentPage - 1)}
@@ -144,7 +150,7 @@ const Latest = () => {
               <PaginationLink>{currentPage - 1}</PaginationLink>
             </PaginationItem>
           )}
-          
+
           <PaginationItem
             active
             className="px-4 py-2 bg-blue-500 text-white rounded-full"
@@ -177,7 +183,9 @@ const Latest = () => {
           {/* Next Button */}
           <PaginationNext
             className={` bg-gray-700 text-white rounded-full transition-all duration-300 ${
-              currentPage === totalPages ? "cursor-not-allowed opacity-50" : "hover:bg-gray-600"
+              currentPage === totalPages
+                ? "cursor-not-allowed opacity-50"
+                : "hover:bg-gray-600"
             }`}
             onClick={() => paginate(currentPage + 1)}
             disabled={currentPage === totalPages}
