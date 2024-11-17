@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';  // Optional: for formatting the date
+import { useNavigate } from 'react-router-dom';  // Import useNavigate for navigation
 
 const Mustread = () => {
   const [articles, setArticles] = useState([]); // State to store the fetched articles
@@ -8,6 +9,8 @@ const Mustread = () => {
   const [error, setError] = useState(null);      // Error state
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
   const [postsPerPage] = useState(2);             // Number of posts per page
+
+  const navigate = useNavigate(); // Hook for navigation
 
   // Fetching data from the API
   useEffect(() => {
@@ -53,6 +56,11 @@ const Mustread = () => {
   // Pagination handler
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // OnClick handler to navigate to article details
+  const handleArticleClick = (articleId) => {
+    navigate(`/post/${articleId}`);  // Navigate to the detailed view of the article
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h2 className="mb-4">
@@ -72,7 +80,11 @@ const Mustread = () => {
           const formattedDate = article.createdAt ? format(new Date(article.createdAt), 'MMMM dd, yyyy') : "No Date Available";
 
           return (
-            <div key={index} className="items-start bg-white hover:text-blue-500">
+            <div
+              key={index}
+              className="items-start bg-white hover:text-blue-500 cursor-pointer"  // Added cursor-pointer for clickable effect
+              onClick={() => handleArticleClick(article._id)} // OnClick to navigate
+            >
               <img
                 src={article.imgSrc || 'default-image.jpg'} // Fallback if imgSrc is not available
                 alt={article.title}
@@ -94,8 +106,8 @@ const Mustread = () => {
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex justify-center mt-6">
-        {/* Previous Button */}
+      {/* <div className="flex justify-center mt-6">
+        
         <button
           className="px-4 py-2 bg-gray-700 text-white rounded-l-md"
           onClick={() => paginate(currentPage - 1)}
@@ -104,7 +116,7 @@ const Mustread = () => {
           Previous
         </button>
 
-        {/* Next Button */}
+
         <button
           className="px-4 py-2 bg-gray-700 text-white rounded-r-md"
           onClick={() => paginate(currentPage + 1)}
@@ -112,7 +124,7 @@ const Mustread = () => {
         >
           Next
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

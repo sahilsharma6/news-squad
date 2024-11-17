@@ -1,6 +1,7 @@
-import { useState } from "react";
-import HorizontalBlogPosts from "./HorizontalBlogPosts";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
+
 
 const categories = [
   "All",
@@ -9,110 +10,78 @@ const categories = [
   "Style Hunter",
   "Vogue",
 ];
-const blogPosts = [
-  {
-    id: 1,
-    title: "Fashion Outfit Ideas From the Biggest Instagram Influencers",
-    date: "August 7, 2019",
-    category: "Vogue",
-    image:
-      "https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2019/08/23-1024x683.jpg.webp",
-  },
-  {
-    id: 2,
-    title: "Style Spy: Fashion Model Goes Casual in Faux Fur and Plaid",
-    date: "August 7, 2019",
-    category: "New Look",
-    image:
-      "https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2019/08/24-1024x683.jpg.webp",
-  },
-  {
-    id: 3,
-    title: "Street Fashion Trends Dominating 2024",
-    date: "August 8, 2019",
-    category: "Street Fashion",
-    image:
-      "https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2019/08/25-1024x683.jpg.webp",
-  },
-  {
-    id: 4,
-    title: "The Ultimate Guide to Achieving the Style Hunter Look",
-    date: "August 9, 2019",
-    category: "Style Hunter",
-    image:
-      "https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2019/08/26-1024x683.jpg.webp",
-  },
-  {
-    id: 5,
-    title: "10 Fabulous Over-the-ankle Shoes to Wear This Cold Season",
-    date: "August 7, 2019",
-    category: "Vogue",
-    image:
-      "https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2019/08/23-1024x683.jpg.webp",
-  },
-  {
-    id: 6,
-    title: "What to Wear on Gala Night? We Asked the Biggest Names!",
-    date: "August 7, 2019",
-    category: "Vogue",
-    image:
-      "https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2019/08/23-1024x683.jpg.webp",
-  },
-  {
-    id: 7,
-    title: "Top Fashion Moments Captured on the Streets of Milan",
-    date: "August 8, 2019",
-    category: "Street Fashion",
-    image:
-      "https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2019/08/27-1024x683.jpg.webp",
-  },
-  {
-    id: 8,
-    title: "New Look: The Boldest Fashion Choices This Year",
-    date: "August 8, 2019",
-    category: "New Look",
-    image:
-      "https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2019/08/28-1024x683.jpg.webp",
-  },
-  {
-    id: 9,
-    title: "Style Hunter: Master the Art of Timeless Fashion",
-    date: "August 9, 2019",
-    category: "Style Hunter",
-    image:
-      "https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2019/08/29-1024x683.jpg.webp",
-  },
-  {
-    id: 10,
-    title: "Vogue’s Top Picks for Fashion Week 2024",
-    date: "August 10, 2019",
-    category: "Vogue",
-    image:
-      "https://demo.tagdiv.com/newspaper_pro/wp-content/uploads/2019/08/30-1024x683.jpg.webp",
-  },
-];
 
 export default function FilterableBlog() {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          setError("No token found.");
+          setLoading(false);
+          return;
+        }
+
+        const response = await axios.get("http://localhost:5000/api/posts", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.data && Array.isArray(response.data.posts)) {
+          setBlogPosts(response.data.posts);
+        } else {
+          setError("Received data is not in expected format.");
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        setError("Failed to load posts. Please try again later.");
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  
   const filteredPosts =
     activeCategory === "All"
       ? blogPosts
-      : blogPosts.filter((post) => post.category === activeCategory);
+      : blogPosts.filter(
+          (post) => post.category && post.category.name === activeCategory
+        );
+
+  const postsToDisplay = filteredPosts.slice(0, 5);
 
   return (
-    <div className="w-full max-h-fit  bg-white z-[999999]">
+    <div className="w-full max-h-fit bg-white z-[999999]">
       <div className="flex">
         <Sidebar
           categories={categories}
           activeCategory={activeCategory}
           setActiveCategory={setActiveCategory}
         />
-        <main className="flex-1 px-4 py-8 ">
-          <div className="grid   grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredPosts.slice(0, 4).map((post) => (
-              <HorizontalBlogPosts key={post.id} post={post} />
-            ))}
+        <main className="flex-1 px-4 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {loading ? (
+              <p>Loading...</p>
+            ) : error ? (
+              <p>{error}</p>
+            ) : filteredPosts.length === 0 ? (
+              <p className="text-lg text-gray-600">No posts in this category.</p>
+            ) : (
+              postsToDisplay.map((post) => (
+                <HorizontalBlogPosts key={post._id} post={post} />
+              ))
+            )}
           </div>
         </main>
       </div>
@@ -143,10 +112,45 @@ function Sidebar({ categories, activeCategory, setActiveCategory }) {
   );
 }
 
+Sidebar.propTypes = {
+  categories: PropTypes.array.isRequired,
+  activeCategory: PropTypes.string.isRequired,
+  setActiveCategory: PropTypes.func.isRequired,
+};
 
-Sidebar.propTypes={
-  categories:PropTypes.string.isRequired,
-  activeCategory:PropTypes.string.isRequired,
-  setActiveCategory:PropTypes.string.isRequired
-}
+const HorizontalBlogPosts = ({ post }) => {
 
+  const categoryName = post.category && post.category.name ? post.category.name : "No Category";
+  const authorName = post.author || "Unknown"; 
+
+  return (
+    <div className="bg-white p-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
+      <img
+        src={post.image}
+        alt={post.title}
+        className="w-full h-48 object-cover rounded-md mb-4"
+      />
+      <div className="flex justify-between items-center mb-2">
+        <span className="bg-blue-100 text-blue-600 text-sm font-semibold px-3 py-1 rounded-full">
+          {categoryName}
+        </span>
+       
+      </div>
+      <h3 className="text-lg font-bold text-gray-800 mb-2">{post.title}</h3>
+     
+    </div>
+  );
+};
+
+HorizontalBlogPosts.propTypes = {
+  post: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    category: PropTypes.shape({
+      name: PropTypes.string,
+    }),
+    image: PropTypes.string,
+    author: PropTypes.string,
+  }).isRequired,
+};

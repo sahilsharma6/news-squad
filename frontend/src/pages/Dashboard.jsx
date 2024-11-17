@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import DashboardSidebar from "@/components/DashboardSidebar";
-import apiClient from "../services/apiClient"; 
+import apiClient from "../services/apiClient";
 import { useNavigate } from "react-router-dom";
 
 export default function DashboardLayout() {
@@ -15,7 +15,7 @@ export default function DashboardLayout() {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        setIsAdmin(false); 
+        setIsAdmin(false);
         setLoading(false);
         return;
       }
@@ -26,13 +26,13 @@ export default function DashboardLayout() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data);
 
-        if (response.data && response.data.isAdmin !== undefined) {
-          setIsAdmin(response.data.isAdmin); 
+        if (response.status === 200 ) {
+          setIsAdmin(response.data.isAdmin);
         } else {
-          setIsAdmin(false); 
+          setIsAdmin(false);
         }
+        
       } catch (error) {
         console.error("Error fetching admin status:", error);
         setIsAdmin(false);
@@ -45,7 +45,7 @@ export default function DashboardLayout() {
   }, []);
 
   useEffect(() => {
-    if (loading) return; 
+    if (loading) return;
 
     if (isAdmin === false) {
       alert("You are not an admin");
@@ -54,13 +54,13 @@ export default function DashboardLayout() {
   }, [loading, isAdmin, navigateTo]);
 
   if (loading) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-100">
+    <div className="flex min-h-[1000px] overflow-hidden bg-gray-100">
       <DashboardSidebar />
-      <div className="overflow-y-scroll w-full">
+      <div className="m-2 w-full">
         <Outlet />
       </div>
     </div>

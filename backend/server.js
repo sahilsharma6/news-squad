@@ -1,5 +1,5 @@
 import path from "path";
-import cors from 'cors';
+import cors from "cors";
 // import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
@@ -13,18 +13,16 @@ const app = express();
 
 import categoryRoutes from "./routes/categoryRoutes.js";
 import imageUploadRoute from "./routes/imageUpload.js";
-import postRoutes from "./routes/postRoutes.js"
-import authRoute from "./routes/authRoute.js"
-import userRoutes from "./routes/userRoutes.js"
+import postRoutes from "./routes/postRoutes.js";
+import authRoute from "./routes/authRoute.js";
+import userRoutes from "./routes/userRoutes.js";
 
-
-app.use(cors({
-  origin: 'http://localhost:5173', 
-  credentials: true, 
-}));
-
-
-
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 // app.use(cors({
 //   origin: 'https://travelsquads.com',
@@ -32,26 +30,20 @@ app.use(cors({
 //   credentials: true
 // }));
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
-
 // routes
-app.use("/api/auth",authRoute)
-app.use("/api/posts",postRoutes)
+app.use("/api/auth", authRoute);
+app.use("/api/posts", postRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/upload-image", imageUploadRoute);
 app.use("/api", userRoutes);
 
-
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
-
-
 
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));

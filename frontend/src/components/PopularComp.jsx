@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for routing
 
 const Performan = () => {
   const [data, setData] = useState([]); 
@@ -8,6 +9,7 @@ const Performan = () => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(4);
+  const navigate = useNavigate();  // Initialize useNavigate for programmatic navigation
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,8 +66,17 @@ const Performan = () => {
           const formattedDate = article.createdAt ? format(new Date(article.createdAt), 'MMMM dd, yyyy') : "No Date Available";
           
           return (
-            <div key={article._id} className="flex items-start bg-white p-2">
-              <img src={article.imgSrc || 'default-image.jpg'} alt={article.title} className="w-1/4 h-16 object-cover mr-4" />
+            <div
+              key={article._id}
+              className="flex items-start bg-white p-2"
+              onClick={() => navigate(`/post/${article._id}`)} // Navigate to the article detail page
+              style={{ cursor: 'pointer' }}
+            >
+              <img
+                src={article.imgSrc || 'default-image.jpg'}
+                alt={article.title}
+                className="w-1/4 h-16 object-cover mr-4"
+              />
               <div className="w-3/4">
                 <h2 className="text-xs md:text-sm mb-1 text-gray-800 font-semibold">{article.title}</h2>
                 <p className="text-xs text-gray-500 mb-1">By {article.author} - {formattedDate}</p>
@@ -76,36 +87,37 @@ const Performan = () => {
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex justify-center mt-6">
-        {/* Previous Button */}
+      {/* <div className="flex justify-center mt-6">
         <button
           className="px-4 py-2 bg-gray-700 text-white rounded-l-md"
           onClick={() => paginate(currentPage - 1)}
           disabled={currentPage === 1}
+          aria-label="Previous page"
         >
           Previous
         </button>
 
-        {/* Page Numbers */}
+        Page Numbers
         {[...Array(Math.ceil(mostViewedPosts.length / postsPerPage))].map((_, index) => (
           <button
             key={index}
             className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} border`}
             onClick={() => paginate(index + 1)}
+            aria-label={`Go to page ${index + 1}`}
           >
             {index + 1}
           </button>
         ))}
 
-        {/* Next Button */}
         <button
           className="px-4 py-2 bg-gray-700 text-white rounded-r-md"
           onClick={() => paginate(currentPage + 1)}
           disabled={currentPage === Math.ceil(mostViewedPosts.length / postsPerPage)}
+          aria-label="Next page"
         >
           Next
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

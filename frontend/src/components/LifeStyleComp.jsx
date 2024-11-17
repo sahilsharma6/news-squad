@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";  // Import useNavigate
 
 const NewsLayout2 = () => {
   const [posts, setPosts] = useState([]);
@@ -6,6 +7,7 @@ const NewsLayout2 = () => {
   const [activeCategory, setActiveCategory] = useState("All");
 
   const categories = ["All", "Travel", "Recipes", "Health & Fitness", "Music"];
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -31,6 +33,10 @@ const NewsLayout2 = () => {
     }
   };
 
+  const handlePostClick = (postId) => {
+    navigate(`/post/${postId}`);  // Navigate to the post details page
+  };
+
   return (
     <div className="container mx-auto p-6">
       {/* Top Navigation */}
@@ -54,7 +60,12 @@ const NewsLayout2 = () => {
       {/* Main Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filteredPosts.slice(0, 4).map((post, index) => (
-          <div key={index} className="flex flex-col">
+          <div
+            key={index}
+            className="flex flex-col"
+            onClick={() => handlePostClick(post._id)}  // Navigate to post detail on click
+            style={{ cursor: 'pointer' }}
+          >
             <div className="relative">
               <img
                 src={post.image || "https://placehold.co/600x400"}
@@ -80,7 +91,12 @@ const NewsLayout2 = () => {
       {/* Bottom Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         {filteredPosts.slice(4, 8).map((post, index) => (
-          <div key={index} className="flex items-center">
+          <div
+            key={index}
+            className="flex items-center"
+            onClick={() => handlePostClick(post._id)}  // Navigate to post detail on click
+            style={{ cursor: 'pointer' }}
+          >
             <img
               src="https://via.placeholder.com/100"
               alt={post.title || "Post Image"}
