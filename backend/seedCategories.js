@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Category from "./models/categoryModel.js"; // Adjust the path as needed
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/newssquad", {
+mongoose.connect("mongodb://127.0.0.1:27017/newssquad", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

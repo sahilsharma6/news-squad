@@ -13,7 +13,7 @@ const GadgetsMenu = ({ param }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/posts/category/Gadgets?page=${currentPage}&limit=${articlesPerPage}`);
+        const response = await fetch(`http://localhost:5000/api/posts/category/${param}?page=${currentPage}&limit=${articlesPerPage}`);
         const data = await response.json();
         
         if (data && data.posts) {
@@ -39,7 +39,7 @@ const GadgetsMenu = ({ param }) => {
           <div className="p-6 sm:w-2/5 bg-white">
             <span className="text-blue-400 text-sm font-semibold">{param.toUpperCase()}</span>
             <h4 className="font-bold mt-2 hover:text-blue-400">
-              <a href='#'>{article.title}</a>
+              <a href={`/post/${article._id}`}>{article.title}</a>
             </h4>
             <p className="mt-4 text-gray-600 text-xs">{article.content}</p>
             <span className="text-gray-500 text-xs mt-4 block">{new Date(article.createdAt).toLocaleDateString()}</span>

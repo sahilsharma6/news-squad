@@ -28,19 +28,19 @@ const router = createBrowserRouter([
       { path: "/category/lifestyle", element: <LifeStyle/> },
       {
         path:"category/gadgets",
-        element: <Gadgets param='gadgets'/>
+        element: <Gadgets param='Gadgets'/>
       },
       {
         path:"category/mobile-phones",
-        element: <Gadgets param='mobile-phones'/>
+        element: <Gadgets param='Mobile-phones'/>
       },
       {
         path:"category/photography",
-        element: <Gadgets param='photography'/>
+        element: <Gadgets param='Photography'/>
       },
       {
         path:"category/reviews",
-        element: <Gadgets param='reviews'/>
+        element: <Gadgets param='Reviews'/>
       },
       
     ],
