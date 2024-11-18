@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios"; // Import axios
-import { Link } from "react-router-dom"; // For navigation to individual post pages
-import { format } from "date-fns"; // For formatting the date
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { format } from "date-fns";
 import {
   Pagination,
   PaginationContent,
@@ -10,11 +10,11 @@ import {
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis,
-} from "@/components/ui/pagination"; // Correct imports
+} from "@/components/ui/pagination"; 
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api", // Base URL for API requests
-  timeout: 10000, // Optional timeout for requests
+  baseURL: "http://localhost:5000/api",
+  timeout: 10000,
 });
 
 const ArticleItem = ({ article }) => {
@@ -59,19 +59,32 @@ const ArticleItem = ({ article }) => {
 const Latest = () => {
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5);
 
   useEffect(() => {
     const fetchNews = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
         const response = await api.get("/posts");
-        setNewsData(response.data.posts);
+        if (response.data && response.data.posts) {
+          setNewsData(response.data.posts);
+        } else {
+          setError("No posts found.");
+        }
       } catch (err) {
         console.error("Error fetching data:", err);
-        setError("Failed to load news. Please try again later.");
+        if (err.response) {
+          // API responded with an error (e.g., 500, 404)
+          setError(`Server Error: ${err.response.status} - ${err.response.data.message || "Unable to fetch posts"}`);
+        } else if (err.request) {
+          // No response from the server (network issues)
+          setError("Network Error: Please check your internet connection.");
+        } else {
+          // Other errors (e.g., code errors)
+          setError(`Unexpected Error: ${err.message}`);
+        }
       } finally {
         setLoading(false);
       }
@@ -88,12 +101,12 @@ const Latest = () => {
     return <p className="text-center text-xl text-red-600">{error}</p>;
   }
 
-  // Calculate the total number of pages based on posts
+  // Calculate the total number of pages
   const totalPages = Math.ceil(newsData.length / postsPerPage);
 
   // Ensure currentPage is within valid range
   if (currentPage > totalPages && totalPages > 0) {
-    setCurrentPage(totalPages); // Set to the last page if the current page exceeds total pages
+    setCurrentPage(totalPages); // Set to last page if current page exceeds total pages
   }
 
   const indexOfLastPost = currentPage * postsPerPage;
@@ -139,25 +152,12 @@ const Latest = () => {
                 />
               </PaginationItem>
 
-              {/* Page 1 */}
-              {/* <PaginationItem>
-                <PaginationLink
-                  onClick={() => paginate(1)}
-                  className={`${currentPage === 1 ? "font-bold" : ""}`}
-                >
-                  1
-                </PaginationLink>
-              </PaginationItem> */}
-
-              {/* Ellipsis if needed */}
-              {currentPage > 2 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
-
               {/* Current Page */}
               <PaginationItem>
                 <PaginationLink className="font-bold">{currentPage}</PaginationLink>
               </PaginationItem>
 
-              {/* Ellipsis if there are more pages */}
+              {/* Ellipsis if needed */}
               {currentPage < totalPages - 1 && (
                 <PaginationItem>
                   <PaginationEllipsis />
