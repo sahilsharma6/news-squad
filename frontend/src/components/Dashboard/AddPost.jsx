@@ -84,11 +84,11 @@ const AddPost = () => {
   };
 
   return (
-    <div>
-      <h1>Add Post</h1>
+    <div className="flex flex-col items-center mt-4">
+      <h1 className="text-2xl font-bold">Add Post</h1>
       <form className="flex flex-col mt-4" onSubmit={handleSubmit}>
-        <div className="w-1/4 md:w-96 mt-2">
-          <label htmlFor="title">Title</label>
+        <div className=" mt-2">
+          <label htmlFor="title " className="font-bold">Title</label>
           <Input
             value={postData.title}
             onChange={handleChange}
@@ -99,7 +99,7 @@ const AddPost = () => {
           />
         </div>
 
-        <div className="mt-2">
+        <div className="font-bold mt-4">
           <label htmlFor="content">Content</label>
           <ContentEditor
             content={postData.content}

@@ -45,9 +45,9 @@ export default function DashboardHome() {
           },
         });
 
-        const totalPosts = data.posts.length;
-        const totalLikes = data.posts.reduce((sum, post) => sum + post.likes, 0);
-        const totalViews = data.posts.reduce((sum, post) => sum + post.views, 0);
+        const totalPosts = data?.posts?.length;
+        const totalLikes = data?.posts?.reduce((sum, post) => sum + post.likes, 0);
+        const totalViews = data?.posts?.reduce((sum, post) => sum + post.views, 0);
 
         setStats({
           posts: totalPosts,

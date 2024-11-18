@@ -78,14 +78,15 @@ const getPostByCategory = asyncHandler(async (req, res) => {
   const category = await Category.findOne({ name: categoryName });
 
   if (!category) {
-    res.status(404);
-    throw new Error("Category not found");
+    return res.status(404).json({
+      success: false,
+      message: "Category not found",
+    });
   }
 
   const posts = await Post.find({ category: category._id })
     .populate("category", "name")
-    .skip((page - 1) * limit)
-    .limit(Number(limit));
+ 
 
   const totalPosts = await Post.countDocuments({ category: category._id });
 
@@ -95,8 +96,11 @@ const getPostByCategory = asyncHandler(async (req, res) => {
       totalPosts,
     });
   } else {
-    res.status(404);
-    throw new Error("No posts found for this category");
+    res.status(404).json({
+      success: false,
+      message: "No posts found for the category",
+    });
+      
   }
 });
 

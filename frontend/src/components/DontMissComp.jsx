@@ -6,10 +6,10 @@ import img1 from '../assets/article1.jpg';
 
 const NewsLayout = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [newsData, setNewsData] = useState([]); 
-  const [loading, setLoading] = useState(true); 
+  const [newsData, setNewsData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(""); 
-  const [selectedCategory, setSelectedCategory] = useState("All"); 
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const categories = ["All", "Style Hunter", "Vogue", "Health & Fitness", "Travel", "Gadgets"];
 
@@ -19,12 +19,28 @@ const NewsLayout = () => {
 
   useEffect(() => {
     const fetchNews = async () => {
+      setLoading(true); // Reset loading to true whenever we refetch data
       try {
         const response = await axios.get("http://localhost:5000/api/posts");
-        setNewsData(response.data.posts);
-        setLoading(false);
+        if (response.data && response.data.posts) {
+          setNewsData(response.data.posts);
+        } else {
+          setError("No posts available");
+        }
       } catch (error) {
-        setError("Failed to load news");
+        console.error("Error fetching news:", error);
+        // Handle different types of errors
+        if (error.response) {
+          // Server responded with a status other than 200
+          setError(`Error: ${error.response.status} - ${error.response.data.message || "Failed to fetch posts"}`);
+        } else if (error.request) {
+          // No response from the server
+          setError("Network error: No response from the server");
+        } else {
+          // Other errors
+          setError(`Error: ${error.message}`);
+        }
+      } finally {
         setLoading(false);
       }
     };
@@ -32,12 +48,10 @@ const NewsLayout = () => {
     fetchNews();
   }, []);
 
-  
   const filteredNewsData = selectedCategory === "All"
     ? newsData
     : newsData.filter(newsItem => newsItem.category?.name === selectedCategory);
 
- 
   const displayedArticles = filteredNewsData?.slice(0, 4);
 
   if (loading) {
@@ -45,7 +59,7 @@ const NewsLayout = () => {
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <p className="text-red-500">{error}</p>;
   }
 
   return (
@@ -106,25 +120,29 @@ const NewsLayout = () => {
 
           {/* Side articles */}
           <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:flex-wrap md:gap-4">
-            {displayedArticles.map((article, index) => {
-              const formattedDate = article.createdAt
-                ? format(new Date(article.createdAt), "MMMM dd, yyyy")
-                : "No Date Available";
+            {displayedArticles && displayedArticles.length > 0 ? (
+              displayedArticles.map((article, index) => {
+                const formattedDate = article.createdAt
+                  ? format(new Date(article.createdAt), "MMMM dd, yyyy")
+                  : "No Date Available";
 
-              return (
-                <Link key={index} to={`/post/${article._id}`} className="flex">
-                  <img
-                    src={article.image || "default-image.jpg"}
-                    alt={article.title}
-                    className="w-16 h-16 object-cover rounded-md mr-2"
-                  />
-                  <div>
-                    <h3 className="text-md hover:text-yellow-500">{article.title}</h3>
-                    <p className="text-gray-500">{formattedDate}</p>
-                  </div>
-                </Link>
-              );
-            })}
+                return (
+                  <Link key={index} to={`/post/${article._id}`} className="flex">
+                    <img
+                      src={article.image || "default-image.jpg"}
+                      alt={article.title}
+                      className="w-16 h-16 object-cover rounded-md mr-2"
+                    />
+                    <div>
+                      <h3 className="text-md hover:text-yellow-500">{article.title}</h3>
+                      <p className="text-gray-500">{formattedDate}</p>
+                    </div>
+                  </Link>
+                );
+              })
+            ) : (
+              <p>No articles available in this category</p>
+            )}
           </div>
         </div>
       </div>

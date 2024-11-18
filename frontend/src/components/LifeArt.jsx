@@ -4,12 +4,13 @@ import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';  // Correct import for useNavigate
 import {
   Pagination,
+  PaginationContent,
   PaginationItem,
   PaginationLink,
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis,
-} from '@/components/ui/pagination'; // Import the pagination components
+} from '@/components/ui/pagination'; 
 
 const ArticleList = () => {
   const [newsData, setNewsData] = useState([]);
@@ -18,7 +19,7 @@ const ArticleList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5);
 
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,7 +28,7 @@ const ArticleList = () => {
         setNewsData(articlesResponse.data.posts);
         setLoading(false);
       } catch (error) {
-        setError('Failed to load news');
+        setError('No posts available for this category.');
         setLoading(false);
       }
     };
@@ -43,12 +44,23 @@ const ArticleList = () => {
   }
 
   const filteredNewsData = newsData.filter(newsItem => newsItem.category?.name === 'Style');
+  const totalPosts = filteredNewsData.length;
+  const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+ 
+  if (currentPage > totalPages && totalPages > 0) {
+    setCurrentPage(totalPages); 
+  }
+
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredNewsData.slice(indexOfFirstPost, indexOfLastPost);
-  const totalPages = Math.ceil(filteredNewsData.length / postsPerPage);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -61,8 +73,8 @@ const ArticleList = () => {
           return (
             <div 
               key={index} 
-              className="flex items-start bg-white p-4 border rounded-md shadow-md cursor-pointer"  // Added cursor-pointer for better UX
-              onClick={() => navigate(`/post/${article._id}`)} // Corrected onClick handler
+              className="flex items-start bg-white p-4 border rounded-md shadow-md cursor-pointer"  
+              onClick={() => navigate(`/post/${article._id}`)} 
             >
               <img
                 src={article.image || 'https://via.placeholder.com/150'}
@@ -91,39 +103,66 @@ const ArticleList = () => {
       </div>
 
       {/* Pagination Controls */}
-      <div className="mt-4">
-        <Pagination>
-          {/* Previous Button */}
-          <PaginationPrevious
-            className={`px-4 py-2 bg-blue-500 text-white rounded-full transition-all duration-300 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-600'}`}
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </PaginationPrevious>
+      {totalPages > 1 && (
+        <div className="mt-4">
+          <Pagination>
+            <PaginationContent>
+              {/* Previous Button */}
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    paginate(currentPage - 1);
+                  }}
+                  className={`${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+                  disabled={currentPage === 1}
+                />
+              </PaginationItem>
 
-          {/* Page Numbers */}
-          {[...Array(totalPages)].map((_, index) => (
-            <PaginationItem key={index}>
-              <PaginationLink
-                className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded-full transition-all duration-300 border`}
-                onClick={() => paginate(index + 1)}
-              >
-                {index + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
+              {/* Page 1 */}
+              <PaginationItem>
+                <PaginationLink
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    paginate(1);
+                  }}
+                  className={`${currentPage === 1 ? 'font-bold' : ''}`}
+                >
+                  1
+                </PaginationLink>
+              </PaginationItem>
 
-          {/* Next Button */}
-          <PaginationNext
-            className={`px-4 py-2 bg-blue-500 text-white rounded-full transition-all duration-300 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-600'}`}
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </PaginationNext>
-        </Pagination>
-      </div>
+              {/* Ellipsis if needed */}
+              {currentPage > 2 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
+
+              {/* Current Page */}
+              <PaginationItem>
+                <PaginationLink href="#" className="font-bold">
+                  {currentPage}
+                </PaginationLink>
+              </PaginationItem>
+
+              {/* Ellipsis if there are more pages */}
+              {currentPage < totalPages - 1 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
+
+              {/* Next Button */}
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    paginate(currentPage + 1);
+                  }}
+                  className={`${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
+                  disabled={currentPage === totalPages}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 };

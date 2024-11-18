@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios"; // Import axios
-import { Link } from "react-router-dom"; 
+import axios from "axios";
+import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import {
   Pagination,
+  PaginationContent,
   PaginationItem,
   PaginationLink,
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis,
-} from "@/components/ui/pagination"; // Correct imports
+} from "@/components/ui/pagination"; 
 
 const api = axios.create({
   baseURL: "http://localhost:5000/api",
@@ -21,23 +22,21 @@ const ArticleItem = ({ article }) => {
     return <div>No article data available</div>;
   }
 
-  // Format the createdAt date using date-fns
   const formattedDate = article.createdAt
-    ? format(new Date(article.createdAt), "MMMM dd, yyyy") // Format as Month day, year
-    : "No Date Available"; // Fallback if no date available
+    ? format(new Date(article.createdAt), "MMMM dd, yyyy")
+    : "No Date Available";
 
   return (
     <Link to={`/post/${article._id}`} key={article._id}>
       <div className="flex flex-col bg-white shadow-md hover:shadow-lg transition-shadow duration-200 rounded-lg overflow-hidden">
         <div className="relative">
           <img
-            src={article.image || "default-image.jpg"} // Fallback if no image is found
+            src={article.image || "default-image.jpg"}
             alt={article.title}
             className="w-full h-48 object-cover rounded-t-lg"
           />
           <span className="absolute bottom-0 left-0 text-xs bg-black text-white px-2 py-1 uppercase rounded-tr-lg">
-            {article.category?.name || "Uncategorized"}{" "}
-            {/* Display category name */}
+            {article.category?.name || "Uncategorized"}
           </span>
         </div>
         <div className="p-4">
@@ -60,26 +59,39 @@ const ArticleItem = ({ article }) => {
 const Latest = () => {
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [currentPage, setCurrentPage] = useState(1); // Track current page
-  const [postsPerPage] = useState(5); // Number of posts per page (adjustable)
+  const [error, setError] = useState(""); 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5);
 
   useEffect(() => {
     const fetchNews = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const response = await api.get("/posts"); // Fetching posts from the API
-        setNewsData(response.data.posts); // Assuming your API returns an array of articles
+        const response = await api.get("/posts");
+        if (response.data && response.data.posts) {
+          setNewsData(response.data.posts);
+        } else {
+          setError("No posts found.");
+        }
       } catch (err) {
-        console.error("Error fetching data:", err); // Logs error to console
-        setError("Failed to load news. Please try again later.");
+        console.error("Error fetching data:", err);
+        if (err.response) {
+          // API responded with an error (e.g., 500, 404)
+          setError(`Server Error: ${err.response.status} - ${err.response.data.message || "Unable to fetch posts"}`);
+        } else if (err.request) {
+          // No response from the server (network issues)
+          setError("Network Error: Please check your internet connection.");
+        } else {
+          // Other errors (e.g., code errors)
+          setError(`Unexpected Error: ${err.message}`);
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchNews();
-  }, []); // Runs once when the component mounts
+  }, []);
 
   if (loading) {
     return <p className="text-center text-xl text-gray-700">Loading...</p>;
@@ -89,16 +101,23 @@ const Latest = () => {
     return <p className="text-center text-xl text-red-600">{error}</p>;
   }
 
-  // Pagination Logic: Calculate the current posts to display
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(newsData.length / postsPerPage);
+
+  // Ensure currentPage is within valid range
+  if (currentPage > totalPages && totalPages > 0) {
+    setCurrentPage(totalPages); // Set to last page if current page exceeds total pages
+  }
+
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = newsData.slice(indexOfFirstPost, indexOfLastPost);
 
-  // Pagination handler to go to the next/previous page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  // Total number of pages
-  const totalPages = Math.ceil(newsData.length / postsPerPage);
+  const paginate = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -108,92 +127,57 @@ const Latest = () => {
         </h2>
       </div>
 
-      <div className="grid grid-cols-1  lg:grid-cols-2 gap-6">
-        {currentPosts.map((article) => (
-          <ArticleItem key={article._id} article={article} />
-        ))}
-      </div>
+      {newsData.length === 0 ? (
+        <p className="text-center text-xl text-gray-700">No posts available.</p>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {currentPosts.map((article) => (
+            <ArticleItem key={article._id} article={article} />
+          ))}
+        </div>
+      )}
 
-      {/* Pagination Controls */}
-      <div className="flex justify-center items-center mt-8">
-        <Pagination className="flex items-center space-x-2">
-          {/* Previous Button */}
-          <PaginationPrevious
-            className={`px-4 py-2 bg-gray-700 text-white rounded-full transition-all duration-300 ${
-              currentPage === 1
-                ? "cursor-not-allowed opacity-50"
-                : "hover:bg-gray-600"
-            }`}
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </PaginationPrevious>
+      {newsData.length > 0 && (
+        <div className="flex justify-center items-center mt-8">
+          <Pagination>
+            <PaginationContent>
+              {/* Previous Button */}
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() => paginate(currentPage - 1)}
+                  className={`${
+                    currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+                  }`}
+                  disabled={currentPage === 1}
+                />
+              </PaginationItem>
 
-          {/* Pagination Items */}
-          {/* <PaginationItem
-            onClick={() => paginate(1)}
-            className={`px-4 py-2 border rounded-full text-gray-700 transition-all duration-300 ${
-              currentPage === 1 ? "bg-blue-500 text-white" : "hover:bg-gray-200"
-            }`}
-          >
-            <PaginationLink>1</PaginationLink>
-          </PaginationItem> */}
+              {/* Current Page */}
+              <PaginationItem>
+                <PaginationLink className="font-bold">{currentPage}</PaginationLink>
+              </PaginationItem>
 
-          {currentPage > 2 && <PaginationEllipsis />}
+              {/* Ellipsis if needed */}
+              {currentPage < totalPages - 1 && (
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              )}
 
-          {currentPage > 1 && (
-            <PaginationItem
-              onClick={() => paginate(currentPage - 1)}
-              className="px-4 py-2 border rounded-full text-gray-700 hover:bg-gray-200"
-            >
-              <PaginationLink>{currentPage - 1}</PaginationLink>
-            </PaginationItem>
-          )}
-
-          <PaginationItem
-            active
-            className="px-4 py-2 bg-blue-500 text-white rounded-full"
-          >
-            <PaginationLink>{currentPage}</PaginationLink>
-          </PaginationItem>
-
-          {currentPage < totalPages && (
-            <PaginationItem
-              onClick={() => paginate(currentPage + 1)}
-              className="px-4 py-2 border rounded-full text-gray-700 hover:bg-gray-200"
-            >
-              <PaginationLink>{currentPage + 1}</PaginationLink>
-            </PaginationItem>
-          )}
-
-          {currentPage < totalPages - 1 && <PaginationEllipsis />}
-
-          {/* {currentPage < totalPages && (
-            <PaginationItem
-              onClick={() => paginate(totalPages)}
-              className={`px-4 py-2 border rounded-full text-gray-700 transition-all duration-300 ${
-                currentPage === totalPages ? "bg-blue-500 text-white" : "hover:bg-gray-200"
-              }`}
-            >
-              <PaginationLink>{totalPages}</PaginationLink>
-            </PaginationItem>
-          )} */}
-
-          {/* Next Button */}
-          <PaginationNext
-            className={` bg-gray-700 text-white rounded-full transition-all duration-300 ${
-              currentPage === totalPages
-                ? "cursor-not-allowed opacity-50"
-                : "hover:bg-gray-600"
-            }`}
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </PaginationNext>
-        </Pagination>
-      </div>
+              {/* Next Button */}
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => paginate(currentPage + 1)}
+                  className={`${
+                    currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""
+                  }`}
+                  disabled={currentPage === totalPages}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 };

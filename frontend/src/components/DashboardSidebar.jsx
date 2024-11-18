@@ -7,9 +7,9 @@ const DashboardSidebar = () => {
   return (
     <aside className="w-64 bg-[#1C2434] text-white p-6 hidden md:block">
       <div className="flex flex-col items-start mb-2 ">
-        <span className="text-2xl font-bold text-transparent bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text">
+        <Link to="/" className="text-2xl font-bold text-transparent bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text">
           NEWS SQUAD
-        </span>
+        </Link>
         <p className="text-xs text-gray-600 mt-1 pl-5">the art of publishing</p>
       </div>
       <nav>
@@ -45,6 +45,28 @@ const DashboardSidebar = () => {
               >
                 <PenIcon className="mr-2 h-4 w-4" />
                 Articles
+              </Button>
+            </Link>
+          </li>
+          <li>
+            <Link to={"/dashboard/AddCategory"}>
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-white"
+              >
+                <PenIcon className="mr-2 h-4 w-4" />
+                Create Category
+              </Button>
+            </Link>
+          </li>
+          <li>
+            <Link to={"/dashboard/AllCategories"}>
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-white"
+              >
+                <PenIcon className="mr-2 h-4 w-4" />
+                All Categories
               </Button>
             </Link>
           </li>

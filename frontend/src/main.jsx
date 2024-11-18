@@ -15,6 +15,10 @@ import Gadgets from "./pages/Gadgets.jsx";
 import AddPost from "./components/Dashboard/AddPost.jsx";
 import AllPosts from "./components/Dashboard/AllPosts.jsx";
 import EditPost from "./components/Dashboard/EditPost.jsx";
+import AddCategory from "./components/Dashboard/AddCategory.jsx";
+import AllCategories from "./components/Dashboard/AllCategories.jsx";
+import EditCategory from "./components/Dashboard/EditCategory.jsx";
+import UserProfile from "./components/UserProfile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -22,28 +26,30 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <div>Error</div>,
     children: [
+     
       { path: "/", element: <Home /> },
       { path: "/post/:id", element: <ArticlePage /> },
       { path: "/category/fashion", element: <FashionPosts /> },
       { path: "/category/lifestyle", element: <LifeStyle /> },
       {
-        path:"category/gadgets",
-        element: <Gadgets param='Gadgets'/>
+        path: "category/gadgets",
+        element: <Gadgets param="Gadgets" />,
       },
       {
-        path:"category/mobile-phones",
-        element: <Gadgets param='Mobile-phones'/>
+        path: "category/mobile-phones",
+        element: <Gadgets param="Mobile-phones" />,
       },
       {
-        path:"category/photography",
-        element: <Gadgets param='Photography'/>
+        path: "category/photography",
+        element: <Gadgets param="Photography" />,
       },
       {
-        path:"category/reviews",
-        element: <Gadgets param='Reviews'/>
+        path: "category/reviews",
+        element: <Gadgets param="Reviews" />,
       },
     ],
   },
+  { path: "/profile", element: <UserProfile /> },
   {
     path: "/signin",
     element: <SignIn />,
@@ -70,11 +76,25 @@ const router = createBrowserRouter([
         path: "/dashboard/EditPost/:id",
         element: <EditPost />,
       },
+
+      {
+        path: "/dashboard/EditCategory/:id",
+        element: <EditCategory />,
+      },
+
+      {
+        path: "/dashboard/AddCategory",
+        element: <AddCategory />,
+      },
+      {
+        path: "/dashboard/AllCategories",
+        element: <AllCategories />,
+      },
     ],
   },
 ]);
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <RouterProvider router={router} future={{ v7_startTransition: true }} />
   </StrictMode>
 );

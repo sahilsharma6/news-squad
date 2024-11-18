@@ -76,7 +76,7 @@ const AllPosts = () => {
                       : ""}
                   </TableCell>
                   <TableCell>{post?.category?.name}</TableCell>
-                  <TableCell>{post?.updatedAt}</TableCell>
+                  <TableCell>{post?.updatedAt.split("T")[0]}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       <Link to={`/dashboard/EditPost/${post._id}`}>
@@ -97,7 +97,9 @@ const AllPosts = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={15}></TableCell>
+                <TableCell colSpan={5} className="text-center text-gray-800 py-4">
+                  No posts found
+                </TableCell>
               </TableRow>
             )}
           </TableBody>
