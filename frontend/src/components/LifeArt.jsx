@@ -2,14 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';  // Correct import for useNavigate
-import {
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-  PaginationEllipsis,
-} from '@/components/ui/pagination'; // Import the pagination components
+import 
+  Pagination
+  from '@/components/ui/pagination'; // Import the pagination components
 
 const ArticleList = () => {
   const [newsData, setNewsData] = useState([]);
@@ -92,37 +87,11 @@ const ArticleList = () => {
 
       {/* Pagination Controls */}
       <div className="mt-4">
-        <Pagination>
-          {/* Previous Button */}
-          <PaginationPrevious
-            className={`px-4 py-2 bg-blue-500 text-white rounded-full transition-all duration-300 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-600'}`}
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </PaginationPrevious>
-
-          {/* Page Numbers */}
-          {[...Array(totalPages)].map((_, index) => (
-            <PaginationItem key={index}>
-              <PaginationLink
-                className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'} rounded-full transition-all duration-300 border`}
-                onClick={() => paginate(index + 1)}
-              >
-                {index + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-
-          {/* Next Button */}
-          <PaginationNext
-            className={`px-4 py-2 bg-blue-500 text-white rounded-full transition-all duration-300 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-600'}`}
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </PaginationNext>
-        </Pagination>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={paginate}
+      />
       </div>
     </div>
   );

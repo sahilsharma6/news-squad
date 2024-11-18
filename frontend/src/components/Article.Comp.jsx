@@ -2,14 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios"; // Import axios
 import { Link } from "react-router-dom"; 
 import { format } from "date-fns";
-import {
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-  PaginationEllipsis,
-} from "@/components/ui/pagination"; // Correct imports
+import 
+  Pagination
+ from "@/components/ui/pagination"; // Correct imports
 
 const api = axios.create({
   baseURL: "http://localhost:5000/api",
@@ -116,83 +111,11 @@ const Latest = () => {
 
       {/* Pagination Controls */}
       <div className="flex justify-center items-center mt-8">
-        <Pagination className="flex items-center space-x-2">
-          {/* Previous Button */}
-          <PaginationPrevious
-            className={`px-4 py-2 bg-gray-700 text-white rounded-full transition-all duration-300 ${
-              currentPage === 1
-                ? "cursor-not-allowed opacity-50"
-                : "hover:bg-gray-600"
-            }`}
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </PaginationPrevious>
-
-          {/* Pagination Items */}
-          {/* <PaginationItem
-            onClick={() => paginate(1)}
-            className={`px-4 py-2 border rounded-full text-gray-700 transition-all duration-300 ${
-              currentPage === 1 ? "bg-blue-500 text-white" : "hover:bg-gray-200"
-            }`}
-          >
-            <PaginationLink>1</PaginationLink>
-          </PaginationItem> */}
-
-          {currentPage > 2 && <PaginationEllipsis />}
-
-          {currentPage > 1 && (
-            <PaginationItem
-              onClick={() => paginate(currentPage - 1)}
-              className="px-4 py-2 border rounded-full text-gray-700 hover:bg-gray-200"
-            >
-              <PaginationLink>{currentPage - 1}</PaginationLink>
-            </PaginationItem>
-          )}
-
-          <PaginationItem
-            active
-            className="px-4 py-2 bg-blue-500 text-white rounded-full"
-          >
-            <PaginationLink>{currentPage}</PaginationLink>
-          </PaginationItem>
-
-          {currentPage < totalPages && (
-            <PaginationItem
-              onClick={() => paginate(currentPage + 1)}
-              className="px-4 py-2 border rounded-full text-gray-700 hover:bg-gray-200"
-            >
-              <PaginationLink>{currentPage + 1}</PaginationLink>
-            </PaginationItem>
-          )}
-
-          {currentPage < totalPages - 1 && <PaginationEllipsis />}
-
-          {/* {currentPage < totalPages && (
-            <PaginationItem
-              onClick={() => paginate(totalPages)}
-              className={`px-4 py-2 border rounded-full text-gray-700 transition-all duration-300 ${
-                currentPage === totalPages ? "bg-blue-500 text-white" : "hover:bg-gray-200"
-              }`}
-            >
-              <PaginationLink>{totalPages}</PaginationLink>
-            </PaginationItem>
-          )} */}
-
-          {/* Next Button */}
-          <PaginationNext
-            className={` bg-gray-700 text-white rounded-full transition-all duration-300 ${
-              currentPage === totalPages
-                ? "cursor-not-allowed opacity-50"
-                : "hover:bg-gray-600"
-            }`}
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </PaginationNext>
-        </Pagination>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={paginate}
+      />
       </div>
     </div>
   );
