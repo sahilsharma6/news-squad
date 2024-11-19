@@ -5,19 +5,35 @@ const NewsLayout2 = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [loading, setLoading] = useState(true);  // Track loading state
+  const [error, setError] = useState(null); // Track errors
 
   const categories = ["All", "Travel", "Recipes", "Health & Fitness", "Music"];
   const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true); // Start loading
       try {
         const response = await fetch("http://localhost:5000/api/posts");
+        
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+        
         const data = await response.json();
-        setPosts(data.posts);
-        setFilteredPosts(data.posts); // Initially set filteredPosts to all posts
+        
+        if (!data.posts || data.posts.length === 0) {
+          setError("No posts available.");
+        } else {
+          setPosts(data.posts);
+          setFilteredPosts(data.posts); // Initially set filteredPosts to all posts
+        }
       } catch (error) {
         console.error("Error fetching posts:", error);
+        setError("Failed to load posts. Please try again later.");
+      } finally {
+        setLoading(false); // Stop loading
       }
     };
 
@@ -36,6 +52,14 @@ const NewsLayout2 = () => {
   const handlePostClick = (postId) => {
     navigate(`/post/${postId}`);  // Navigate to the post details page
   };
+
+  if (loading) {
+    return <p className="text-center text-xl text-gray-700">Loading posts...</p>;
+  }
+
+  if (error) {
+    return <p className="text-center text-xl text-red-600">{error}</p>;
+  }
 
   return (
     <div className="container mx-auto p-6">
@@ -90,7 +114,7 @@ const NewsLayout2 = () => {
 
       {/* Bottom Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        {filteredPosts.slice(4, 8).map((post, index) => (
+        {filteredPosts?.slice(4, 8).map((post, index) => (
           <div
             key={index}
             className="flex items-center"

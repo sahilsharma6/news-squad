@@ -1,16 +1,36 @@
 import Category  from "../models/categoryModel.js";
 
+
 // Create a new category
 export const createCategory = async (req, res) => {
   try {
     const { name } = req.body;
-    const newCategory = new Category({ name});
+
+    if (!name || typeof name !== 'string' || name.trim().length === 0) {
+      return res.status(400).json({ error: "Category name is required and must be a valid string" });
+    }
+   
+    const existingCategory = await Category.findOne({ name: name.trim() });
+    if (existingCategory) {
+      return res.status(409).json({ error: "Category with this name already exists" });
+    }
+    const newCategory = new Category({ name: name.trim() });
+
+
     await newCategory.save();
-    res.status(201).json(newCategory);
+
+    res.status(201).json({
+      message: "Category created successfully",
+      category: newCategory,
+    });
   } catch (error) {
-    res.status(500).json({ error: "Failed to create category" });
+    console.error("Error creating category:", error);
+ 
+    res.status(500).json({ error: "Failed to create category. Please try again later." });
   }
 };
+
+
 
 // Get all categories
 export const getAllCategories = async (req, res) => {

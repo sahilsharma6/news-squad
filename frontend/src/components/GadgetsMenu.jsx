@@ -8,14 +8,12 @@ import {
   PaginationNext,
   PaginationEllipsis,
 } from '@/components/ui/pagination';
-import { ToastProvider, ToastViewport, Toast, ToastTitle, ToastDescription, ToastClose, ToastAction } from './ui/toast';
 
 const GadgetsMenu = ({ param }) => {
   const [articles, setArticles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const articlesPerPage = 2;
-  const [open,setOpen]=useState(false)
+  const articlesPerPage = 5;
 
   useEffect(() => {
     setCurrentPage(1);
@@ -46,25 +44,12 @@ const GadgetsMenu = ({ param }) => {
       setCurrentPage(pageNumber);
     }
   };
+console.log(articles);
 
-  return (
-    <div>
-      <ToastProvider>
-      <div className="App">
-        <button onClick={() => setOpen(true)} >Show Toast</button>
-        <Toast open={open} onOpenChange={setOpen} variant="default">
-          <ToastTitle>Success</ToastTitle>
-          <ToastDescription>Your action was successful!</ToastDescription>
-          <ToastClose />
-          <ToastAction asChild altText="Action description">
-          <button className="text-blue-500" onClick={() => console.log('Undo clicked')}>Undo</button>
-
-          </ToastAction>
-        </Toast>
-        <ToastViewport />
-      </div>
-    </ToastProvider>
-      {articles.map((article, index) => {
+return (
+  <div>
+    {articles.length > 0 ? (
+      articles.map((article, index) => {
         // Inline image URL extraction using regex
         const imageUrl = article.content.match(/<img src="([^"]+)"/)?.[1] || article.featuredImage;
         const contentWithoutImages = article.content.replace(/<img[^>]*>/g, '');
@@ -91,73 +76,77 @@ const GadgetsMenu = ({ param }) => {
             </div>
           </article>
         );
-      })}
+      })
+    ) : (
+      'Post Not Found'
+    )}
 
-      {/* Pagination Controls */}
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center mt-8">
-          <Pagination>
-            <PaginationContent>
-              {/* Previous Button */}
-              <PaginationItem>
-                <PaginationPrevious
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    paginate(currentPage - 1);
-                  }}
-                  className={`${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
-                  disabled={currentPage === 1}
-                />
-              </PaginationItem>
+    {/* Pagination Controls */}
+    {totalPages > 1 && (
+      <div className="flex justify-center items-center mt-8">
+        <Pagination>
+          <PaginationContent>
+            {/* Previous Button */}
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  paginate(currentPage - 1);
+                }}
+                className={`${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+                disabled={currentPage === 1}
+              />
+            </PaginationItem>
 
-              {/* Page 1 */}
+            {/* Page 1 */}
+            <PaginationItem>
+              <PaginationLink
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  paginate(1);
+                }}
+                className={`${currentPage === 1 ? 'font-bold' : ''}`}
+              >
+                1
+              </PaginationLink>
+            </PaginationItem>
+
+            {/* Ellipsis */}
+            {currentPage > 2 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
+
+            {/* Current Page */}
+            {currentPage > 1 && currentPage < totalPages && (
               <PaginationItem>
-                <PaginationLink
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    paginate(1);
-                  }}
-                  className={`${currentPage === 1 ? 'font-bold' : ''}`}
-                >
-                  1
+                <PaginationLink href="#" className="font-bold">
+                  {currentPage}
                 </PaginationLink>
               </PaginationItem>
+            )}
 
-              {/* Ellipsis */}
-              {currentPage > 2 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
+            {/* Ellipsis */}
+            {currentPage < totalPages - 1 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
 
-              {/* Current Page */}
-              {currentPage > 1 && currentPage < totalPages && (
-                <PaginationItem>
-                  <PaginationLink href="#" className="font-bold">
-                    {currentPage}
-                  </PaginationLink>
-                </PaginationItem>
-              )}
+            {/* Next Button */}
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  paginate(currentPage + 1);
+                }}
+                className={`${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
+                disabled={currentPage === totalPages}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
+    )}
+  </div>
+);
 
-              {/* Ellipsis */}
-              {currentPage < totalPages - 1 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
-
-              {/* Next Button */}
-              <PaginationItem>
-                <PaginationNext
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    paginate(currentPage + 1);
-                  }}
-                  className={`${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
-                  disabled={currentPage === totalPages}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
-      )}
-    </div>
-  );
 };
 
 export default GadgetsMenu;

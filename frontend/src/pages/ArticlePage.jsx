@@ -22,7 +22,11 @@ const ArticlePage = () => {
         console.error("Error fetching post data:", error);
       }
     };
+
     fetchPost();
+
+    // Scroll to the top of the page whenever this component is mounted
+    window.scrollTo(0, 0);
   }, [id]);
 
   if (!postData) {

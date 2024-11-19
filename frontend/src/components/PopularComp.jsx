@@ -9,7 +9,7 @@ const Performan = () => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(4);
-  const navigate = useNavigate();  // Initialize useNavigate for programmatic navigation
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,12 +20,10 @@ const Performan = () => {
         if (response.data && Array.isArray(response.data.posts)) {
           setData(response.data.posts); 
         } else {
-          console.error("Expected an array under 'posts', but received:", response.data);
           setError("Data is not in expected format.");
         }
         setLoading(false);
       } catch (error) {
-        console.error(error);
         setError("Failed to load data.");
         setLoading(false);
       }
@@ -33,11 +31,10 @@ const Performan = () => {
     fetchData();
   }, []);
 
-  // Ensure that data is an array before trying to filter and sort
+ 
   const sortedData = Array.isArray(data) ? [...data].sort((a, b) => b.views - a.views) : [];
   const mostViewedPosts = sortedData.slice(0, 4);
 
-  // Pagination logic
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = mostViewedPosts.slice(indexOfFirstPost, indexOfLastPost);
@@ -62,14 +59,14 @@ const Performan = () => {
       {/* Display posts */}
       <div className="space-y-4">
         {currentPosts.map((article, index) => {
-          // Format the createdAt date field using date-fns
+      
           const formattedDate = article.createdAt ? format(new Date(article.createdAt), 'MMMM dd, yyyy') : "No Date Available";
           
           return (
             <div
               key={article._id}
               className="flex items-start bg-white p-2"
-              onClick={() => navigate(`/post/${article._id}`)} // Navigate to the article detail page
+              onClick={() => navigate(`/post/${article._id}`)} 
               style={{ cursor: 'pointer' }}
             >
               <img

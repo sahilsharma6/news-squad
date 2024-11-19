@@ -7,7 +7,7 @@ export const hamburgerMenu = [
   {
     label: "FASHION",
     route: "/category/fashion",
-    dropdown: true,
+    dropdown: false,
     subItems: [
       { label: "All", route: "/fashion/all" },
       { label: "New Look", route: "/fashion/new-look" },
@@ -20,17 +20,17 @@ export const hamburgerMenu = [
   },
   {
     label: "GADGETS",
-    route: "/gadgets",
+    route: "/category/gadgets",
     dropdown: false,
   },
   {
     label: "LIFESTYLE",
-    route: "/lifestyle",
+    route: "/category/lifestyle",
     dropdown: false,
   },
   {
-    label: "VIDEO",
-    route: "/video",
+    label: "DASHBOARD", 
+    route: "/dashboard",
     dropdown: false,
   },
 ];

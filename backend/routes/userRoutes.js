@@ -27,7 +27,7 @@ router.route("/check-admin").get(protect, (req, res) => {
 
 
 router
-  .route("/profile")
+  .route("/users/profile")
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
 
