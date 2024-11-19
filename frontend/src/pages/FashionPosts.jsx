@@ -59,7 +59,7 @@ const FashionPosts = () => {
         </div>
       </div>
 
-      <div className="flex md:mx-[10%]">
+      <div className="flex flex-col md:flex-row mx-[5%] md:mx-[10%]">
         <div className="w-[70%]">
           {" "}
           <LatestNews />

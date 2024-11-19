@@ -10,7 +10,7 @@ import {
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis,
-} from '@/components/ui/pagination'; // Import the pagination components
+} from '@/components/ui/pagination'; 
 
 const ArticleList = () => {
   const [newsData, setNewsData] = useState([]);
@@ -19,7 +19,7 @@ const ArticleList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5);
 
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +28,7 @@ const ArticleList = () => {
         setNewsData(articlesResponse.data.posts);
         setLoading(false);
       } catch (error) {
-        setError('Failed to load news');
+        setError('No posts available for this category.');
         setLoading(false);
       }
     };
@@ -47,9 +47,9 @@ const ArticleList = () => {
   const totalPosts = filteredNewsData.length;
   const totalPages = Math.ceil(totalPosts / postsPerPage);
 
-  // Ensure currentPage is within valid range
+ 
   if (currentPage > totalPages && totalPages > 0) {
-    setCurrentPage(totalPages); // Set to the last page if currentPage exceeds totalPages
+    setCurrentPage(totalPages); 
   }
 
   const indexOfLastPost = currentPage * postsPerPage;
@@ -73,8 +73,8 @@ const ArticleList = () => {
           return (
             <div 
               key={index} 
-              className="flex items-start bg-white p-4 border rounded-md shadow-md cursor-pointer"  // Added cursor-pointer for better UX
-              onClick={() => navigate(`/post/${article._id}`)} // Corrected onClick handler
+              className="flex items-start bg-white p-4 border rounded-md shadow-md cursor-pointer"  
+              onClick={() => navigate(`/post/${article._id}`)} 
             >
               <img
                 src={article.image || 'https://via.placeholder.com/150'}

@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Menu, ChevronDown, Search } from "lucide-react";
+import { Menu, ChevronDown, Search, User, LogIn, LogOut, Home } from "lucide-react"; // Icons
 import React, { useState } from "react";
 import { hamburgerMenu } from "@/Constants";
 
@@ -9,17 +9,26 @@ export default function HamburgerMenu() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const location = useLocation();
   const previousPathnameRef = React.useRef(location.pathname);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Check if user is logged in
 
   React.useEffect(() => {
     if (previousPathnameRef.current !== location.pathname) {
       setIsMenuOpen(false);
-      setOpenDropdown(null); // Close dropdown when route changes
+      setOpenDropdown(null); 
       previousPathnameRef.current = location.pathname;
     }
+
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token); // Check token to determine login status
   }, [location.pathname]);
 
   const toggleDropdown = (item) => {
     setOpenDropdown(openDropdown === item ? null : item);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false); // Update login state
   };
 
   return (
@@ -69,10 +78,32 @@ export default function HamburgerMenu() {
                 )}
               </li>
             ))}
+
+            {/* Admin or Sign In/Sign Out Button */}
+            <li className="flex justify-between items-center">
+              {isLoggedIn ? (
+                <button
+                  onClick={handleLogout}
+                  className="text-base font-medium text-black transition-colors ease-in-out flex items-center"
+                >
+                  <LogOut size={16} className="mr-2" />
+                  Sign Out
+                </button>
+              ) : (
+                <Link
+                  to="/signin"
+                  className="text-base font-medium text-black transition-colors ease-in-out flex items-center"
+                >
+                  <LogIn size={16} className="mr-2" />
+                  Sign In
+                </Link>
+              )}
+            </li>
           </ul>
         </SheetContent>
       </Sheet>
 
+      {/* Logo */}
       <Link to="/">
         <div className="flex flex-col items-start mb-2 ">
           <span className="text-2xl font-bold text-transparent bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text">
@@ -84,6 +115,7 @@ export default function HamburgerMenu() {
         </div>
       </Link>
 
+      {/* Search Button */}
       <div className="flex items-center ">
         <Sheet>
           <SheetTrigger>

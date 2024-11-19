@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 const ModernSection = () => {
   const [posts, setPosts] = useState([]); 
-  const [loading, setLoading] = useState(true); // Track loading state
-  const [error, setError] = useState(""); // Track any errors
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(""); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,22 +16,22 @@ const ModernSection = () => {
         }
         const data = await response.json();
         if (data.posts && data.posts.length > 0) {
-          setPosts(data.posts);  // Set posts if available
+          setPosts(data.posts);
         } else {
           setError("No posts available for this category.");
         }
       } catch (error) {
-        console.error("Error fetching posts:", error);
-        setError("Failed to load posts. Please try again later."); // Generic error message
+       
+        setError("Failed to load posts. Please try again later."); 
       } finally {
-        setLoading(false); // Set loading to false once the fetch is completed
+        setLoading(false); 
       }
     };
 
     fetchPosts();
   }, []);
 
-  // Error or loading state handling
+
   if (loading) {
     return <p className="text-center text-xl text-gray-700">Loading posts...</p>;
   }

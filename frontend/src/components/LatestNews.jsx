@@ -10,14 +10,14 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"; // Import pagination components
+} from "@/components/ui/pagination"; 
 
 const LatestNews = () => {
-  const [newsData, setNewsData] = useState([]); // Store all news articles
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(""); // Error state
-  const [currentPage, setCurrentPage] = useState(1); // Current page for pagination
-  const [postsPerPage] = useState(5); // Number of posts per page (adjustable)
+  const [newsData, setNewsData] = useState([]); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(""); 
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [postsPerPage] = useState(4); 
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -26,7 +26,7 @@ const LatestNews = () => {
         setNewsData(response.data.posts);
         setLoading(false);
       } catch (error) {
-        setError("Failed to load news");
+        setError("No posts available in the Fashion category.");
         setLoading(false);
       }
     };
