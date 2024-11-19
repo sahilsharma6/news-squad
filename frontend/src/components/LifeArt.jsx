@@ -2,9 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';  // Correct import for useNavigate
-import 
-  Pagination
-  from '@/components/ui/pagination'; // Import the pagination components
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+} from '@/components/ui/pagination'; // Import the pagination components
 
 const ArticleList = () => {
   const [newsData, setNewsData] = useState([]);
@@ -38,12 +44,23 @@ const ArticleList = () => {
   }
 
   const filteredNewsData = newsData.filter(newsItem => newsItem.category?.name === 'Style');
+  const totalPosts = filteredNewsData.length;
+  const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+  // Ensure currentPage is within valid range
+  if (currentPage > totalPages && totalPages > 0) {
+    setCurrentPage(totalPages); // Set to the last page if currentPage exceeds totalPages
+  }
+
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredNewsData.slice(indexOfFirstPost, indexOfLastPost);
-  const totalPages = Math.ceil(filteredNewsData.length / postsPerPage);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -86,13 +103,66 @@ const ArticleList = () => {
       </div>
 
       {/* Pagination Controls */}
-      <div className="mt-4">
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={paginate}
-      />
-      </div>
+      {totalPages > 1 && (
+        <div className="mt-4">
+          <Pagination>
+            <PaginationContent>
+              {/* Previous Button */}
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    paginate(currentPage - 1);
+                  }}
+                  className={`${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+                  disabled={currentPage === 1}
+                />
+              </PaginationItem>
+
+              {/* Page 1 */}
+              <PaginationItem>
+                <PaginationLink
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    paginate(1);
+                  }}
+                  className={`${currentPage === 1 ? 'font-bold' : ''}`}
+                >
+                  1
+                </PaginationLink>
+              </PaginationItem>
+
+              {/* Ellipsis if needed */}
+              {currentPage > 2 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
+
+              {/* Current Page */}
+              <PaginationItem>
+                <PaginationLink href="#" className="font-bold">
+                  {currentPage}
+                </PaginationLink>
+              </PaginationItem>
+
+              {/* Ellipsis if there are more pages */}
+              {currentPage < totalPages - 1 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
+
+              {/* Next Button */}
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    paginate(currentPage + 1);
+                  }}
+                  className={`${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
+                  disabled={currentPage === totalPages}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 };

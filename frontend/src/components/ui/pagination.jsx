@@ -1,96 +1,99 @@
-import React from "react";
-import { cn } from "@/lib/utils";
+import * as React from "react"
+import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button";
-import { ChevronLeftIcon, ChevronRightIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { ChevronLeftIcon, ChevronRightIcon, DotsHorizontalIcon } from "@radix-ui/react-icons"
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  const handlePageChange = (page) => {
-    if (onPageChange && page >= 1 && page <= totalPages) {
-      onPageChange(page);
-    }
-  };
+const Pagination = ({
+  className,
+  ...props
+}) => (
+  <nav
+    role="navigation"
+    aria-label="pagination"
+    className={cn("mx-auto flex w-full justify-center", className)}
+    {...props} />
+)
+Pagination.displayName = "Pagination"
 
-  const renderPageNumbers = () => {
-    const pageNumbers = [];
+const PaginationContent = React.forwardRef(({ className, ...props }, ref) => (
+  <ul
+    ref={ref}
+    className={cn("flex flex-row items-center gap-1", className)}
+    {...props} />
+))
+PaginationContent.displayName = "PaginationContent"
 
-    if (totalPages <= 7) {
-      for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i);
-      }
-    } else {
-      pageNumbers.push(1);
+const PaginationItem = React.forwardRef(({ className, ...props }, ref) => (
+  <li ref={ref} className={cn("", className)} {...props} />
+))
+PaginationItem.displayName = "PaginationItem"
 
-      if (currentPage > 4) {
-        pageNumbers.push("...");
-      }
+const PaginationLink = ({
+  className,
+  isActive,
+  size = "icon",
+  ...props
+}) => (
+  <a
+    aria-current={isActive ? "page" : undefined}
+    className={cn(buttonVariants({
+      variant: isActive ? "outline" : "ghost",
+      size,
+    }), className)}
+    {...props} />
+)
+PaginationLink.displayName = "PaginationLink"
 
-      const startPage = Math.max(2, currentPage - 2);
-      const endPage = Math.min(totalPages - 1, currentPage + 2);
+const PaginationPrevious = ({
+  className,
+  ...props
+}) => (
+  <PaginationLink
+    aria-label="Go to previous page"
+    size="default"
+    className={cn("gap-1 pl-2.5", className)}
+    {...props}>
+    <ChevronLeftIcon className="h-4 w-4" />
+    <span>Previous</span>
+  </PaginationLink>
+)
+PaginationPrevious.displayName = "PaginationPrevious"
 
-      for (let i = startPage; i <= endPage; i++) {
-        pageNumbers.push(i);
-      }
+const PaginationNext = ({
+  className,
+  ...props
+}) => (
+  <PaginationLink
+    aria-label="Go to next page"
+    size="default"
+    className={cn("gap-1 pr-2.5", className)}
+    {...props}>
+    <span>Next</span>
+    <ChevronRightIcon className="h-4 w-4" />
+  </PaginationLink>
+)
+PaginationNext.displayName = "PaginationNext"
 
-      if (currentPage < totalPages - 3) {
-        pageNumbers.push("...");
-      }
+const PaginationEllipsis = ({
+  className,
+  ...props
+}) => (
+  <span
+    aria-hidden
+    className={cn("flex h-9 w-9 items-center justify-center", className)}
+    {...props}>
+    <DotsHorizontalIcon className="h-4 w-4" />
+    <span className="sr-only">More pages</span>
+  </span>
+)
+PaginationEllipsis.displayName = "PaginationEllipsis"
 
-      pageNumbers.push(totalPages);
-    }
-
-    return pageNumbers;
-  };
-
-  return (
-    <nav className="flex items-center justify-center mt-6 space-x-2">
-      {/* Previous button */}
-      <button
-        onClick={() => handlePageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className={cn(
-          buttonVariants({ variant: "outline" }),
-          "p-2 flex items-center justify-center",
-          currentPage === 1 && "opacity-50 cursor-not-allowed"
-        )}
-      >
-        Previous<ChevronLeftIcon className="h-5 w-5" />
-      </button>
-
-      {/* Page numbers */}
-      {renderPageNumbers().map((page, index) =>
-        page === "..." ? (
-          <span key={`ellipsis-${index}`} className="flex items-center justify-center text-gray-500">
-            <DotsHorizontalIcon className="h-5 w-5" />
-          </span>
-        ) : (
-          <button
-            key={page}
-            onClick={() => handlePageChange(page)}
-            className={cn(
-              buttonVariants({ variant: currentPage === page ? "solid" : "outline" }),
-              "px-3 py-1",
-              currentPage === page && "bg-blue-500 text-white"
-            )}
-          >
-            {page}
-          </button>
-        )
-      )}
-
-      {/* Next button */}
-      <button
-        onClick={() => handlePageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className={cn(
-          buttonVariants({ variant: "outline" }),
-          "p-2 flex items-center justify-center",
-          currentPage === totalPages && "opacity-50 cursor-not-allowed"
-        )}
-      >
-      Next  <ChevronRightIcon className="h-5 w-5" />
-      </button>
-    </nav>
-  );
-};
-
-export default Pagination;
+export {
+  Pagination,
+  PaginationContent,
+  PaginationLink,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+}

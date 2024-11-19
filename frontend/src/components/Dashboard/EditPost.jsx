@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import ContentEditor from "../Editor.jsx";
 import { Button } from "../ui/button.jsx";
+import { Toast, ToastTitle, ToastDescription, ToastClose, ToastViewport } from "../ui/toast.jsx"; // Import the Toast components
 
 const EditPost = () => {
   const { id } = useParams();
@@ -28,12 +29,19 @@ const EditPost = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [postLoading, setPostLoading] = useState(true);
 
+  const [toast, setToast] = useState({
+    open: false,
+    variant: "success", // 'success' or 'error'
+    title: "",
+    description: "",
+  });
+
   const fetchCategories = async () => {
     try {
       const result = await apiClient.get("/api/categories");
-      setCategories(result.data || []); 
+      setCategories(result.data || []);
     } catch (error) {
-      alert("Failed to load categories:");
+      alert("Failed to load categories.");
     }
   };
 
@@ -91,18 +99,36 @@ const EditPost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       await apiClient.put(`/api/posts/${postId}`, postData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      alert("Post updated successfully! Redirecting...");
+
+      setToast({
+        open: true,
+        variant: "success",
+        title: "Success!",
+        description: "Post updated successfully.",
+      });
+
       setTimeout(() => {
+        setToast((prevToast) => ({ ...prevToast, open: false }));
         navigate("/dashboard/AllPosts");
-      }, 1000);
+      }, 2000);
     } catch (error) {
-      alert("Error while updating the post:");
+      setToast({
+        open: true,
+        variant: "error",
+        title: "Error!",
+        description: "Error while updating the post.",
+      });
+
+      setTimeout(() => {
+        setToast((prevToast) => ({ ...prevToast, open: false }));
+      }, 4000);
     }
   };
 
@@ -113,6 +139,23 @@ const EditPost = () => {
   return (
     <div>
       <h1>Edit Post</h1>
+
+      {/* Render the Toast component */}
+      {toast.open && (
+        <Toast
+          variant={toast.variant}
+          open={toast.open}
+          onOpenChange={() => setToast({ ...toast, open: false })}
+          className={` ${toast.variant === "success" ? "text-green-500" : "text-red-500"} bottom-96 text-xs`}
+        >
+          <ToastTitle>{toast.title}</ToastTitle>
+          <ToastDescription>{toast.description}</ToastDescription>
+          <ToastClose />
+        </Toast>
+      )}
+
+      <ToastViewport />
+
       <form className="flex flex-col mt-4" onSubmit={handleSubmit}>
         <div className="w-1/4 md:w-96 mt-2">
           <label htmlFor="title">Title</label>

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import apiClient from "@/services/apiClient";
 import {
@@ -9,9 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useState } from "react";
 import ContentEditor from "../Editor.jsx";
 import { Button } from "../ui/button.jsx";
+import { Toast, ToastClose, ToastDescription, ToastTitle, ToastProvider, ToastViewport } from "@/components/ui/toast"; // Import Toast components
 
 const AddPost = () => {
   const [postData, setPostData] = useState({
@@ -21,6 +22,7 @@ const AddPost = () => {
   });
 
   const [categories, setCategories] = useState([]);
+  const [toast, setToast] = useState({ open: false, variant: "", title: "", description: "" });
 
   const handleChange = (e) => {
     setPostData({ ...postData, [e.target.id]: e.target.value });
@@ -60,8 +62,13 @@ const AddPost = () => {
     e.preventDefault();
 
     if (!postData.title || !postData.content || !postData.selectCategory) {
-      alert("Please fill in all required fields.");
-      return; 
+      setToast({
+        open: true,
+        variant: "destructive",
+        title: "Error",
+        description: "Please fill in all required fields.",
+      });
+      return;
     }
 
     try {
@@ -71,7 +78,12 @@ const AddPost = () => {
         },
       });
       if (response) {
-        alert("Post added");
+        setToast({
+          open: true,
+          variant: "success",
+          title: "Post added successfully.",
+          description: "Your post has been created.",
+        });
         setPostData({
           title: "",
           content: "",
@@ -80,56 +92,82 @@ const AddPost = () => {
       }
     } catch (error) {
       console.error("Failed to add post:", error);
+      setToast({
+        open: true,
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to add post. Please try again.",
+      });
     }
   };
 
   return (
-    <div>
-      <h1>Add Post</h1>
-      <form className="flex flex-col mt-4" onSubmit={handleSubmit}>
-        <div className="w-1/4 md:w-96 mt-2">
-          <label htmlFor="title">Title</label>
-          <Input
-            value={postData.title}
-            onChange={handleChange}
-            type="text"
-            id="title"
-            placeholder="Title"
-            required
-          />
-        </div>
+    <ToastProvider>
+      <div>
+        <h1>Add Post</h1>
 
-        <div className="mt-2">
-          <label htmlFor="content">Content</label>
-          <ContentEditor
-            content={postData.content}
-            handleContentChange={handleContentChange}
-          />
-        </div>
+        {/* Render the Toast component */}
+        {toast.open && (
+          <Toast
+            variant={toast.variant}
+            open={toast.open}
+            onOpenChange={() => setToast({ ...toast, open: false })}
+            className={`text-4xl ${
+              toast.variant === "success" ? "text-green-500" : "text-red-500"
+            } bottom-96`}
+          >
+            <ToastTitle>{toast.title}</ToastTitle>
+            <ToastDescription>{toast.description}</ToastDescription>
+            <ToastClose />
+          </Toast>
+        )}
+        <ToastViewport />
 
-        <div className="mt-2 w-[300px]">
-          <Select onValueChange={handleCategoryChange} value={postData.selectCategory}>
-            <SelectTrigger className="w-[300px] bg-white border rounded">
-              <SelectValue placeholder="Select a Category" />
-            </SelectTrigger>
-            <SelectContent className="bg-white border p-3 w-[300px]">
-              <SelectGroup>
-                <SelectLabel>Categories</SelectLabel>
-                {categories.map((category) => (
-                  <SelectItem key={category._id} value={category.name}>
-                    {category.name}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+        <form className="flex flex-col mt-4" onSubmit={handleSubmit}>
+          <div className="w-1/4 md:w-96 mt-2">
+            <label htmlFor="title">Title</label>
+            <Input
+              value={postData.title}
+              onChange={handleChange}
+              type="text"
+              id="title"
+              placeholder="Title"
+              required
+            />
+          </div>
 
-        <Button className={"w-[100px] mt-4"} type="submit">
-          Add Post
-        </Button>
-      </form>
-    </div>
+          <div className="mt-2">
+            <label htmlFor="content">Content</label>
+            <ContentEditor
+              content={postData.content}
+              handleContentChange={handleContentChange}
+            />
+          </div>
+
+          <div className="mt-2 w-[300px]">
+            <Select onValueChange={handleCategoryChange} value={postData.selectCategory}>
+              <SelectTrigger className="w-[300px] bg-white border rounded">
+                <SelectValue placeholder="Select a Category" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border p-3 w-[300px]">
+                <SelectGroup>
+                  <SelectLabel>Categories</SelectLabel>
+                  {categories.map((category) => (
+                    <SelectItem key={category._id} value={category.name}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <Button className={"w-[100px] mt-4"} type="submit">
+            Add Post
+          </Button>
+        </form>
+      </div>
+    </ToastProvider>
   );
 };
 
