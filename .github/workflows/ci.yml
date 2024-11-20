@@ -13,30 +13,34 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-  
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'  
+        node-version: '20'
 
+    - name: Clean up node_modules and package-lock
+      run: |
+        rm -rf frontend/node_modules
+        rm -f frontend/package-lock.json
 
-    - name: Install frontend dependencies
+    - name: Install latest npm
+      run: |
+        npm install -g npm@latest
+
+    - name: Install frontend dependencies with legacy peer deps
       run: |
         cd frontend
-        npm install
-
+        npm install --legacy-peer-deps
 
     - name: Build frontend (Vite.js)
       run: |
         cd frontend
         npm run build
 
-  
     - name: Run frontend server
       run: |
         cd frontend
         npm run dev &  # Start frontend in the background
-
 
     - name: Verify if frontend is running
       run: |
