@@ -12,7 +12,7 @@ const Header = () => {
             <span className="text-2xl font-bold text-transparent bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text">
               NEWS SQUAD
             </span>
-            <p className="text-xs text-gray-600 mt-1 pl-5">the art of publishing</p>
+            <p className="text-xs text-gray-600 mt-1 pl-5">The art of publishing</p>
           </div>
 
           <div className="text-center my-2">
