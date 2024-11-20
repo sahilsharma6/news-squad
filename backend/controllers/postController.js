@@ -209,4 +209,24 @@ const updatePost = asyncHandler(async (req, res) => {
   res.json(updatedPost);
 });
 
-export { getPosts, getPostsById, getPostByCategory,updatePost, createPost, deletePost };
+
+const likePost = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const post = await Post.findById(id);
+
+  if (!post) {
+    res.status(404);
+    throw new Error("Post not found");
+  }
+
+  post.likes = post.likes + 1;
+
+  const updatedPost = await post.save();
+
+  res.status(200).json({ likes: updatedPost.likes });
+}
+);
+
+
+export { getPosts, getPostsById, getPostByCategory,updatePost, createPost, deletePost ,likePost};
