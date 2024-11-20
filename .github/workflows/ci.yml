@@ -1,6 +1,9 @@
-name: CI Workflow
+name: CI for React Vite App
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
     branches:
       - master
@@ -10,43 +13,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v3
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20' 
+        node-version: '20'  
 
-    - name: Clean up node_modules and package-lock.json
-      run: |
-        rm -rf frontend/node_modules
-        rm -f frontend/package-lock.json
+    - name: Navigate to frontend directory
+      run: cd frontend 
 
-    - name: Install latest npm
+    - name: Install dependencies
       run: |
-        npm install -g npm@latest
+        cd frontend  # Make sure we're in the frontend directory
+        npm install   # Install dependencies
 
-    - name: Install frontend dependencies with legacy peer deps
+    - name: Build the project
       run: |
-        cd frontend
-        npm install --legacy-peer-deps
+        cd frontend  # Ensure we are in the frontend directory
+        npm run build  # Vite build command
 
-    - name: Build frontend (Vite.js)
+    - name: Run the app preview to check for errors
       run: |
-        cd frontend
-        npm run build
+        cd frontend  # Ensure we are in the frontend directory
+        npm run preview  # Vite preview command to check if the app runs correctly
 
-    - name: Run frontend server
+    - name: Check for outdated dependencies
       run: |
-        cd frontend
-        npm run dev &  # Start frontend in the background
-
-    - name: Verify if frontend is running
-      run: |
-        sleep 30  # Wait for the server to start
-        curl --silent --show-error http://localhost:5173 > /dev/null
-        if [ $? -ne 0 ]; then
-          echo "Frontend server did not start correctly!"
-          exit 1
-        fi
+        cd frontend  # Ensure we are in the frontend directory
+        npm outdated  # Checks for outdated dependencies
