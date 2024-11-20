@@ -1,6 +1,7 @@
 name: CI for React Vite App
 
 on:
+ 
   pull_request:
     branches:
       - master
@@ -19,16 +20,19 @@ jobs:
         node-version: '20'  
 
     - name: Navigate to frontend directory
-      run: cd frontend
+      run: cd frontend 
 
     - name: Install dependencies
       run: |
+        cd frontend 
         npm install   # Install dependencies
 
     - name: Build the project
       run: |
-        npm run build   
+        cd frontend  
+        npm run build  # Vite build command
 
     - name: Check for outdated dependencies
       run: |
+        cd frontend 
         npm outdated  # Checks for outdated dependencies
