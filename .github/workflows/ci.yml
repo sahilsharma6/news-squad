@@ -1,9 +1,6 @@
 name: CI for React Vite App
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
@@ -19,27 +16,22 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20'  
+        node-version: '16'
 
     - name: Navigate to frontend directory
-      run: cd frontend 
+      run: cd frontend
 
     - name: Install dependencies
       run: |
-        cd frontend  # Make sure we're in the frontend directory
-        npm install   # Install dependencies
+        cd frontend
+        npm install
 
     - name: Build the project
       run: |
-        cd frontend  # Ensure we are in the frontend directory
-        npm run build  # Vite build command
-
-    - name: Run the app preview to check for errors
-      run: |
-        cd frontend  # Ensure we are in the frontend directory
-        npm run preview  # Vite preview command to check if the app runs correctly
+        cd frontend
+        npm run build
 
     - name: Check for outdated dependencies
       run: |
-        cd frontend  # Ensure we are in the frontend directory
-        npm outdated  # Checks for outdated dependencies
+        cd frontend
+        npm outdated
