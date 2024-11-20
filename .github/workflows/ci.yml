@@ -33,8 +33,3 @@ jobs:
         npm run build  # Vite build command
 
  
-
-    - name: Check for outdated dependencies
-      run: |
-        cd frontend 
-        npm outdated  # Checks for outdated dependencies
