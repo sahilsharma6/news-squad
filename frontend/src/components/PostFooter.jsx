@@ -1,11 +1,39 @@
-// PostFooter.js
-const PostFooter = ({ likes, views, tags, previousArticle, nextArticle, author, authorLink, authorDes }) => {
+import React from "react";
+import { AiOutlineLike } from "react-icons/ai";
+
+// Helper function to format views (e.g., 1000 -> 1k)
+const formatViews = (views) => {
+  if (views >= 1000) {
+    return (views / 1000).toFixed(1) + "k";  // Format views in 'k' for numbers over 1000
+  }
+  return views;  // Return as is for numbers less than 1000
+};
+
+const PostFooter = ({ likes, views, tags, previousArticle, nextArticle, author, authorLink, authorDes, handleLike, isLiked }) => {
   return (
     <footer className="mt-8 bg-gray-50 p-4 rounded-lg shadow-md">
       <div className="flex justify-between items-center">
-        <div className="text-sm text-gray-500">
-          <span className="font-semibold">Likes:</span> {likes} <span className="ml-4"><span className="font-semibold">Views:</span> {views}</span>
+        <div className="text-sm text-gray-500 flex items-center space-x-4">
+        
+          <div className="flex items-center space-x-2">
+            <button 
+              onClick={handleLike} 
+              className={`px-3 py-1 rounded-full ${isLiked ? "bg-green-500" : "bg-blue-500"} flex items-center space-x-2`}
+            >
+              <AiOutlineLike size={16} color="white" />
+              <span className="text-white">{isLiked ? "Liked" : "Like"}</span>
+            </button>
+            <span className="font-semibold text-gray-700">{likes}</span>
+          </div>
+
+          <span className="text-gray-500">•</span>
+
+          <div className="flex items-center space-x-2">
+            <span className="font-semibold text-gray-700">Views:</span>
+            <span className="text-gray-600">{formatViews(views)}</span> 
+          </div>
         </div>
+
         <div className="flex space-x-4">
           <div className="text-sm text-gray-500">
             <span className="font-semibold">Tags:</span> {tags.join(", ")}
