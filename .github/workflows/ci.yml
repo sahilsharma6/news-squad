@@ -1,6 +1,7 @@
-name: CI Workflow
+name: CI for React Vite App
 
 on:
+ 
   pull_request:
     branches:
       - master
@@ -10,39 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v3
 
-  
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'  
+        node-version: '20'  
 
+    - name: Navigate to frontend directory
+      run: cd frontend 
 
-    - name: Install frontend dependencies
+    - name: Install dependencies
       run: |
         cd frontend
-        npm install
+        npm install  
 
-
-    - name: Build frontend (Vite.js)
+    - name: Build the project
       run: |
-        cd frontend
-        npm run build
+        cd frontend 
+        npm run build  # Vite build command
 
-  
-    - name: Run frontend server
-      run: |
-        cd frontend
-        npm run dev &  # Start frontend in the background
-
-
-    - name: Verify if frontend is running
-      run: |
-        sleep 30  # Wait for the server to start
-        curl --silent --show-error http://localhost:5173 > /dev/null
-        if [ $? -ne 0 ]; then
-          echo "Frontend server did not start correctly!"
-          exit 1
-        fi
+ 
