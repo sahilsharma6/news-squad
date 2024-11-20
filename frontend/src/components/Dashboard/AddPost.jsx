@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import ContentEditor from "../Editor.jsx";
 import { Button } from "../ui/button.jsx";
+import { Toast, ToastTitle, ToastDescription, ToastClose, ToastViewport } from "../ui/toast"; // Import Toast components
 
 const AddPost = () => {
   const [postData, setPostData] = useState({
@@ -21,6 +22,12 @@ const AddPost = () => {
   });
 
   const [categories, setCategories] = useState([]);
+  const [toast, setToast] = useState({
+    open: false,
+    title: "",
+    description: "",
+    variant: "",
+  });
 
   const handleChange = (e) => {
     setPostData({ ...postData, [e.target.id]: e.target.value });
@@ -71,7 +78,12 @@ const AddPost = () => {
         },
       });
       if (response) {
-        alert("Post added");
+        setToast({
+          open: true,
+          title: "Success",
+          description: "Post added successfully!",
+          variant: "success",
+        });
         setPostData({
           title: "",
           content: "",
@@ -79,6 +91,12 @@ const AddPost = () => {
         });
       }
     } catch (error) {
+      setToast({
+        open: true,
+        title: "Error",
+        description: "Failed to add the post.",
+        variant: "error",
+      });
       console.error("Failed to add post:", error);
     }
   };
@@ -86,6 +104,24 @@ const AddPost = () => {
   return (
     <div className="flex flex-col items-center mt-4">
       <h1 className="text-2xl font-bold">Add Post</h1>
+
+      {/* Render the Toast component */}
+      {toast.open && (
+        <Toast
+          variant={toast.variant}
+          open={toast.open}
+          onOpenChange={() => setToast({ ...toast, open: false })}
+          className={`text-4xl ${
+            toast.variant === "success" ? "text-green-500" : "text-red-500"
+          }  bottom-96`}
+        >
+          <ToastTitle>{toast.title}</ToastTitle>
+          <ToastDescription>{toast.description}</ToastDescription>
+          <ToastClose />
+        </Toast>
+      )}
+      <ToastViewport />
+
       <form className="flex flex-col mt-4" onSubmit={handleSubmit}>
         <div className=" mt-2">
           <label htmlFor="title " className="font-bold">Title</label>

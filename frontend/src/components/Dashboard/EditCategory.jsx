@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import apiClient from "@/services/apiClient";
 import { Button } from "../ui/button.jsx";
+import { Toast, ToastTitle, ToastDescription, ToastClose, ToastViewport } from "@/components/ui/toast"; 
 
 const EditCategory = () => {
   const { id } = useParams();
@@ -13,8 +14,12 @@ const EditCategory = () => {
     name: "",
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [toast, setToast] = useState({
+    open: false,
+    variant: "",
+    title: "",
+    description: "",
+  });
 
   const fetchCategory = async () => {
     if (!categoryId) {
@@ -47,11 +52,15 @@ const EditCategory = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");  // Reset error message
-    setSuccess(""); // Reset success message
+    setToast({ open: false, variant: "", title: "", description: "" }); // Reset toast state
 
     if (!categoryData.name.trim()) {
-      setError("Category name is required.");
+      setToast({
+        open: true,
+        variant: "error",
+        title: "Error",
+        description: "Category name is required.",
+      });
       return;
     }
 
@@ -62,12 +71,23 @@ const EditCategory = () => {
         },
       });
 
-      setSuccess("Category updated successfully!");
+      setToast({
+        open: true,
+        variant: "success",
+        title: "Success",
+        description: "Category updated successfully!",
+      });
+
       setTimeout(() => {
         navigate("/dashboard/AllCategories");
       }, 1000);
     } catch (error) {
-      setError("Error while updating the category.");
+      setToast({
+        open: true,
+        variant: "error",
+        title: "Error",
+        description: "Error while updating the category.",
+      });
     }
   };
 
@@ -79,17 +99,24 @@ const EditCategory = () => {
     <div className="max-w-md mx-auto p-6">
       <h2 className="text-2xl font-bold mb-4">Edit Category</h2>
 
-      {success && (
-        <div className="bg-green-200 text-green-800 p-2 rounded mb-4">
-          {success}
-        </div>
+      {/* Toast component to show success/error messages */}
+      {toast.open && (
+        <Toast
+          variant={toast.variant}
+          open={toast.open}
+          onOpenChange={() => setToast({ ...toast, open: false })}
+          className={`text-4xl ${
+            toast.variant === "success" ? "text-green-500" : "text-red-500"
+          }  bottom-96`}
+        >
+          <ToastTitle>{toast.title}</ToastTitle>
+          <ToastDescription>{toast.description}</ToastDescription>
+          <ToastClose />
+        </Toast>
       )}
 
-      {error && (
-        <div className="bg-red-200 text-red-800 p-2 rounded mb-4">
-          {error}
-        </div>
-      )}
+      {/* Toast viewport */}
+      <ToastViewport />
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
