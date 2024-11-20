@@ -1,0 +1,48 @@
+name: CI Workflow
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+  
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  
+
+
+    - name: Install frontend dependencies
+      run: |
+        cd frontend
+        npm install
+
+
+    - name: Build frontend (Vite.js)
+      run: |
+        cd frontend
+        npm run build
+
+  
+    - name: Run frontend server
+      run: |
+        cd frontend
+        npm run dev &  # Start frontend in the background
+
+
+    - name: Verify if frontend is running
+      run: |
+        sleep 30  # Wait for the server to start
+        curl --silent --show-error http://localhost:5173 > /dev/null
+        if [ $? -ne 0 ]; then
+          echo "Frontend server did not start correctly!"
+          exit 1
+        fi

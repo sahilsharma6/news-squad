@@ -12,22 +12,57 @@ import Advertisement from "@/components/Advertisement";
 const ArticlePage = () => {
   const { id } = useParams(); 
   const [postData, setPostData] = useState(null); 
+  const [likes, setLikes] = useState(0);  
+  const [errorMessage, setErrorMessage] = useState(""); 
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
-        setPostData(response.data); 
+        setPostData(response.data);
+        setLikes(response.data.likes);  
       } catch (error) {
         console.error("Error fetching post data:", error);
       }
     };
 
     fetchPost();
-
-    // Scroll to the top of the page whenever this component is mounted
     window.scrollTo(0, 0);
   }, [id]);
+
+  const handleLike = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+   
+      if (!token) {
+        setErrorMessage("Unauthorized. Please log in to like this post.");
+        return;
+      }
+
+
+      const response = await axios.put(
+        `http://localhost:5000/api/posts/like/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,  
+          },
+        }
+      );
+
+  
+      if (response.status === 200) {
+        setLikes(prevLikes => prevLikes + 1); 
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setErrorMessage("Unauthorized. Please log in to like this post.");
+      } else {
+        console.error("Error liking post:", error);
+      }
+    }
+  };
 
   if (!postData) {
     return <div>Loading...</div>;
@@ -42,8 +77,15 @@ const ArticlePage = () => {
           publishDate={postData.createdAt} 
         />
         <PostContent content={postData.content} />
+        
+        {errorMessage && (
+          <div className="text-red-500 mt-2">
+            {errorMessage}
+          </div>
+        )}
+
         <PostFooter 
-          likes={postData.likes} 
+          likes={likes} 
           views={postData.views} 
           tags={postData.tags} 
           previousArticle={postData.previousArticle} 
@@ -51,6 +93,7 @@ const ArticlePage = () => {
           author={postData.author} 
           authorLink={postData.authorLink} 
           authorDes={postData.authorDes} 
+          handleLike={handleLike}
         />
       </div>
       
