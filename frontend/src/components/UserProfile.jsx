@@ -75,7 +75,7 @@ const UserProfile = () => {
           </div>
           <div className="flex justify-between">
             <span className="font-medium text-gray-700">Phone Number:</span>
-            <span className="text-gray-600">{user.phoneNumber || "Not provided"}</span>
+            <span className="text-gray-600">{user.phone || "Not provided"}</span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium text-gray-700">Role:</span>

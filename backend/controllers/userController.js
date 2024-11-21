@@ -7,12 +7,14 @@ import bcrypt from "bcrypt";
 // @access  Private
 export const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id).select("-password");
+  console.log(user)
 
   if (user) {
     res.json({
       _id: user._id,
       username: user.username,
       email: user.email,
+      phone: user.phoneNumber,
       role: user.role,
     });
   } else {
@@ -72,19 +74,6 @@ export const deleteUser = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("User not found");
   }
-});
-
-// @desc    Get user by ID
-// @route   GET /api/users/:id
-// @access  Private/Admin
-export const getUserById = asyncHandler(async (req, res) => {
-  // const user = await User.findById(req.params.id).select('-password');
-  // if (user) {
-  //   return res.json(user);
-  // } else {
-  //   res.status(404);
-  //   throw new Error("User not found");
-  // }
 });
 
 // @desc    Update user

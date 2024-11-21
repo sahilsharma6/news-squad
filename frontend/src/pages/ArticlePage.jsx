@@ -13,6 +13,7 @@ const ArticlePage = () => {
   const { id } = useParams(); 
   const [postData, setPostData] = useState(null); 
   const [likes, setLikes] = useState(0);  
+  const [likedByUser, setLikedByUser] = useState(false); 
   const [errorMessage, setErrorMessage] = useState(""); 
 
   useEffect(() => {
@@ -21,6 +22,14 @@ const ArticlePage = () => {
         const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
         setPostData(response.data);
         setLikes(response.data.likes);  
+
+        const token = localStorage.getItem("token");
+        if (token) {
+          const likedResponse = await axios.get(`http://localhost:5000/api/posts/liked/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          setLikedByUser(likedResponse.data.isLiked);  
+        }
       } catch (error) {
         console.error("Error fetching post data:", error);
       }
@@ -34,32 +43,32 @@ const ArticlePage = () => {
     try {
       const token = localStorage.getItem("token");
 
-   
       if (!token) {
         setErrorMessage("Unauthorized. Please log in to like this post.");
         return;
       }
 
+      const url = likedByUser 
+        ? `http://localhost:5000/api/posts/dislike/${id}` 
+        : `http://localhost:5000/api/posts/like/${id}`; 
 
-      const response = await axios.put(
-        `http://localhost:5000/api/posts/like/${id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,  
-          },
-        }
-      );
+      const headers = { Authorization: `Bearer ${token}` };
 
-  
+      const response = await axios.put(url, {}, { headers });
+
       if (response.status === 200) {
-        setLikes(prevLikes => prevLikes + 1); 
+        if (likedByUser) {
+          setLikes(prevLikes => prevLikes - 1);
+        } else {
+          setLikes(prevLikes => prevLikes + 1);
+        }
+        setLikedByUser(!likedByUser); 
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
         setErrorMessage("Unauthorized. Please log in to like this post.");
       } else {
-        console.error("Error liking post:", error);
+        console.error("Error liking/disliking post:", error);
       }
     }
   };
@@ -90,10 +99,11 @@ const ArticlePage = () => {
           tags={postData.tags} 
           previousArticle={postData.previousArticle} 
           nextArticle={postData.nextArticle} 
-          author={postData.author} 
+          author={postData.userId[0].username} 
           authorLink={postData.authorLink} 
           authorDes={postData.authorDes} 
           handleLike={handleLike}
+          isLiked={likedByUser}  
         />
       </div>
       

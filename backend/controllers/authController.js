@@ -82,7 +82,7 @@ export const register = async (req, res) => {
       username,
       email,
       password,
-      phone,
+      phoneNumber: phone,
     });
 
     return res.status(201).json({
@@ -92,7 +92,7 @@ export const register = async (req, res) => {
         id: newUser.id,
         email: newUser.email,
         username: newUser.username,
-        phone: newUser.phone,
+        phone: newUser.phoneNumber,
       },
     });
   } catch (err) {

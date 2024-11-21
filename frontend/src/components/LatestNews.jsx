@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { format } from "date-fns"; // Import date-fns for date formatting
+import { format } from "date-fns"; 
 import {
   Pagination,
   PaginationContent,
@@ -24,6 +24,7 @@ const LatestNews = () => {
       try {
         const response = await axios.get("http://localhost:5000/api/posts/category/Fashion");
         setNewsData(response.data.posts);
+        console.log(response.data.posts);
         setLoading(false);
       } catch (error) {
         setError("No posts available in the Fashion category.");
@@ -89,7 +90,7 @@ const LatestNews = () => {
                 <div className="flex flex-col">
                   <div className="relative">
                     <img
-                      src={newsItem.image || "/default-image.jpg"}
+                      src={"http://localhost:5000"+newsItem.image || "/default-image.jpg"}
                       alt={newsItem.title}
                       className="w-full h-48 object-cover"
                     />
@@ -101,7 +102,7 @@ const LatestNews = () => {
                   <div className="mt-2">
                     <h3 className="text-lg font-bold">{newsItem.title}</h3>
                     <div className="flex justify-between text-sm text-gray-500 mb-2">
-                      {newsItem.author || "Unknown Author"} - {formattedDate}
+                      {newsItem.userId[0].username || "Unknown Author"} - {formattedDate}
                       <div className="flex bg-black justify-between text-sm text-white px-1">
                         <span>{newsItem.views || 0}</span>
                       </div>
