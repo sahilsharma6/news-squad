@@ -56,7 +56,7 @@ export default function DashboardLayout() {
         description: "You are not an admin",
       });
 
-      setTimeout(() => navigateTo("/"), 4000);
+      setTimeout(() => navigateTo("/"), 1000);
     }
   }, [loading, isAdmin, navigateTo]);
 
