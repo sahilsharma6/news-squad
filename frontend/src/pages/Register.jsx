@@ -57,7 +57,7 @@ const Register = () => {
 
       if (response.data.status === "success") {
         showToast("success", "Success", "Registered successfully! Redirecting...");
-        setTimeout(() => navigateTo("/signin"), 4000);
+        setTimeout(() => navigateTo("/signin"), 1000);
       } else {
         showToast("error", "Error", response.data.message);
       }

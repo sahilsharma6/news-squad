@@ -47,7 +47,7 @@ const SignIn = () => {
           title: "Success",
           description: "Sign In successful, Redirecting...",
         });
-        setTimeout(() => navigateTo("/"), 4000);
+        setTimeout(() => navigateTo("/"), 1000);
       } else {
         setToast({
           open: true,

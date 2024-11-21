@@ -128,7 +128,7 @@ const EditPost = () => {
 
       setTimeout(() => {
         setToast((prevToast) => ({ ...prevToast, open: false }));
-      }, 4000);
+      }, 1000);
     }
   };
 
