@@ -113,7 +113,7 @@ const AddPost = () => {
           onOpenChange={() => setToast({ ...toast, open: false })}
           className={`text-4xl ${
             toast.variant === "success" ? "text-green-500" : "text-red-500"
-          }  bottom-96`}
+          }  bottom-96 bg-opacity-10 bg-white `}
         >
           <ToastTitle>{toast.title}</ToastTitle>
           <ToastDescription>{toast.description}</ToastDescription>

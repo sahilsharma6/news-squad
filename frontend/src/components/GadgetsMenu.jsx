@@ -28,6 +28,8 @@ const GadgetsMenu = ({ param }) => {
         const data = await response.json();
 
         if (data && data.posts) {
+          console.log('akj',data);
+          
           setArticles(data.posts);
           setTotalPages(Math.ceil(data.totalPosts / articlesPerPage));
         }

@@ -77,14 +77,14 @@ const SignIn = () => {
   return (
     <ToastProvider>
       <div className="flex font-poppins items-center justify-center min-h-screen bg-gray-100">
-        <div className="m-[5vw] w-full max-w-md p-8 space-y-10 bg-white rounded-2xl shadow-md">
+        <div className="m-[5vw] w-full max-w-md p-8 space-y-10 bg-white rounded-2xl shadow-md bg-opacity-100">
           {/* Toast Feedback */}
           {toast.open && (
             <Toast
               variant={toast.variant === "success" ? "default" : "destructive"}
               open={toast.open}
               onOpenChange={() => setToast({ ...toast, open: false })}
-              className={`text-4xl ${toast.variant === "success" ? "text-green-500" : "text-red-500"} bottom-96`}
+              className={`text-4xl ${toast.variant === "success" ? "text-green-500" : "text-red-500"} bottom-96 bg-opacity-100`}
             >
               <ToastTitle>{toast.title}</ToastTitle>
               <ToastDescription>{toast.description}</ToastDescription>
