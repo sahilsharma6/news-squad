@@ -3,10 +3,12 @@ import { Outlet } from "react-router-dom";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import apiClient from "../services/apiClient";
 import { useNavigate } from "react-router-dom";
+import { Toast, ToastClose, ToastDescription, ToastTitle, ToastProvider, ToastViewport } from "@/components/ui/toast"; // Adjust the import based on your setup
 
 export default function DashboardLayout() {
   const [isAdmin, setIsAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState({ open: false, variant: "", title: "", description: "" });
 
   const navigateTo = useNavigate();
 
@@ -27,12 +29,11 @@ export default function DashboardLayout() {
           },
         });
 
-        if (response.status === 200 ) {
+        if (response.status === 200) {
           setIsAdmin(response.data.isAdmin);
         } else {
           setIsAdmin(false);
         }
-        
       } catch (error) {
         console.error("Error fetching admin status:", error);
         setIsAdmin(false);
@@ -48,8 +49,14 @@ export default function DashboardLayout() {
     if (loading) return;
 
     if (isAdmin === false) {
-      alert("You are not an admin");
-      navigateTo("/");
+      setToast({
+        open: true,
+        variant: "destructive",
+        title: "Error",
+        description: "You are not an admin",
+      });
+
+      setTimeout(() => navigateTo("/"), 4000);
     }
   }, [loading, isAdmin, navigateTo]);
 
@@ -58,11 +65,31 @@ export default function DashboardLayout() {
   }
 
   return (
-    <div className="flex min-h-[1000px] overflow-hidden bg-gray-100">
-      <DashboardSidebar />
-      <div className="m-2 w-full">
-        <Outlet />
-      </div>
-    </div>
+    <ToastProvider>
+      {isAdmin ? (
+        <div className="flex min-h-[1000px] overflow-hidden bg-gray-100">
+          <DashboardSidebar />
+          <div className="m-2 w-full">
+            <Outlet />
+          </div>
+        </div>
+      ) : (
+        <>
+          {toast.open && (
+            <Toast
+              variant={toast.variant}
+              open={toast.open}
+              onOpenChange={() => setToast({ ...toast, open: false })}
+              className={`text-4xl  bottom-96`}
+            >
+              <ToastTitle>{toast.title}</ToastTitle>
+              <ToastDescription>{toast.description}</ToastDescription>
+              <ToastClose />
+            </Toast>
+          )}
+          <ToastViewport />
+        </>
+      )}
+    </ToastProvider>
   );
 }

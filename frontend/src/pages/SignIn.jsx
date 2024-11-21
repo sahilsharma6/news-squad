@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, redirect } from "react-router-dom";
 import apiClient from "../services/apiClient";
 import { useNavigate } from "react-router-dom";
+import { Toast, ToastDescription, ToastTitle, ToastClose, ToastProvider, ToastViewport } from "@/components/ui/toast";
 
 const SignIn = () => {
   const [focusedInput, setFocusedInput] = useState("");
@@ -10,7 +11,12 @@ const SignIn = () => {
 
   const navigateTo = useNavigate();
 
-  const [confirmation, setConfirmation] = useState(""); //for future use to show confirmation message
+  const [toast, setToast] = useState({
+    open: false,
+    variant: "",
+    title: "",
+    description: "",
+  });
 
   const handleFocus = (inputName) => {
     setFocusedInput(inputName);
@@ -35,11 +41,20 @@ const SignIn = () => {
 
       if (response.data.status === "success") {
         localStorage.setItem("token", response.data.token);
-        setConfirmation({ status: "success" });
-        alert("Sign In successfully, Redirecting...")
-        navigateTo("/");
+        setToast({
+          open: true,
+          variant: "success",
+          title: "Success",
+          description: "Sign In successful, Redirecting...",
+        });
+        setTimeout(() => navigateTo("/"), 4000);
       } else {
-        setConfirmation({ status: "fail", message: response.data.message });
+        setToast({
+          open: true,
+          variant: "error",
+          title: "Error",
+          description: response.data.message,
+        });
       }
 
       setEmail("");
@@ -49,95 +64,108 @@ const SignIn = () => {
       setEmail("");
       setPassword("");
       setFocusedInput("");
-      setConfirmation({
-        status: "fail",
-        message:
+      setToast({
+        open: true,
+        variant: "error",
+        title: "Error",
+        description:
           err.response?.data?.message || "An error occurred. Please try again.",
       });
-
-    
     }
   };
 
   return (
-    <div className="flex font-poppins items-center justify-center min-h-screen bg-gray-100">
-      <div className="m-[5vw] w-full max-w-md p-8 space-y-10 bg-white rounded-2xl shadow-md">
-        <h2 className="text-3xl font-medium text-center">
-          Sign In to NewsSquad
-        </h2>
-
-        <form onSubmit={handleSignInSubmit} className="space-y-4">
-          <div className="relative mb-4">
-            <input
-              type="email"
-              id="email"
-              required
-              placeholder=" "
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onFocus={() => handleFocus("email")}
-              onBlur={() => handleBlur("email")}
-              className={`block mb-6 w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-0 focus:border-blue-500`}
-            />
-            <label
-              htmlFor="email"
-              className={`absolute left-4 transition-all duration-200 ${
-                focusedInput === "email" || email
-                  ? "-top-4 text-blue-500 text-xs"
-                  : "top-3 text-gray-500"
-              }`}
+    <ToastProvider>
+      <div className="flex font-poppins items-center justify-center min-h-screen bg-gray-100">
+        <div className="m-[5vw] w-full max-w-md p-8 space-y-10 bg-white rounded-2xl shadow-md">
+          {/* Toast Feedback */}
+          {toast.open && (
+            <Toast
+              variant={toast.variant === "success" ? "default" : "destructive"}
+              open={toast.open}
+              onOpenChange={() => setToast({ ...toast, open: false })}
+              className={`text-4xl ${toast.variant === "success" ? "text-green-500" : "text-red-500"} bottom-96`}
             >
-              Email
-            </label>
-          </div>
+              <ToastTitle>{toast.title}</ToastTitle>
+              <ToastDescription>{toast.description}</ToastDescription>
+              <ToastClose />
+            </Toast>
+          )}
+          <ToastViewport />
 
-          <div className="relative mb-4">
-            <input
-              type="password"
-              id="password"
-              required
-              placeholder=" "
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onFocus={() => handleFocus("password")}
-              onBlur={() => handleBlur("password")}
-              className={`block w-full mb-5 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-0 focus:border-blue-600`}
-            />
-            <label
-              htmlFor="password"
-              className={`absolute left-4 transition-all duration-200 ${
-                focusedInput === "password" || password
-                  ? "-top-5 text-blue-500 text-sm"
-                  : "top-3 text-gray-500"
-              }`}
+          <h2 className="text-3xl font-medium text-center">
+            Sign In to NewsSquad
+          </h2>
+
+          <form onSubmit={handleSignInSubmit} className="space-y-4">
+            <div className="relative mb-4">
+              <input
+                type="email"
+                id="email"
+                required
+                placeholder=" "
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onFocus={() => handleFocus("email")}
+                onBlur={() => handleBlur("email")}
+                className={`block mb-6 w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-0 focus:border-blue-500`}
+              />
+              <label
+                htmlFor="email"
+                className={`absolute left-4 transition-all duration-200 ${
+                  focusedInput === "email" || email
+                    ? "-top-4 text-blue-500 text-xs"
+                    : "top-3 text-gray-500"
+                }`}
+              >
+                Email
+              </label>
+            </div>
+
+            <div className="relative mb-4">
+              <input
+                type="password"
+                id="password"
+                required
+                placeholder=" "
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onFocus={() => handleFocus("password")}
+                onBlur={() => handleBlur("password")}
+                className={`block w-full mb-5 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-0 focus:border-blue-600`}
+              />
+              <label
+                htmlFor="password"
+                className={`absolute left-4 transition-all duration-200 ${
+                  focusedInput === "password" || password
+                    ? "-top-5 text-blue-500 text-sm"
+                    : "top-3 text-gray-500"
+                }`}
+              >
+                Password
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-2 mt-4 text-white bg-blue-800 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
             >
-              Password
-            </label>
-          </div>
+              Sign In
+            </button>
+          </form>
 
-          <button
-            type="submit"
-            className="w-full py-2 mt-4 text-white bg-blue-800 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
-          >
-            Sign In
-          </button>
-        </form>
-        {confirmation && confirmation.status === "fail" && (
-          <p className="mt-4 text-sm text-center text-red-600">
-            {confirmation.message}
+          <p className="mt-4 text-sm text-center text-gray-600">
+            Don’t have an account?{" "}
+            <Link
+              to="/register"
+              className="font-semibold text-lg text-blue-600 hover:underline"
+            >
+              Register
+            </Link>
           </p>
-        )}
-        <p className="mt-4 text-sm text-center text-gray-600">
-          Don’t have an account?{" "}
-          <Link
-            to="/register"
-            className="font-semibold text-lg text-blue-600 hover:underline"
-          >
-            Register
-          </Link>
-        </p>
+        </div>
       </div>
-    </div>
+    </ToastProvider>
   );
 };
 

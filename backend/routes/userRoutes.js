@@ -19,7 +19,7 @@ const router = express.Router();
 router.route("/check-admin").get(protect, (req, res) => {
   console.log(req);
   if (req.user && req.user.role === "admin") {
-    return res.status(200).json({ message: "Admin access granted" });
+    return res.status(200).json({ message: "Admin access granted",isAdmin:true });
   } else {
     return res.status(403).json({ message: "Not authorized as an admin" });
   }
