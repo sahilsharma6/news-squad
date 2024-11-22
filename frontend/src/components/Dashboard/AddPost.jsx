@@ -12,13 +12,22 @@ import {
 import { useEffect, useState } from "react";
 import ContentEditor from "../Editor.jsx";
 import { Button } from "../ui/button.jsx";
-import { Toast, ToastTitle, ToastDescription, ToastClose, ToastViewport } from "../ui/toast"; // Import Toast components
+import {
+  Toast,
+  ToastTitle,
+  ToastDescription,
+  ToastClose,
+  ToastViewport,
+} from "../ui/toast";
 
 const AddPost = () => {
   const [postData, setPostData] = useState({
     title: "",
     content: "",
     selectCategory: "",
+    tags: "",
+    introDescription: "",
+    thumbnail: null,
   });
 
   const [categories, setCategories] = useState([]);
@@ -44,6 +53,11 @@ const AddPost = () => {
     }));
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setPostData({ ...postData, thumbnail: file });
+  };
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -57,26 +71,35 @@ const AddPost = () => {
     fetchCategories();
   }, []);
 
-  const actualData = {
-    title: postData.title,
-    content: postData.content,
-    category: postData.selectCategory,
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!postData.title || !postData.content || !postData.selectCategory) {
+    if (
+      !postData.title ||
+      !postData.content ||
+      !postData.selectCategory ||
+      !postData.thumbnail
+    ) {
       alert("Please fill in all required fields.");
-      return; 
+      return;
     }
 
+    const formData = new FormData();
+    formData.append("title", postData.title);
+    formData.append("content", postData.content);
+    formData.append("category", postData.selectCategory);
+    formData.append("tags", postData.tags);
+    formData.append("introDescription", postData.introDescription);
+    formData.append("thumbnail", postData.thumbnail);
+
     try {
-      const response = await apiClient.post("/api/posts", actualData, {
+      const response = await apiClient.post("/api/posts", formData, {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+
       if (response) {
         setToast({
           open: true,
@@ -88,6 +111,9 @@ const AddPost = () => {
           title: "",
           content: "",
           selectCategory: "",
+          tags: "",
+          introDescription: "",
+          thumbnail: null,
         });
       }
     } catch (error) {
@@ -102,10 +128,9 @@ const AddPost = () => {
   };
 
   return (
-    <div className="flex flex-col items-center mt-4">
+    <div className="flex h-full pb-20 flex-col items-center mt-4">
       <h1 className="text-2xl font-bold">Add Post</h1>
 
-      {/* Render the Toast component */}
       {toast.open && (
         <Toast
           variant={toast.variant}
@@ -113,7 +138,7 @@ const AddPost = () => {
           onOpenChange={() => setToast({ ...toast, open: false })}
           className={`text-4xl ${
             toast.variant === "success" ? "text-green-500" : "text-red-500"
-          }  bottom-96`}
+          } bottom-96`}
         >
           <ToastTitle>{toast.title}</ToastTitle>
           <ToastDescription>{toast.description}</ToastDescription>
@@ -123,8 +148,10 @@ const AddPost = () => {
       <ToastViewport />
 
       <form className="flex flex-col mt-4" onSubmit={handleSubmit}>
-        <div className=" mt-2">
-          <label htmlFor="title " className="font-bold">Title</label>
+        <div className="mt-2">
+          <label htmlFor="title" className="font-bold">
+            Title
+          </label>
           <Input
             value={postData.title}
             onChange={handleChange}
@@ -144,7 +171,10 @@ const AddPost = () => {
         </div>
 
         <div className="mt-2 w-[300px]">
-          <Select onValueChange={handleCategoryChange} value={postData.selectCategory}>
+          <Select
+            onValueChange={handleCategoryChange}
+            value={postData.selectCategory}
+          >
             <SelectTrigger className="w-[300px] bg-white border rounded">
               <SelectValue placeholder="Select a Category" />
             </SelectTrigger>
@@ -161,7 +191,46 @@ const AddPost = () => {
           </Select>
         </div>
 
-        <Button className={"w-[100px] mt-4"} type="submit">
+        <div className="mt-4">
+          <label htmlFor="tags" className="font-bold">
+            Tags
+          </label>
+          <Input
+            value={postData.tags}
+            onChange={handleChange}
+            type="text"
+            id="tags"
+            placeholder="Tags (comma separated)"
+          />
+        </div>
+
+        <div className="mt-4">
+          <label htmlFor="introDescription" className="font-bold">
+            Intro Description
+          </label>
+          <Input
+            value={postData.introDescription}
+            onChange={handleChange}
+            type="text"
+            id="introDescription"
+            placeholder="Short Intro Description"
+          />
+        </div>
+
+        <div className="mt-4">
+          <label htmlFor="thumbnail" className="font-bold">
+            Thumbnail
+          </label>
+          <input
+            type="file"
+            id="thumbnail"
+            accept="image/*"
+            onChange={handleFileChange}
+            required
+          />
+        </div>
+
+        <Button className="w-[100px] mt-4" type="submit">
           Add Post
         </Button>
       </form>

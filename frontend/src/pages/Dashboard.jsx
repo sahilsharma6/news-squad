@@ -67,9 +67,9 @@ export default function DashboardLayout() {
   return (
     <ToastProvider>
       {isAdmin ? (
-        <div className="flex min-h-[1000px] overflow-hidden bg-gray-100">
+        <div className="flex   min-h-screen overflow-hidden bg-gray-100">
           <DashboardSidebar />
-          <div className="m-2 w-full">
+          <div className="m-2 w-[80%] overflow-hidden">
             <Outlet />
           </div>
         </div>

@@ -1,6 +1,8 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Category from "../models/categoryModel.js";
 import Post from "../models/postModel.js";
+import Like from "../models/LikeModel.js";
+
 
 // @desc    Fetch all posts
 // @route   GET /api/posts
@@ -51,7 +53,7 @@ const getPostsById = asyncHandler(async (req, res) => {
   }
 
   try {
-    const post = await Post.findById(id).populate("category", "name");
+    const post = await Post.findById(id).populate("category", "name").populate("userId", "username");
 
     if (post) {
       post.views = (post.views || 0) + 1;
@@ -73,7 +75,7 @@ const getPostsById = asyncHandler(async (req, res) => {
 
 const getPostByCategory = asyncHandler(async (req, res) => {
   const categoryName = req.params.category;
-  const { page = 1, limit = 4 } = req.query;
+  
 
   const category = await Category.findOne({ name: categoryName });
 
@@ -86,7 +88,8 @@ const getPostByCategory = asyncHandler(async (req, res) => {
 
   const posts = await Post.find({ category: category._id })
     .populate("category", "name")
- 
+    .populate("userId", "username")
+
 
   const totalPosts = await Post.countDocuments({ category: category._id });
 
@@ -100,9 +103,9 @@ const getPostByCategory = asyncHandler(async (req, res) => {
       success: false,
       message: "No posts found for the category",
     });
-      
   }
 });
+
 
 // @desc    Create a new post
 // @route   POST /api/posts
@@ -115,11 +118,21 @@ const createPost = asyncHandler(async (req, res) => {
     });
   }
 
-  let category = null;
-  if (req.body.category) {
-    category = await Category.findOne({ name: req.body.category });
+  const { title, content, category, tags, introDescription } = req.body;
 
-    if (!category) {
+
+  if (!title || !content) {
+    return res.status(400).json({
+      success: false,
+      message: "Title and content are required.",
+    });
+  }
+
+
+  let categoryObj = null;
+  if (category) {
+    categoryObj = await Category.findOne({ name: category });
+    if (!categoryObj) {
       return res.status(404).json({
         success: false,
         message: "Category not found",
@@ -127,16 +140,38 @@ const createPost = asyncHandler(async (req, res) => {
     }
   }
 
+
+  let tagsArray = [];
+  if (tags) {
+    tagsArray = tags.split(',').map(tag => tag.trim());
+  }
+
+
+  let thumbnailPath = null;
+  if (req.file) {
+    
+    thumbnailPath = `/uploads/images/${req.file.filename}`;
+  }
+
+
   const post = new Post({
-    title: req.body.title,
-    content: req.body.content,
-    category: category ? category._id : null,
-    tags: req.body.tags || [],
-    introDescription: req.body.introDescription || "",
+    title,
+    content,
+    category: categoryObj ? categoryObj._id : null,
+    tags: tagsArray,
+    introDescription: introDescription || "",
+    image: thumbnailPath,  
     userId: [req.user._id],
   });
 
+
   const createdPost = await post.save();
+
+
+  if (categoryObj) {
+    categoryObj.posts.push(createdPost._id);
+    await categoryObj.save();
+  }
 
   res.status(201).json({
     success: true,
@@ -220,7 +255,31 @@ const likePost = asyncHandler(async (req, res) => {
     throw new Error("Post not found");
   }
 
+  const existingLike = await Like.findOne({
+    userId: req.user._id,
+    postId: post._id,
+  });
+
+  if (existingLike) {
+    res.status(400);
+    throw new Error("Post already liked");
+  }
+
+  
+
   post.likes = post.likes + 1;
+
+  
+   
+
+  const like = new Like({
+    userId: req.user._id,
+    postId: post._id,
+    like: true,
+  });
+
+  await like.save();
+
 
   const updatedPost = await post.save();
 
@@ -229,4 +288,61 @@ const likePost = asyncHandler(async (req, res) => {
 );
 
 
-export { getPosts, getPostsById, getPostByCategory,updatePost, createPost, deletePost ,likePost};
+const dislikePost = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const post = await Post.findById(id);
+
+  if (!post) {
+    res.status(404);
+    throw new Error("Post not found");
+  }
+
+  post.likes = post.likes - 1;
+
+  const like = await Like.findOneAndDelete({
+    userId: req.user._id,
+    postId: post._id,
+    like: true,
+  });
+
+  if (!like) {
+    res.status(400);
+    throw new Error("Like not found");
+  }
+
+  const updatedPost = await post.save();
+
+  res.status(200).json({ likes: updatedPost.likes });
+}
+);
+
+
+const likedPost = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const post = await Post.findById(id);
+
+  if (!post) {  
+    res.status(404);
+    throw new Error("Post not found");
+  }
+
+  const isLiked = await Like.findOne({
+    userId: req.user._id,
+    postId: post._id,
+    like: true,
+  });
+
+  res.status(200).json({ isLiked: !!isLiked });
+}
+
+);
+
+
+
+
+
+
+
+export { getPosts, getPostsById, getPostByCategory,updatePost, createPost, deletePost ,likePost, dislikePost, likedPost};

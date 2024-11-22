@@ -13,6 +13,7 @@ const AllCategories = () => {
   const fetchCategories = async () => {
     try {
       const { data } = await apiClient.get("http://localhost:5000/api/categories"); 
+   
       setCategories(data); 
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -25,6 +26,7 @@ const AllCategories = () => {
 
  
   const deleteCategory = async () => {
+
     const token = localStorage.getItem("token");
 
     try {
@@ -52,7 +54,7 @@ const AllCategories = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container h-screen overflow-y-scroll mx-auto p-6">
       <div className="border-b mb-4 pb-2">
         <h2 className="text-white text-sm bg-black inline-block p-2">
           ALL CATEGORIES
@@ -73,7 +75,7 @@ const AllCategories = () => {
               categories.map((category) => (
                 <TableRow key={category._id} className="border-b-2">
                   <TableCell className="font-medium">{category.name}</TableCell>
-                  <TableCell>{category.posts.length}</TableCell> {/* Assuming posts is an array in the category */}
+                  <TableCell>{category.posts.length}</TableCell> 
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       <Link to={`/dashboard/EditCategory/${category._id}`}>

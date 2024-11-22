@@ -44,7 +44,7 @@ const GadgetsMenu = ({ param }) => {
       setCurrentPage(pageNumber);
     }
   };
-console.log(articles);
+
 
 return (
   <div>

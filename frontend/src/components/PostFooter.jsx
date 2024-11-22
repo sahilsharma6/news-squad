@@ -1,15 +1,25 @@
 import React from "react";
 import { AiOutlineLike } from "react-icons/ai";
 
-// Helper function to format views (e.g., 1000 -> 1k)
 const formatViews = (views) => {
   if (views >= 1000) {
-    return (views / 1000).toFixed(1) + "k";  // Format views in 'k' for numbers over 1000
+    return (views / 1000).toFixed(1) + "k";  
   }
-  return views;  // Return as is for numbers less than 1000
+  return views;  
 };
 
-const PostFooter = ({ likes, views, tags, previousArticle, nextArticle, author, authorLink, authorDes, handleLike, isLiked }) => {
+const PostFooter = ({
+  likes,
+  views,
+  tags,
+  previousArticle,
+  nextArticle,
+  author,
+  authorLink,
+  authorDes,
+  handleLike,
+  isLiked, 
+}) => {
   return (
     <footer className="mt-8 bg-gray-50 p-4 rounded-lg shadow-md">
       <div className="flex justify-between items-center">
@@ -18,7 +28,8 @@ const PostFooter = ({ likes, views, tags, previousArticle, nextArticle, author, 
           <div className="flex items-center space-x-2">
             <button 
               onClick={handleLike} 
-              className={`px-3 py-1 rounded-full ${isLiked ? "bg-green-500" : "bg-blue-500"} flex items-center space-x-2`}
+              className={`px-3 py-1 rounded-full transition-colors duration-300 ease-in-out flex items-center space-x-2 
+                ${isLiked ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"}`}
             >
               <AiOutlineLike size={16} color="white" />
               <span className="text-white">{isLiked ? "Liked" : "Like"}</span>
@@ -44,7 +55,7 @@ const PostFooter = ({ likes, views, tags, previousArticle, nextArticle, author, 
       <div className="mt-6">
         <h3 className="text-lg font-semibold">About the Author</h3>
         <p>{authorDes}</p>
-        <a href={authorLink} className="text-blue-500">{author}</a>
+        <a href={authorLink} className="text-blue-500">Name: {author}</a>
       </div>
 
       <div className="mt-6 flex justify-between">

@@ -1,7 +1,22 @@
-import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
 import { useEffect, useState } from "react";
 import apiClient from "@/services/apiClient";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import parse from "html-react-parser";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
@@ -33,7 +48,10 @@ const AllPosts = () => {
       fetchPosts();
       setIsModalOpen(false);
     } catch (error) {
-      console.error("Error deleting post:", error.response ? error.response.data : error.message);
+      console.error(
+        "Error deleting post:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -48,7 +66,7 @@ const AllPosts = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container h-screen overflow-auto mx-auto p-6">
       <div className="border-b mb-4 pb-2">
         <h2 className="text-white text-sm bg-black inline-block p-2">
           ALL POSTS
@@ -76,7 +94,14 @@ const AllPosts = () => {
                       : ""}
                   </TableCell>
                   <TableCell>{post?.category?.name}</TableCell>
-                  <TableCell>{post?.updatedAt.split("T")[0]}</TableCell>
+                  <TableCell>
+                    {new Date(post?.updatedAt).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </TableCell>
+
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       <Link to={`/dashboard/EditPost/${post._id}`}>
@@ -97,7 +122,10 @@ const AllPosts = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={5} className="text-center text-gray-800 py-4">
+                <TableCell
+                  colSpan={5}
+                  className="text-center text-gray-800 py-4"
+                >
                   No posts found
                 </TableCell>
               </TableRow>
@@ -109,7 +137,9 @@ const AllPosts = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-lg font-semibold mb-4">Are you sure you want to delete this post?</h2>
+            <h2 className="text-lg font-semibold mb-4">
+              Are you sure you want to delete this post?
+            </h2>
             <div className="flex justify-end gap-4">
               <Button variant="outline" onClick={closeModal}>
                 Cancel
