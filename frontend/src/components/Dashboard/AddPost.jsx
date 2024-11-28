@@ -61,7 +61,7 @@ const AddPost = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await apiClient.get("/api/categories");
+        const { data } = await apiClient.get("/categories");
         setCategories(data);
       } catch (error) {
         console.error("Failed to load categories:", error);
@@ -93,7 +93,7 @@ const AddPost = () => {
     formData.append("thumbnail", postData.thumbnail);
 
     try {
-      const response = await apiClient.post("/api/posts", formData, {
+      const response = await apiClient.post("/posts", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

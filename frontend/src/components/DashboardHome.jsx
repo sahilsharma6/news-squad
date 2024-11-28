@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import {
   Select,
@@ -6,13 +7,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Bell, ChevronDown, MessageSquare, Search } from "lucide-react";
+import { Bell, ChevronDown, MessageSquare, Search, Menu } from "lucide-react"; 
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { LineChartComponent } from "./LineChart";
 import { PieChartComponent } from "./PieChart";
-import { useEffect, useState } from "react";
 import apiClient from "@/services/apiClient";
 
 export default function DashboardHome() {
@@ -23,10 +23,12 @@ export default function DashboardHome() {
     views: 0,
   });
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const { data } = await apiClient.get("/api/profile", {
+        const { data } = await apiClient.get("/user/profile", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -39,7 +41,7 @@ export default function DashboardHome() {
 
     const fetchPostsData = async () => {
       try {
-        const { data } = await apiClient.get("/api/posts", {
+        const { data } = await apiClient.get("/posts", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -50,9 +52,9 @@ export default function DashboardHome() {
         const totalViews = data?.posts?.reduce((sum, post) => sum + post.views, 0);
 
         setStats({
-          posts: totalPosts,
-          likes: totalLikes,
-          views: totalViews,
+          posts: totalPosts || 0, 
+          likes: totalLikes || 0,
+          views: totalViews || 0,
         });
       } catch (error) {
         console.error("Failed to load posts data:", error);
@@ -64,17 +66,23 @@ export default function DashboardHome() {
   }, []);
 
   return (
-    <main className="flex-1 overflow-auto p-8 max-w-screen-xl">
+    <main className="flex-1 overflow-auto p-8 ">
       {/* Top Bar */}
       <div className="flex justify-between items-center mb-8">
-        <div className="relative">
-          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <Input
-            type="text"
-            placeholder="Type to search..."
-            className="pl-10 w-64"
-          />
+        {/* Hamburger Menu for Mobile */}
+        <div className="md:hidden">
+          <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+            <Menu className="h-5 w-5" />
+          </Button>
         </div>
+
+   
+        <div className="flex items-center space-x-4">
+         
+          <p className="text-lg font-semibold">{user?.username}</p>
+        </div>
+
+        {/* Right Side (Notifications & Message Icons) */}
         <div className="flex items-center space-x-4">
           <Button variant="ghost" size="icon">
             <Bell className="h-5 w-5" />
@@ -82,12 +90,6 @@ export default function DashboardHome() {
           <Button variant="ghost" size="icon">
             <MessageSquare className="h-5 w-5" />
           </Button>
-          <div className="flex items-center">
-            <Avatar>
-              <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>{user?.username}</AvatarFallback>
-            </Avatar>
-          </div>
         </div>
       </div>
 

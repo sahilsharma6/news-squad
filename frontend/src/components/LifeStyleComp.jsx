@@ -1,39 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";  // Import useNavigate
+import { useNavigate } from "react-router-dom";  
+import apiClient from "@/services/apiClient"; 
 
 const NewsLayout2 = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [loading, setLoading] = useState(true);  // Track loading state
-  const [error, setError] = useState(null); // Track errors
+  const [loading, setLoading] = useState(true);  
+  const [error, setError] = useState(null);
 
-  const categories = ["All", "Travel", "Recipes", "Health & Fitness", "Music"];
-  const navigate = useNavigate(); // Initialize useNavigate
+  const categories = ["All", "Travel", "Recipe", "Health & Fitness", "Music"];
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchPosts = async () => {
-      setLoading(true); // Start loading
+      setLoading(true); 
       try {
-        const response = await fetch("http://localhost:5000/api/posts");
+        const response = await apiClient.get("/posts"); 
         
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status} - ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        
-        if (!data.posts || data.posts.length === 0) {
+        if (!response.data.posts || response.data.posts.length === 0) {
           setError("No posts available.");
         } else {
-          setPosts(data.posts);
-          setFilteredPosts(data.posts); // Initially set filteredPosts to all posts
+          setPosts(response.data.posts);
+          setFilteredPosts(response.data.posts); 
         }
       } catch (error) {
         console.error("Error fetching posts:", error);
         setError("Failed to load posts. Please try again later.");
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false); 
       }
     };
 
@@ -43,14 +38,14 @@ const NewsLayout2 = () => {
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
     if (category === "All") {
-      setFilteredPosts(posts); // Show all posts
+      setFilteredPosts(posts);
     } else {
-      setFilteredPosts(posts.filter(post => post.category?.name === category)); // Filter by selected category
+      setFilteredPosts(posts.filter(post => post.category?.name === category)); 
     }
   };
 
   const handlePostClick = (postId) => {
-    navigate(`/post/${postId}`);  // Navigate to the post details page
+    navigate(`/post/${postId}`);  
   };
 
   if (loading) {
@@ -71,9 +66,7 @@ const NewsLayout2 = () => {
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
-              className={`text-gray-600 hover:text-green-600 ${
-                activeCategory === category ? "font-bold text-green-600" : ""
-              }`}
+              className={`text-gray-600 hover:text-green-600 ${activeCategory === category ? "font-bold text-green-600" : ""}`}
             >
               {category}
             </button>
@@ -87,7 +80,7 @@ const NewsLayout2 = () => {
           <div
             key={index}
             className="flex flex-col"
-            onClick={() => handlePostClick(post._id)}  // Navigate to post detail on click
+            onClick={() => handlePostClick(post._id)}  
             style={{ cursor: 'pointer' }}
           >
             <div className="relative">
@@ -118,7 +111,7 @@ const NewsLayout2 = () => {
           <div
             key={index}
             className="flex items-center"
-            onClick={() => handlePostClick(post._id)}  // Navigate to post detail on click
+            onClick={() => handlePostClick(post._id)} 
             style={{ cursor: 'pointer' }}
           >
             <img

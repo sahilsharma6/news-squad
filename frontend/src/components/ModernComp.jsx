@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import apiClient from '@/services/apiClient'; 
 
 const ModernSection = () => {
   const [posts, setPosts] = useState([]); 
@@ -10,27 +11,22 @@ const ModernSection = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/posts/category/MakeitModern");
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status} - ${response.statusText}`);
-        }
-        const data = await response.json();
-        if (data.posts && data.posts.length > 0) {
-          setPosts(data.posts);
+        const response = await apiClient.get("/posts/category/MakeitModern"); 
+        if (response.data.posts && response.data.posts.length > 0) {
+          setPosts(response.data.posts);
         } else {
           setError("No posts available for this category.");
         }
       } catch (error) {
-       
-        setError("Failed to load posts. Please try again later."); 
+        console.error("Error fetching posts:", error);
+        setError("No posts available.");
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     fetchPosts();
   }, []);
-
 
   if (loading) {
     return <p className="text-center text-xl text-gray-700">Loading posts...</p>;
@@ -46,7 +42,7 @@ const ModernSection = () => {
         <h2 className="text-white text-sm bg-black inline-block p-2">MAKE IT MODERN</h2>
       </div>
 
-      {/* Display posts if available */}
+     
       {posts.length === 0 ? (
         <p className="text-center text-xl text-gray-700">No posts found for this category.</p>
       ) : (
@@ -63,7 +59,7 @@ const ModernSection = () => {
                   Make it Modern
                 </span>
                 <img
-                  src={article.imgSrc || 'default-image.jpg'}
+                  src={article.imgSrc || 'https://via.placeholder.com/150'}
                   alt={article.altText || article.title}
                   className="w-full h-48 object-cover"
                 />

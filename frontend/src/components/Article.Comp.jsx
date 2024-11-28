@@ -11,11 +11,7 @@ import {
   PaginationNext,
   PaginationEllipsis,
 } from "@/components/ui/pagination"; 
-
-const api = axios.create({
-  baseURL: "http://localhost:5000/api",
-  timeout: 10000,
-});
+import apiClient from "@/services/apiClient";
 
 const ArticleItem = ({ article }) => {
   if (!article) {
@@ -31,7 +27,7 @@ const ArticleItem = ({ article }) => {
       <div className="flex flex-col bg-white shadow-md hover:shadow-lg transition-shadow duration-200 rounded-lg overflow-hidden">
         <div className="relative">
           <img
-            src={article.image || "default-image.jpg"}
+            src={"http://localhost:5000" + article.image || "default-image.jpg"}
             alt={article.title}
             className="w-full h-48 object-cover rounded-t-lg"
           />
@@ -67,22 +63,21 @@ const Latest = () => {
     const fetchNews = async () => {
       setLoading(true);
       try {
-        const response = await api.get("/posts");
+        const response = await apiClient.get("/posts");
         if (response.data && response.data.posts) {
-          setNewsData(response.data.posts);
+         
+          const sortedPosts = response.data.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          setNewsData(sortedPosts);
         } else {
           setError("No posts found.");
         }
       } catch (err) {
         console.error("Error fetching data:", err);
         if (err.response) {
-          // API responded with an error (e.g., 500, 404)
           setError(`Server Error: ${err.response.status} - ${err.response.data.message || "Unable to fetch posts"}`);
         } else if (err.request) {
-          // No response from the server (network issues)
           setError("Network Error: Please check your internet connection.");
         } else {
-          // Other errors (e.g., code errors)
           setError(`Unexpected Error: ${err.message}`);
         }
       } finally {
@@ -98,15 +93,13 @@ const Latest = () => {
   }
 
   if (error) {
-    return <p className="text-center text-xl text-red-600">{error}</p>;
+    return <p className="text-center mt-[50%] text-xl text-black">{error}</p>;
   }
 
-  // Calculate the total number of pages
   const totalPages = Math.ceil(newsData.length / postsPerPage);
 
-  // Ensure currentPage is within valid range
   if (currentPage > totalPages && totalPages > 0) {
-    setCurrentPage(totalPages); // Set to last page if current page exceeds total pages
+    setCurrentPage(totalPages); 
   }
 
   const indexOfLastPost = currentPage * postsPerPage;
@@ -146,7 +139,7 @@ const Latest = () => {
                 <PaginationPrevious
                   onClick={() => paginate(currentPage - 1)}
                   className={`${
-                    currentPage === 1 ? "cursor-not-allowed opacity-50" : ""
+                    currentPage === 1 ? "cursor-not-allowed opacity-50" : "cursor-pointer"
                   }`}
                   disabled={currentPage === 1}
                 />
@@ -169,7 +162,7 @@ const Latest = () => {
                 <PaginationNext
                   onClick={() => paginate(currentPage + 1)}
                   className={`${
-                    currentPage === totalPages ? "cursor-not-allowed opacity-50" : ""
+                    currentPage === totalPages ? "cursor-not-allowed opacity-50" : "cursor-pointer"
                   }`}
                   disabled={currentPage === totalPages}
                 />

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { User } from "lucide-react"; 
+import apiClient from "@/services/apiClient";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -12,7 +13,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/users/profile", {
+        const { data } = await apiClient.get("/user/profile", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

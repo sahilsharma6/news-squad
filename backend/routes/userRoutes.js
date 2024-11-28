@@ -27,11 +27,11 @@ router.route("/check-admin").get(protect, (req, res) => {
 });
 
 router
-  .route("/users/profile")
+  .route("/user/profile")
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
 
-router.route("/:id").delete(protect, adminCRUD, deleteUser);
+router.route("/user/:id").delete(protect, adminCRUD, deleteUser);
 
 router
   .route("/users")

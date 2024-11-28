@@ -37,12 +37,12 @@ const Home = () => {
       </div>
 
       {/* Third Section */}
-      <div className="flex flex-col md:flex-row w-full pt-5 gap-5">
+      {/* <div className="flex flex-col md:flex-row w-full pt-5 gap-5">
         <div className="w-full md:w-[70%]">
           <HouseDesignSection />
         </div>
         <div className="w-full md:w-[30%] hidden md:block sticky top-5"></div>
-      </div>
+      </div> */}
 
       {/* Mobile Sidebar */}
       <div className="w-full md:hidden space-y-5 pt-5">
@@ -51,11 +51,11 @@ const Home = () => {
       </div>
 
       {/* Fourth Section */}
-      <div className="flex flex-col md:flex-row w-full pt-5 gap-5">
-        <div className="w-full md:w-[70%]">
+      <div className="flex  max-w-screen flex-col md:flex-row w-full pt-5 gap-5">
+        {/* <div className="w-full md:w-[70%]">
           <Perform />
-        </div>
-        <div className="w-full md:w-[30%] hidden md:block sticky top-5">
+        </div> */}
+        <div className=" hidden md:block sticky top-5">
           <Holiday />
         </div>
       </div>

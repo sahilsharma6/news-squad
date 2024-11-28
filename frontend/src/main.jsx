@@ -19,6 +19,7 @@ import AddCategory from "./components/Dashboard/AddCategory.jsx";
 import AllCategories from "./components/Dashboard/AllCategories.jsx";
 import EditCategory from "./components/Dashboard/EditCategory.jsx";
 import UserProfile from "./components/UserProfile.jsx";
+import AllUsers from "./components/Dashboard/AllUsers.jsx";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,11 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/AllPosts",
         element: <AllPosts />,
+      },
+      {
+        path: "/dashboard/AllUsers",
+        element: <AllUsers />,
+        
       },
       {
         path: "/dashboard/EditPost/:id",

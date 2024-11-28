@@ -11,6 +11,7 @@ import {
   PaginationNext,
   PaginationEllipsis,
 } from "@/components/ui/pagination";
+import apiClient from "@/services/apiClient";
 
 const ArticleList = () => {
   const [newsData, setNewsData] = useState([]);
@@ -24,8 +25,8 @@ const ArticleList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const articlesResponse = await axios.get(
-          "http://localhost:5000/api/posts/category/Style"
+        const articlesResponse = await apiClient.get(
+          "/posts/category/Style"
         );
         setNewsData(articlesResponse.data.posts);
         setLoading(false);

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
+
+import apiClient from "@/services/apiClient";
 
 
 const categories = [
@@ -28,7 +29,7 @@ export default function FilterableBlog() {
           return;
         }
 
-        const response = await axios.get("http://localhost:5000/api/posts", {
+        const response = await apiClient.get("/posts", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -38,7 +39,7 @@ export default function FilterableBlog() {
         if (response.data && Array.isArray(response.data.posts)) {
           setBlogPosts(response.data.posts);
         } else {
-          setError("Received data is not in expected format.");
+          setError("No posts available.");
         }
         setLoading(false);
       } catch (error) {
