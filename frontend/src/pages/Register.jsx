@@ -48,7 +48,7 @@ const Register = () => {
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiClient.post("/api/auth/register", {
+      const response = await apiClient.post("/auth/register", {
         username,
         email,
         password,

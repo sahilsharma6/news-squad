@@ -28,7 +28,7 @@ const EditCategory = () => {
     }
 
     try {
-      const response = await apiClient.get(`/api/categories/${categoryId}`);
+      const response = await apiClient.get(`/categories/${categoryId}`);
       const category = response.data;
       setCategoryData({
         name: category.name,
@@ -65,7 +65,7 @@ const EditCategory = () => {
     }
 
     try {
-      const response = await apiClient.put(`/api/categories/${categoryId}`, categoryData, {
+      const response = await apiClient.put(`/categories/${categoryId}`, categoryData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

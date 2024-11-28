@@ -3,7 +3,6 @@ import { Search } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import FilterableBlog from "./FilterableBlogs";
 import profilepic from "../assets/profile-user.png";
-import GadgetsSubmenu from "./GadgetsSubmenu";
 import { useNavigate } from "react-router-dom";
 
 export default function NavigationMenu() {
@@ -24,8 +23,7 @@ export default function NavigationMenu() {
     switch (activeComponent) {
       case "FASHION":
         return <FilterableBlog />;
-      case "GADGETS":
-        return <GadgetsSubmenu />;
+      
       default:
         return null;
     }
@@ -63,7 +61,7 @@ export default function NavigationMenu() {
                     }`}
                   >
                     {item}
-                    {["FASHION", "GADGETS"].includes(item) && (
+                    {["FASHION"].includes(item) && (
                       <svg
                         className="ml-2 h-5 w-5 text-gray-400"
                         xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +78,7 @@ export default function NavigationMenu() {
                     )}
                   </Link>
                   {activeComponent === item &&
-                    ["FASHION", "GADGETS"].includes(item) && (
+                    ["FASHION", "GADGET"].includes(item) && (
                       <div className="absolute left-0 w-full mt-1 p-4 border border-gray-300 rounded-lg bg-white shadow-lg z-[99999]">
                         {renderComponent()}
                       </div>

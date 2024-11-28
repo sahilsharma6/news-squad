@@ -1,67 +1,92 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { format } from 'date-fns';
 import { useNavigate } from "react-router-dom";
+import apiClient from "@/services/apiClient";
 
 const Holiday = () => {
-  const [recipe, setRecipe] = useState(null);
+  const [recipes, setRecipes] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchRecipe = async () => {
+    const fetchRecipes = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/posts/category/Recipe");
+        const response = await apiClient.get("/posts/category/Recipe");
         if (response.data && response.data.posts && response.data.posts.length > 0) {
-          setRecipe(response.data.posts[0]);
+          setRecipes(response.data.posts.slice(0, 2));  
         } else {
-          setError("No recipe found.");
+          setError("No Recipes found.");
         }
       } catch (error) {
-        setError("Failed to load recipe. Please try again later.");
+        setError("No Recipes available.");
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchRecipe();
+    fetchRecipes();
   }, []);
 
-  if (error) {
-    return <div className="text-center text-red-500">{error}</div>;
-  }
-
-  if (!recipe) {
-    return <div className="text-center text-gray-700">Loading recipe...</div>;
-  }
-
-  const formattedDate = recipe.createdAt ? format(new Date(recipe.createdAt), 'MMMM dd, yyyy') : "No Date Available";
-
-  const handleClick = () => {
-    navigate(`/post/${recipe._id}`);
+  const handleClick = (postId) => {
+    navigate(`/post/${postId}`);
   };
 
+  if (loading) {
+    return <div className="text-center text-gray-700">Loading recipes...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center  text-black">{error}</div>;
+  }
+
   return (
-    <div className="max-w-xl mx-auto p-4" onClick={handleClick}>
+    <div className=" mx-auto p-4">
       <div className="border-b mb-4 pb-2">
         <h2 className="text-white text-sm bg-purple-500 inline-block p-2">
-          Holiday Recipe
+          Featured Holiday Recipes
         </h2>
       </div>
 
-      <h1 className="text-xl mb-4 text-start hover:text-purple-500">
-        {recipe.title}
-        <br />
-        <span className="text-sm">- {recipe.author} - {formattedDate}</span>
-      </h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+        {recipes.length > 0 ? (
+          recipes.map((recipe) => {
+            const formattedDate = recipe.createdAt ? format(new Date(recipe.createdAt), 'MMMM dd, yyyy') : "No Date Available";
 
-      <img
-        src={recipe.image || 'https://via.placeholder.com/600x400'}
-        alt={recipe.title}
-        className="mx-auto mb-4 h-48 object-cover"
-      />
+            return (
+              <div
+                key={recipe._id}
+                className="cursor-pointer hover:shadow-lg transition-all duration-300"
+                onClick={() => handleClick(recipe._id)}
+              >
+                <div className="border-b mb-4 pb-2">
+                  <h3 className="text-white text-sm bg-purple-500 inline-block p-2">
+                    {recipe.category.name}
+                  </h3>
+                </div>
 
-      <p className="text-gray-700 hover:text-purple-500 mb-6">
-        {recipe.content}
-      </p>
+                <h1 className="text-xl mb-4 text-start hover:text-purple-500">
+                  {recipe.title}
+                  <br />
+                  <span className="text-sm text-gray-600">- {recipe.author || "Anonymous"} - {formattedDate}</span>
+                </h1>
+
+                <img
+                  src={recipe.image || 'https://via.placeholder.com/600x400'}
+                  alt={recipe.title}
+                  className="mx-auto mb-4 h-48 object-cover rounded-md shadow-md"
+                />
+
+                <p className="text-gray-700 hover:text-purple-500 mb-6 line-clamp-3">
+                  {recipe.content.length > 200 ? recipe.content.slice(0, 200) + '...' : recipe.content}
+                </p>
+              </div>
+            );
+          })
+        ) : (
+          <p>No recipes available.</p>
+        )}
+      </div>
     </div>
   );
 };

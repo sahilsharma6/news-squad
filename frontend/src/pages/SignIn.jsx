@@ -34,7 +34,7 @@ const SignIn = () => {
   const handleSignInSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiClient.post("/api/auth/signin", {
+      const response = await apiClient.post("/auth/signin", {
         email,
         password,
       });
@@ -49,6 +49,7 @@ const SignIn = () => {
         });
         setTimeout(() => navigateTo("/"), 1000);
       } else {
+        
         setToast({
           open: true,
           variant: "error",
@@ -64,6 +65,7 @@ const SignIn = () => {
       setEmail("");
       setPassword("");
       setFocusedInput("");
+      
       setToast({
         open: true,
         variant: "error",

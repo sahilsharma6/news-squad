@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
-import DashboardSidebar from "@/components/DashboardSidebar";
+import { Outlet, useNavigate } from "react-router-dom";
+import DashboardSidebar from "@/components/DashboardSidebar"; 
 import apiClient from "../services/apiClient";
-import { useNavigate } from "react-router-dom";
-import { Toast, ToastClose, ToastDescription, ToastTitle, ToastProvider, ToastViewport } from "@/components/ui/toast"; // Adjust the import based on your setup
+import { Toast, ToastClose, ToastDescription, ToastTitle, ToastProvider, ToastViewport } from "@/components/ui/toast"; 
 
 export default function DashboardLayout() {
-  const [isAdmin, setIsAdmin] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(null); 
   const [loading, setLoading] = useState(true);
-  const [toast, setToast] = useState({ open: false, variant: "", title: "", description: "" });
+  const [toast, setToast] = useState({
+    open: false,
+    variant: "",
+    title: "",
+    description: "",
+  }); 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
+  const navigateTo = useNavigate(); 
 
-  const navigateTo = useNavigate();
 
   useEffect(() => {
     const checkAdminStatus = async () => {
@@ -23,7 +28,7 @@ export default function DashboardLayout() {
       }
 
       try {
-        const response = await apiClient.get("/api/check-admin", {
+        const response = await apiClient.get("/check-admin", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -45,6 +50,7 @@ export default function DashboardLayout() {
     checkAdminStatus();
   }, []);
 
+
   useEffect(() => {
     if (loading) return;
 
@@ -56,31 +62,41 @@ export default function DashboardLayout() {
         description: "You are not an admin",
       });
 
-      setTimeout(() => navigateTo("/"), 1000);
+      setTimeout(() => navigateTo("/"), 1000); 
     }
   }, [loading, isAdmin, navigateTo]);
 
-  if (loading) {
+ 
+  if (loading || isAdmin === false) {
     return <div>Loading...</div>;
   }
 
   return (
     <ToastProvider>
       {isAdmin ? (
-        <div className="flex   min-h-screen overflow-hidden bg-gray-100">
-          <DashboardSidebar />
-          <div className="m-2 w-[80%] overflow-hidden">
+        <div className="flex min-h-screen bg-gray-100">
+          {/* Sidebar */}
+          <DashboardSidebar
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+          />
+
+          {/* Main Content */}
+          <div
+            className={`m-2 transition-all ${isSidebarOpen ? "md:w-[80%]" : "md:w-full"} overflow-hidden`}
+          >
             <Outlet />
           </div>
         </div>
       ) : (
         <>
+   
           {toast.open && (
             <Toast
               variant={toast.variant}
               open={toast.open}
               onOpenChange={() => setToast({ ...toast, open: false })}
-              className={`text-4xl  bottom-96`}
+              className="text-4xl bottom-96"
             >
               <ToastTitle>{toast.title}</ToastTitle>
               <ToastDescription>{toast.description}</ToastDescription>

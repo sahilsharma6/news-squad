@@ -3,6 +3,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import img1 from '../assets/article1.jpg';
+import apiClient from "@/services/apiClient";
 
 const NewsLayout = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -19,9 +20,9 @@ const NewsLayout = () => {
 
   useEffect(() => {
     const fetchNews = async () => {
-      setLoading(true); // Reset loading to true whenever we refetch data
+      setLoading(true); 
       try {
-        const response = await axios.get("http://localhost:5000/api/posts");
+        const response = await apiClient.get("/posts");
         if (response.data && response.data.posts) {
           setNewsData(response.data.posts);
         } else {
@@ -29,12 +30,12 @@ const NewsLayout = () => {
         }
       } catch (error) {
         console.error("Error fetching news:", error);
-        // Handle different types of errors
+     
         if (error.response) {
-          // Server responded with a status other than 200
+        
           setError(`Error: ${error.response.status} - ${error.response.data.message || "Failed to fetch posts"}`);
         } else if (error.request) {
-          // No response from the server
+     
           setError("Network error: No response from the server");
         } else {
           // Other errors
@@ -129,7 +130,7 @@ const NewsLayout = () => {
                 return (
                   <Link key={index} to={`/post/${article._id}`} className="flex">
                     <img
-                      src={article.image || "default-image.jpg"}
+                      src={"http://localhost:5000" + article.image || "default-image.jpg"}
                       alt={article.title}
                       className="w-16 h-16 object-cover rounded-md mr-2"
                     />

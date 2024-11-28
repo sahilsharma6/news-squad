@@ -10,13 +10,13 @@ const PostHeader = ({ title, introDescription }) => {
 
     return (
         <div className='p-2 w-full flex flex-col justify-center items-start bg-white'>
-            <div className='w-16 h-6 bg-red-500 flex justify-center items-center'>
-                <p className='text-sm text-center text-white font-semibold p-4'>Fashion</p>
+            <div className='w-20 h-10 text-white bg-blue-500 flex justify-center items-center'>
+                <p className='text-lg text-center text-white font-semibold p-6'>Fashion</p>
             </div>
-            <div className='w-full flex flex-col gap-y-4'>
+            <div className='w-full flex flex-col gap-y-4 mt-4'>
                 <h1 className='text-4xl font-semibold'>{title}</h1>
-                <p>{introDescription}</p>
-                {/* Additional elements like author info, icons, and images */}
+                <p className='text-sm text-gray-500'>{introDescription}</p>
+           
             </div>
         </div>
     );

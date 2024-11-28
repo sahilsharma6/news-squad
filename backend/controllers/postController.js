@@ -197,6 +197,15 @@ const deletePost = asyncHandler(async (req, res) => {
 
     await Post.findByIdAndDelete(req.params.id);
 
+    await Category.updateOne(
+      { _id : post.category },
+      { $pull: { posts: post._id } }
+    );
+
+    await Like.deleteMany({ postId: post._id });
+
+    
+
     res.status(200).json({
       success: true,
       message: "Post removed successfully",

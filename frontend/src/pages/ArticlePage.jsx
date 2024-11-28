@@ -8,6 +8,7 @@ import PostFooter from "../components/PostFooter";
 import Performan from "@/components/PopularComp";
 import Recentcomment from "@/components/RecentComp";
 import Advertisement from "@/components/Advertisement";
+import apiClient from "@/services/apiClient";
 
 const ArticlePage = () => {
   const { id } = useParams(); 
@@ -19,13 +20,13 @@ const ArticlePage = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
+        const response = await apiClient.get(`/posts/${id}`);
         setPostData(response.data);
         setLikes(response.data.likes);  
 
         const token = localStorage.getItem("token");
         if (token) {
-          const likedResponse = await axios.get(`http://localhost:5000/api/posts/liked/${id}`, {
+          const likedResponse = await apiClient.get(`/posts/liked/${id}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           setLikedByUser(likedResponse.data.isLiked);  
@@ -99,7 +100,7 @@ const ArticlePage = () => {
           tags={postData.tags} 
           previousArticle={postData.previousArticle} 
           nextArticle={postData.nextArticle} 
-          author={postData.userId[0].username} 
+          author={postData?.userId[0]?.username || "Unknown Author"} 
           authorLink={postData.authorLink} 
           authorDes={postData.authorDes} 
           handleLike={handleLike}

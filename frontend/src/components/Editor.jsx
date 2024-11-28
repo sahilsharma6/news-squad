@@ -1,19 +1,20 @@
 import { Editor } from "@tinymce/tinymce-react";
 import { useRef } from "react";
 import DOMPurify from "dompurify";
+import apiClient from "@/services/apiClient";
 
 export default function ContentEditor({ content, handleContentChange }) {
-  //   const [content, setContent] = useState("");
   const editorRef = useRef(null);
 
   const handleEditorChange = () => {
     const cleanContent = DOMPurify.sanitize(editorRef.current.getContent());
     handleContentChange(cleanContent);
   };
+
   return (
     <div className="flex flex-col">
       <Editor
-        apiKey="lfqevskjzwe9ooap19ndn8lbigt79ghkothcuuyb704olerc"
+        apiKey="7s21z3us8zywr6rbe87d31zpkwqfax63lhf2g8ojc3ybx5oo"
         onInit={(evt, editor) => (editorRef.current = editor)}
         onEditorChange={handleEditorChange}
         value={content}
@@ -45,23 +46,18 @@ export default function ContentEditor({ content, handleContentChange }) {
           object_resizing: true,
 
           images_upload_handler: async (blobInfo) => {
-            return new Promise((resolve, reject) => {
-              const imageFile = new FormData();
-              imageFile.append("file", blobInfo.blob()); // Use "file" as the field name
+            const imageFile = new FormData();
+            imageFile.append("file", blobInfo.blob());
 
-              // Send the image to your backend
-              fetch("http://localhost:5000/api/upload-image", {
-                method: "POST",
-                body: imageFile,
-              })
-                .then((response) => response.json())
-                .then((data) => {
-                  resolve(data.imageUrl);
-                })
-                .catch((error) => {
-                  reject("Image upload failed: " + error.message);
-                });
-            });
+            try {
+         
+              const response = await apiClient.post("/upload-image", imageFile);
+              const imageUrl = response.data.imageUrl;
+              return imageUrl;  
+            } catch (error) {
+              console.error("Image upload failed:", error);
+              throw new Error("Image upload failed: " + error.message);
+            }
           },
         }}
       />

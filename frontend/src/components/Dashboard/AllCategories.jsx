@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import apiClient from "@/services/apiClient"; // Update based on your API client location
-import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table"; // Assuming you have this Table component
+import apiClient from "@/services/apiClient"; 
+import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table"; 
 import { Button } from "../ui/button";
-import { Link } from "react-router-dom"; // Assuming you want a route for editing a category
+import { Link } from "react-router-dom"; 
 
 const AllCategories = () => {
   const [categories, setCategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
 
-  // Fetch all categories
+
   const fetchCategories = async () => {
     try {
-      const { data } = await apiClient.get("http://localhost:5000/api/categories"); 
+      const { data } = await apiClient.get("/categories"); 
    
       setCategories(data); 
     } catch (error) {
@@ -30,7 +30,7 @@ const AllCategories = () => {
     const token = localStorage.getItem("token");
 
     try {
-      await apiClient.delete(`/api/categories/${categoryToDelete}`, {
+      await apiClient.delete(`/categories/${categoryToDelete}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -23,12 +23,12 @@ const PostFooter = ({
   return (
     <footer className="mt-8 bg-gray-50 p-4 rounded-lg shadow-md">
       <div className="flex justify-between items-center">
-        <div className="text-sm text-gray-500 flex items-center space-x-4">
+        <div className="text-sm text-gray-500 flex items-center space-x-2">
         
           <div className="flex items-center space-x-2">
             <button 
               onClick={handleLike} 
-              className={`px-3 py-1 rounded-full transition-colors duration-300 ease-in-out flex items-center space-x-2 
+              className={`px-3 py-1 rounded-full transition-colors duration-300 ease-in-out flex items-center space-x-1 
                 ${isLiked ? "bg-green-500 hover:bg-green-600" : "bg-blue-500 hover:bg-blue-600"}`}
             >
               <AiOutlineLike size={16} color="white" />
@@ -39,7 +39,7 @@ const PostFooter = ({
 
           <span className="text-gray-500">•</span>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1">
             <span className="font-semibold text-gray-700">Views:</span>
             <span className="text-gray-600">{formatViews(views)}</span> 
           </div>
@@ -55,7 +55,8 @@ const PostFooter = ({
       <div className="mt-6">
         <h3 className="text-lg font-semibold">About the Author</h3>
         <p>{authorDes}</p>
-        <a href={authorLink} className="text-blue-500">Name: {author}</a>
+        <span className="text-sm text-gray-500">Written by </span>
+        <a href={authorLink} className="text-blue-600"> {author}</a>
       </div>
 
       <div className="mt-6 flex justify-between">
