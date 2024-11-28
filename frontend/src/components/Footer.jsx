@@ -72,13 +72,13 @@ const Footer = () => {
                     className="flex gap-3 items-start md:items-center space-y-4 md:space-y-0 md:space-x-4"
                   >
                     <img
-                      src={post.image}
+                      src={"http://localhost:5000" + post.image}
                       alt={post.title}
                       className="w-28 md:w-24 md:h-16 object-cover"
                     />
                     <div>
                       <h4 className="hover:text-blue-500">
-                        <a href={`/posts/${post._id}`}>{post.title}</a>
+                        <a href={`/post/${post._id}`}>{post.title}</a>
                       </h4>
                       <p className="text-sm text-gray-400">
                         {new Date(post.createdAt).toLocaleDateString()}
@@ -102,13 +102,13 @@ const Footer = () => {
                     className="flex gap-3 items-start md:items-center space-y-4 md:space-y-0 md:space-x-4"
                   >
                     <img
-                      src={post.image}
+                      src={"http://localhost:5000" + post.image}
                       alt={post.title}
                       className="w-28 md:w-24 md:h-16 object-cover"
                     />
                     <div>
                       <h4 className="hover:text-blue-500">
-                        <a href={`/posts/${post._id}`}>{post.title}</a>
+                        <a href={`/post/${post._id}`}>{post.title}</a>
                       </h4>
                       <p className="text-sm text-gray-400">
                         {new Date(post.createdAt).toLocaleDateString()}

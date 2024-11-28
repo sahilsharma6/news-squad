@@ -80,7 +80,7 @@ const Mustread = () => {
                 onClick={() => handleArticleClick(article._id)}
               >
                 <img
-                  src={article.imgSrc || "https://via.placeholder.com/150"}
+                  src={"http://localhost:5000" + article.image || "https://via.placeholder.com/150"}
                   alt={article.title}
                   className="w-80 h-40 object-cover"
                 />

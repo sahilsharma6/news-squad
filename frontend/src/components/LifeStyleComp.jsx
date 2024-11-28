@@ -17,6 +17,7 @@ const NewsLayout2 = () => {
       setLoading(true); 
       try {
         const response = await apiClient.get("/posts"); 
+        console.log("Posts:", response.data.posts);
         
         if (!response.data.posts || response.data.posts.length === 0) {
           setError("No posts available.");
@@ -98,7 +99,7 @@ const NewsLayout2 = () => {
                 {post.title || "Untitled"}
               </h2>
               <p className="text-sm text-gray-600">
-                {post.author || "Anonymous"} - {new Date(post.date).toLocaleDateString()}
+                {post.author || "Anonymous"} - {new Date(post.createdAt).toLocaleDateString()}
               </p>
             </div>
           </div>
