@@ -17,7 +17,7 @@ const NewsLayout2 = () => {
       setLoading(true); 
       try {
         const response = await apiClient.get("/posts"); 
-        console.log("Posts:", response.data.posts);
+       
         
         if (!response.data.posts || response.data.posts.length === 0) {
           setError("No posts available.");
@@ -26,7 +26,7 @@ const NewsLayout2 = () => {
           setFilteredPosts(response.data.posts); 
         }
       } catch (error) {
-        console.error("Error fetching posts:", error);
+       
         setError("Failed to load posts. Please try again later.");
       } finally {
         setLoading(false); 

@@ -50,8 +50,8 @@ const ArticlePage = () => {
       }
 
       const url = likedByUser 
-        ? `http://localhost:5000/api/posts/dislike/${id}` 
-        : `http://localhost:5000/api/posts/like/${id}`; 
+        ? `${import.meta.env.VITE_BACKEND_URL}/api/posts/dislike/${id}` 
+        : `${import.meta.env.VITE_BACKEND_URL}/api/posts/like/${id}`; 
 
       const headers = { Authorization: `Bearer ${token}` };
 

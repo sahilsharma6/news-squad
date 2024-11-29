@@ -43,7 +43,7 @@ const Performan = () => {
           const formattedDate = article.createdAt ? format(new Date(article.createdAt), 'MMMM dd, yyyy') : "No Date Available";
           
           
-          const imageSrc = "http://localhost:5000" + article.image || 'https://via.placeholder.com/150';  
+          const imageSrc = import.meta.env.VITE_BACKEND_URL  + article.image || 'https://via.placeholder.com/150';  
 
           return (
             <div

@@ -3,6 +3,7 @@ import { useRef } from "react";
 import DOMPurify from "dompurify";
 import apiClient from "@/services/apiClient";
 
+
 export default function ContentEditor({ content, handleContentChange }) {
   const editorRef = useRef(null);
 
@@ -14,7 +15,7 @@ export default function ContentEditor({ content, handleContentChange }) {
   return (
     <div className="flex flex-col">
       <Editor
-        apiKey="7s21z3us8zywr6rbe87d31zpkwqfax63lhf2g8ojc3ybx5oo"
+        apiKey={import.meta.env.VITE_EDITOR_KEY}
         onInit={(evt, editor) => (editorRef.current = editor)}
         onEditorChange={handleEditorChange}
         value={content}
