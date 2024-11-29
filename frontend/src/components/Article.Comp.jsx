@@ -27,7 +27,7 @@ const ArticleItem = ({ article }) => {
       <div className="flex flex-col bg-white shadow-md hover:shadow-lg transition-shadow duration-200 rounded-lg overflow-hidden">
         <div className="relative">
           <img
-            src={"http://localhost:5000" + article.image || "default-image.jpg"}
+            src={import.meta.env.VITE_BACKEND_URL + article.image || "default-image.jpg"}
             alt={article.title}
             className="w-full h-48 object-cover rounded-t-lg"
           />

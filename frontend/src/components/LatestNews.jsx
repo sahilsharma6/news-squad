@@ -92,7 +92,7 @@ const LatestNews = () => {
                 <div className="flex flex-col">
                   <div className="relative">
                     <img
-                      src={"http://localhost:5000" + newsItem.image || "/default-image.jpg"}
+                      src={import.meta.env.VITE_BACKEND_URL+ newsItem.image || "/default-image.jpg"}
                       alt={newsItem.title}
                       className="w-full h-48 object-cover"
                     />

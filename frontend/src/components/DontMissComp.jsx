@@ -130,7 +130,7 @@ const NewsLayout = () => {
                 return (
                   <Link key={index} to={`/post/${article._id}`} className="flex">
                     <img
-                      src={"http://localhost:5000" + article.image || "default-image.jpg"}
+                      src={import.meta.env.VITE_BACKEND_URL + article.image || "default-image.jpg"}
                       alt={article.title}
                       className="w-16 h-16 object-cover rounded-md mr-2"
                     />

@@ -72,7 +72,7 @@ const Footer = () => {
                     className="flex gap-3 items-start md:items-center space-y-4 md:space-y-0 md:space-x-4"
                   >
                     <img
-                      src={"http://localhost:5000" + post.image}
+                      src={import.meta.env.VITE_BACKEND_URL + post.image}
                       alt={post.title}
                       className="w-28 md:w-24 md:h-16 object-cover"
                     />
@@ -102,7 +102,7 @@ const Footer = () => {
                     className="flex gap-3 items-start md:items-center space-y-4 md:space-y-0 md:space-x-4"
                   >
                     <img
-                      src={"http://localhost:5000" + post.image}
+                      src={ + post.image}
                       alt={post.title}
                       className="w-28 md:w-24 md:h-16 object-cover"
                     />

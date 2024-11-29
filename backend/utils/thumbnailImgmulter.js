@@ -15,6 +15,9 @@ const storage = multer.diskStorage({
 // Only allow image files
 const upload = multer({
   storage: storage,
+  limits: {
+    fieldSize: 8 * 1024 * 1024,
+  },
   fileFilter: function (req, file, cb) {
     if (!file.mimetype.startsWith("image/")) {
       return cb(new Error('File is not an image'));
