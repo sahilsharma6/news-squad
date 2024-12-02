@@ -25,9 +25,7 @@ const ArticleList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const articlesResponse = await apiClient.get(
-          "/posts/category/Style"
-        );
+        const articlesResponse = await apiClient.get("/posts/category/Style");
         setNewsData(articlesResponse.data.posts);
         setLoading(false);
       } catch (error) {
@@ -84,9 +82,12 @@ const ArticleList = () => {
               onClick={() => navigate(`/post/${article._id}`)}
             >
               <img
-                src={article.image || "https://via.placeholder.com/150"}
+                src={
+                  import.meta.env.VITE_BACKEND_URL + article.image ||
+                  "https://via.placeholder.com/150"
+                }
                 alt={article.title}
-                className="w-1/3 h-auto object-cover"
+                className="w-1/3 h-32 object-cover"
               />
               <div className="pl-4 w-2/3">
                 <span className="text-xs font-semibold uppercase text-white bg-black px-2 py-1 mb-2 inline-block hover:bg-blue-400">
@@ -96,18 +97,10 @@ const ArticleList = () => {
                   {article.title}
                 </h2>
                 <span className="text-xs text-black mb-2 font-bold">
-                  By {article.author || "Unknown Author"}
+                  By {article.author || "Admin"}
                 </span>
                 <span className="text-xs"> - {formattedDate}</span>
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html: article.content || "No description available.",
-                  }}
-
-                  className="text-gray-700 hidden md:block"
-                >
-                 
-                </p>
+                
               </div>
               <div className="flex justify-end">
                 <span className="text-xs bg-gray-800 text-white rounded-full px-2 py-1 items-center hidden md:flex">

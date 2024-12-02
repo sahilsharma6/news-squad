@@ -85,11 +85,11 @@ const Mustread = () => {
                   className="w-80 h-40 object-cover"
                 />
                 <div className="text-left">
-                  <h2 className="text-xl md:text-xl font-semibold mb-2 hover:text-blue-500 pt-4">
+                  <h2 className="text-xl md:text-xl font-semibold hover:text-blue-500 pt-4">
                     {article.title}
                   </h2>
                   <span className="text-xs mb-2 text-black">
-                    By {article.author} - {formattedDate}
+                      {formattedDate}
                   </span>
                 </div>
               </div>

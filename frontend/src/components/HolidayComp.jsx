@@ -41,9 +41,9 @@ const Holiday = () => {
   }
 
   return (
-    <div className=" mx-auto p-4">
-      <div className="border-b mb-4 pb-2">
-        <h2 className="text-white text-sm bg-purple-500 inline-block p-2">
+    <div className="mx-auto p-6">
+      <div className="border-b mb-6 pb-4">
+        <h2 className="text-lg text-white bg-purple-500 inline-block p-2">
           Featured Holiday Recipes
         </h2>
       </div>
@@ -56,30 +56,32 @@ const Holiday = () => {
             return (
               <div
                 key={recipe._id}
-                className="cursor-pointer hover:shadow-lg transition-all duration-300"
+                className="cursor-pointer hover:shadow-xl transition-all duration-300 rounded-lg border border-gray-200 bg-white"
                 onClick={() => handleClick(recipe._id)}
               >
-                <div className="border-b mb-4 pb-2">
-                  <h3 className="text-white text-sm bg-purple-500 inline-block p-2">
+                <div className="flex justify-between items-center p-4 border-b border-gray-200">
+                  <h3 className="text-sm text-white bg-purple-500 inline-block py-1 px-3 rounded-md">
                     {recipe.category.name}
                   </h3>
                 </div>
 
-                <h1 className="text-xl mb-4 text-start hover:text-purple-500">
-                  {recipe.title}
-                  <br />
-                  <span className="text-sm text-gray-600">- {recipe.author || "Anonymous"} - {formattedDate}</span>
-                </h1>
+                <div className="p-4">
+                  <h1 className="text-xl font-semibold mb-2 text-gray-800 hover:text-purple-500 transition-all duration-300">
+                    {recipe.title}
+                  </h1>
 
-                <img
-                  src={recipe.image || 'https://via.placeholder.com/600x400'}
-                  alt={recipe.title}
-                  className="mx-auto mb-4 h-48 object-cover rounded-md shadow-md"
-                />
+                  <p className="text-sm text-gray-600">
+                    <span> {recipe.author || "Admin"} - </span>
+                 
+                    <span>{formattedDate}</span>
+                  </p>
 
-                <p className="text-gray-700 hover:text-purple-500 mb-6 line-clamp-3">
-                  {recipe.content.length > 200 ? recipe.content.slice(0, 200) + '...' : recipe.content}
-                </p>
+                  <img
+                    src={import.meta.env.VITE_BACKEND_URL + recipe.image || 'https://via.placeholder.com/600x400'}
+                    alt={recipe.title}
+                    className="mt-4 rounded-md shadow-md w-full h-48 object-cover"
+                  />
+                </div>
               </div>
             );
           })

@@ -9,9 +9,9 @@ const Header = () => {
       <div className="max-w-screen-xl mx-auto px-4">
         <header className="flex justify-between items-center py-5 bg-white shadow-md flex-wrap">
           <div className="flex flex-col items-start mb-2 pl-24">
-            <span className="text-2xl font-bold text-transparent bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text">
+            <Link to="/" className="text-2xl font-bold text-transparent bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text">
               NEWS SQUAD
-            </span>
+            </Link>
             <p className="text-xs text-gray-600 mt-1 pl-5">The Art of Publishing</p>
           </div>
 

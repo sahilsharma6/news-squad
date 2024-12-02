@@ -39,7 +39,7 @@ const UserProfile = () => {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen text-red-500">
+      <div className="flex justify-center items-center h-screen text-black">
         <div>{error}</div>
       </div>
     );

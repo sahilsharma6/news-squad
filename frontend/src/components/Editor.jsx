@@ -52,8 +52,9 @@ export default function ContentEditor({ content, handleContentChange }) {
 
             try {
          
-              const response = await apiClient.post("/upload-image", imageFile);
+              const response = await apiClient.post(`${import.meta.env.VITE_BACKEND_URL}/api/upload-image`, imageFile);
               const imageUrl = response.data.imageUrl;
+              console.log("Image uploaded successfully:", imageUrl);
               return imageUrl;  
             } catch (error) {
               console.error("Image upload failed:", error);

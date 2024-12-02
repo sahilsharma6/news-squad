@@ -1,35 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";  
-import apiClient from "@/services/apiClient"; 
+import { useNavigate } from "react-router-dom";
+import apiClient from "@/services/apiClient";
 
 const NewsLayout2 = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [loading, setLoading] = useState(true);  
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const categories = ["All", "Travel", "Recipe", "Health & Fitness", "Music"];
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
-      setLoading(true); 
+      setLoading(true);
       try {
-        const response = await apiClient.get("/posts"); 
-       
-        
+        const response = await apiClient.get("/posts");
+
         if (!response.data.posts || response.data.posts.length === 0) {
           setError("No posts available.");
         } else {
           setPosts(response.data.posts);
-          setFilteredPosts(response.data.posts); 
+          setFilteredPosts(response.data.posts);
         }
       } catch (error) {
-       
         setError("Failed to load posts. Please try again later.");
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -41,33 +39,39 @@ const NewsLayout2 = () => {
     if (category === "All") {
       setFilteredPosts(posts);
     } else {
-      setFilteredPosts(posts.filter(post => post.category?.name === category)); 
+      setFilteredPosts(
+        posts.filter((post) => post.category?.name === category)
+      );
     }
   };
 
   const handlePostClick = (postId) => {
-    navigate(`/post/${postId}`);  
+    navigate(`/post/${postId}`);
   };
 
   if (loading) {
-    return <p className="text-center text-xl text-gray-700">Loading posts...</p>;
+    return (
+      <p className="text-center text-xl text-gray-700">Loading posts...</p>
+    );
   }
 
   if (error) {
-    return <p className="text-center text-xl text-red-600">{error}</p>;
+    return <p className="text-center text-xl text-black">{error}</p>;
   }
 
   return (
     <div className="container mx-auto p-6">
       {/* Top Navigation */}
-      <div className="flex items-center justify-between border-b pb-3 mb-6">
+      <div className="flex flex-col md:flex-row lg:flex-row items-center justify-between border-b pb-3 mb-6">
         <h1 className="text-sm text-white bg-green-800 p-2">LIFESTYLE NEWS</h1>
-        <nav className="flex items-center space-x-2">
+        <nav className="flex  items-center space-x-2 sm:text-sm bg-gray-100 p-2">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
-              className={`text-gray-600 hover:text-green-600 ${activeCategory === category ? "font-bold text-green-600" : ""}`}
+              className={`text-gray-600 bg-white hover:bg-gray-300 px-4 py-2 text-sm md:text-lg lg:text-lg hover:text-green-600 ${
+                activeCategory === category ? "font-bold text-green-600" : ""
+              }`}
             >
               {category}
             </button>
@@ -81,12 +85,15 @@ const NewsLayout2 = () => {
           <div
             key={index}
             className="flex flex-col"
-            onClick={() => handlePostClick(post._id)}  
-            style={{ cursor: 'pointer' }}
+            onClick={() => handlePostClick(post._id)}
+            style={{ cursor: "pointer" }}
           >
             <div className="relative">
               <img
-                src={post.image || "https://placehold.co/600x400"}
+                src={
+                  import.meta.env.VITE_BACKEND_URL + post.image ||
+                  "https://placehold.co/600x400"
+                }
                 alt={post.title || "Post Image"}
                 className="w-full h-48 object-cover"
               />
@@ -98,8 +105,16 @@ const NewsLayout2 = () => {
               <h2 className="mt-2 text-xl font-semibold hover:text-green-600">
                 {post.title || "Untitled"}
               </h2>
-              <p className="text-sm text-gray-600">
-                {post.author || "Anonymous"} - {new Date(post.createdAt).toLocaleDateString()}
+              <p className="text-sm flex gap-1 items-center text-gray-600">
+                {post.author || " Admin "} -{" "}
+                <p className="text-xs text-gray-600">
+                  {" "}
+                  {new Date(post?.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
               </p>
             </div>
           </div>
@@ -112,17 +127,28 @@ const NewsLayout2 = () => {
           <div
             key={index}
             className="flex items-center"
-            onClick={() => handlePostClick(post._id)} 
-            style={{ cursor: 'pointer' }}
+            onClick={() => handlePostClick(post._id)}
+            style={{ cursor: "pointer" }}
           >
             <img
-              src="https://via.placeholder.com/100"
+              src={
+                import.meta.env.VITE_BACKEND_URL + post?.image ||
+                "https://placehold.co/600x400"
+              }
               alt={post.title || "Post Image"}
               className="w-20 h-20 object-cover mr-4"
             />
             <div>
-              <h3 className="text-sm hover:text-green-600">{post.title || "Untitled"}</h3>
-              <p className="text-xs text-gray-600">{new Date(post.date).toLocaleDateString()}</p>
+              <h3 className="text-sm hover:text-green-600">
+                {post.title || "Untitled"}
+              </h3>
+              <p className="text-xs text-gray-600">
+                {new Date(post?.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
             </div>
           </div>
         ))}
