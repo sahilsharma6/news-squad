@@ -10,6 +10,13 @@ import Recentcomment from "@/components/RecentComp";
 import Advertisement from "@/components/Advertisement";
 import apiClient from "@/services/apiClient";
 
+// Simple CSS Spinner
+const Spinner = () => (
+  <div className="flex justify-center items-center h-[500px]">
+    <div className="spinner border-4 border-t-4 border-gray-500 border-t-transparent w-16 h-16 rounded-full animate-spin"></div>
+  </div>
+);
+
 const ArticlePage = () => {
   const { id } = useParams(); 
   const [postData, setPostData] = useState(null); 
@@ -58,11 +65,7 @@ const ArticlePage = () => {
       const response = await axios.put(url, {}, { headers });
 
       if (response.status === 200) {
-        if (likedByUser) {
-          setLikes(prevLikes => prevLikes - 1);
-        } else {
-          setLikes(prevLikes => prevLikes + 1);
-        }
+        setLikes(prevLikes => likedByUser ? prevLikes - 1 : prevLikes + 1);
         setLikedByUser(!likedByUser); 
       }
     } catch (error) {
@@ -75,13 +78,14 @@ const ArticlePage = () => {
   };
 
   if (!postData) {
-    return <div>Loading...</div>;
+    return <Spinner />; 
   }
 
   return (
     <div className="flex flex-col lg:flex-row justify-center items-start">
       <div className="w-full p-2 lg:w-[70%] lg:ml-[10%] overflow-x-hidden">
         <PostHeader 
+          category={postData.category.name}
           title={postData.title} 
           introDescription={postData.introDescription} 
           publishDate={postData.createdAt} 
@@ -89,7 +93,7 @@ const ArticlePage = () => {
         <PostContent content={postData.content} />
         
         {errorMessage && (
-          <div className="text-red-500 mt-2">
+          <div className="text-black mt-2">
             {errorMessage}
           </div>
         )}
@@ -100,7 +104,7 @@ const ArticlePage = () => {
           tags={postData.tags} 
           previousArticle={postData.previousArticle} 
           nextArticle={postData.nextArticle} 
-          author={postData?.userId[0]?.username || "Unknown Author"} 
+          author={postData?.userId[0]?.username || "Admin"} 
           authorLink={postData.authorLink} 
           authorDes={postData.authorDes} 
           handleLike={handleLike}

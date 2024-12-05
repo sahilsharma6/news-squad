@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '@/services/apiClient';
+import { FaEye } from 'react-icons/fa';
 
 const Performan = () => {
   const [data, setData] = useState([]); 
@@ -59,8 +60,8 @@ const Performan = () => {
               />
               <div className="w-3/4">
                 <h2 className="text-xs md:text-sm mb-1 text-gray-800 font-semibold">{article.title}</h2>
-                <p className="text-xs text-gray-500 mb-1">By {article.author} - {formattedDate}</p>
-                <p className="text-xs text-gray-500">Views: {article.views}</p> 
+                <p className="text-xs text-gray-500 mb-1">{formattedDate}</p>
+                <p className="text-xs text-gray-500 flex  gap-1 items-center" ><FaEye /> {article.views}</p> 
               </div>
             </div>
           );

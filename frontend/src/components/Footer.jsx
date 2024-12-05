@@ -14,13 +14,16 @@ const Footer = () => {
         const response = await apiClient.get("/posts");
         const posts = response.data.posts;
 
-        const popular = posts.filter((post) => post.views > 250);
-
-        setAllPosts(posts);
+     
+        const popular = posts.sort((a, b) => b.views - a.views);
         setPopularPosts(popular.slice(0, 4));
+
+    
+        const shuffledPosts = posts.sort(() => 0.5 - Math.random());
+        setAllPosts(shuffledPosts.slice(0, 4));
       } catch (error) {
-      
         console.error("Error fetching footer data:", error);
+        setError("An error occurred while fetching posts.");
       } finally {
         setLoading(false);
       }
@@ -32,8 +35,8 @@ const Footer = () => {
   if (loading) {
     return (
       <footer className="relative bg-black text-white">
-        <div className="container mx-auto px-4 py-12">
-          <p>Loading...</p>
+        <div className="container mx-auto px-4 py-12 flex justify-center items-center h-full">
+          <div className="spinner"></div> 
         </div>
       </footer>
     );
@@ -66,7 +69,7 @@ const Footer = () => {
               {allPosts.length === 0 ? (
                 <li>No posts available</li>
               ) : (
-                allPosts.slice(0, 4).map((post) => (
+                allPosts.map((post) => (
                   <li
                     key={post._id}
                     className="flex gap-3 items-start md:items-center space-y-4 md:space-y-0 md:space-x-4"
@@ -102,9 +105,9 @@ const Footer = () => {
                     className="flex gap-3 items-start md:items-center space-y-4 md:space-y-0 md:space-x-4"
                   >
                     <img
-                      src={ + post.image}
+                      src={import.meta.env.VITE_BACKEND_URL + post.image}
                       alt={post.title}
-                      className="w-28 md:w-24 md:h-16 object-cover"
+                      className="w-28 h-auto md:w-24 md:h-16 object-cover"
                     />
                     <div>
                       <h4 className="hover:text-blue-500">
@@ -134,28 +137,13 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/category/home" className="hover:text-blue-500">
+                <a href="/" className="hover:text-blue-500">
                   Home
                 </a>
               </li>
               <li>
-                <a href="/category/travel" className="hover:text-blue-500">
-                  Travel
-                </a>
-              </li>
-              <li>
-                <a href="/category/food" className="hover:text-blue-500">
-                  Food
-                </a>
-              </li>
-              <li>
-                <a href="/category/movies" className="hover:text-blue-500">
-                  Movies
-                </a>
-              </li>
-              <li>
-                <a href="/category/vogue" className="hover:text-blue-500">
-                  Vogue
+                <a href="/category/lifestyle" className="hover:text-blue-500">
+                  Lifestyle
                 </a>
               </li>
             </ul>

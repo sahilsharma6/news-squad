@@ -14,7 +14,7 @@ const GadgetsMenu = ({ param }) => {
   const [articles, setArticles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const articlesPerPage = 5;
+  const articlesPerPage = 10;
 
   useEffect(() => {
     setCurrentPage(1);
@@ -53,11 +53,11 @@ const GadgetsMenu = ({ param }) => {
       {articles.length > 0 ? (
         articles.map((article, index) => {
    
-          const imageUrl = article.content.match(/<img src="([^"]+)"/)?.[1] || article.featuredImage;
+   
           const contentWithoutImages = article.content.replace(/<img[^>]*>/g, '');
 
           return (
-            <article className="overflow-hidden mb-8 flex flex-col sm:flex-row" key={index}>
+            <article className="overflow-hidden mb-8 flex flex-col items-center sm:flex-row" key={index}>
               <div className="p-6 sm:w-2/5 bg-white">
                 <span className="text-blue-400 text-sm font-semibold">{param.toUpperCase()}</span>
                 <h4 className="font-bold mt-2 hover:text-blue-400">
@@ -71,9 +71,9 @@ const GadgetsMenu = ({ param }) => {
               <div className="sm:w-3/5 mr-2">
             
                 <img
-                  src={imageUrl}
+                  src={import.meta.env.VITE_BACKEND_URL + article.image || 'https://via.placeholder.com/150'}
                   alt={article.title}
-                  className="w-full h-full object-cover"
+                  className="h-[200px] object-cover"
                 />
               </div>
             </article>
@@ -83,69 +83,6 @@ const GadgetsMenu = ({ param }) => {
         'No Posts available.'
       )}
 
-      {/* Pagination Controls */}
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center mt-8">
-          <Pagination>
-            <PaginationContent>
-              {/* Previous Button */}
-              <PaginationItem>
-                <PaginationPrevious
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    paginate(currentPage - 1);
-                  }}
-                  className={`${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
-                  disabled={currentPage === 1}
-                />
-              </PaginationItem>
-
-              {/* Page 1 */}
-              <PaginationItem>
-                <PaginationLink
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    paginate(1);
-                  }}
-                  className={`${currentPage === 1 ? 'font-bold' : ''}`}
-                >
-                  1
-                </PaginationLink>
-              </PaginationItem>
-
-              {/* Ellipsis */}
-              {currentPage > 2 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
-
-              {/* Current Page */}
-              {currentPage > 1 && currentPage < totalPages && (
-                <PaginationItem>
-                  <PaginationLink href="#" className="font-bold">
-                    {currentPage}
-                  </PaginationLink>
-                </PaginationItem>
-              )}
-
-              {/* Ellipsis */}
-              {currentPage < totalPages - 1 && <PaginationItem><PaginationEllipsis /></PaginationItem>}
-
-              {/* Next Button */}
-              <PaginationItem>
-                <PaginationNext
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    paginate(currentPage + 1);
-                  }}
-                  className={`${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''}`}
-                  disabled={currentPage === totalPages}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
-      )}
     </div>
   );
 };

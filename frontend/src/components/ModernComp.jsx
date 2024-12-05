@@ -33,7 +33,7 @@ const ModernSection = () => {
   }
 
   if (error) {
-    return <p className="text-center text-xl text-red-600">{error}</p>;
+    return <p className="text-center text-xl text-black">{error}</p>;
   }
 
   return (
@@ -59,7 +59,7 @@ const ModernSection = () => {
                   Make it Modern
                 </span>
                 <img
-                  src={article.imgSrc || 'https://via.placeholder.com/150'}
+                  src={import.meta.env.VITE_BACKEND_URL + article.image || 'https://via.placeholder.com/150'}
                   alt={article.altText || article.title}
                   className="w-full h-48 object-cover"
                 />

@@ -99,7 +99,7 @@ const EditCategory = () => {
     <div className="max-w-md mx-auto p-6">
       <h2 className="text-2xl font-bold mb-4">Edit Category</h2>
 
-      {/* Toast component to show success/error messages */}
+    
       {toast.open && (
         <Toast
           variant={toast.variant}

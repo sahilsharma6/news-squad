@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { FaEye } from "react-icons/fa";
+
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import {
@@ -39,12 +40,12 @@ const ArticleItem = ({ article }) => {
           <h3 className="text-lg font-semibold hover:text-blue-500">
             {article.title}
           </h3>
-          <div className="flex justify-between text-sm text-gray-500 mb-2">
-            <span>{article.author || "Unknown Author"}</span> -{" "}
+          <div className="flex items-center gap-1 text-sm text-gray-500 mb-2">
+            <span>{article.author || "Admin"}</span> - {" "}
             <span>{formattedDate}</span>
           </div>
-          <div className="flex justify-between items-center text-sm text-gray-700">
-            <span>Views: {article.views || 0}</span>
+          <div className="flex  items-center text-sm text-gray-700">
+            <spa className="flex items-center gap-1"><FaEye /> {article.views || 0}</spa>
           </div>
         </div>
       </div>

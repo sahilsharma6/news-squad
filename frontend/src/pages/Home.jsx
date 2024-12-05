@@ -55,30 +55,24 @@ const Home = () => {
         {/* <div className="w-full md:w-[70%]">
           <Perform />
         </div> */}
-        <div className=" hidden md:block sticky top-5">
+        <div className="  sticky top-5">
           <Holiday />
         </div>
       </div>
 
-      <div className="w-full md:hidden pt-5">
-        <Holiday />
-      </div>
 
       {/* Fifth Section */}
       <div className="flex flex-col md:flex-row w-full pt-5 gap-5">
         <div className="w-full md:w-[70%]">
           <Latest />
         </div>
-        <div className="w-full md:w-[30%] hidden md:flex flex-col gap-5 sticky top-5">
+        <div className="w-full md:w-[30%]  md:flex flex-col gap-5 sticky top-5">
           <Performan />
           <Recentcomment />
         </div>
       </div>
 
-      <div className="w-full md:hidden space-y-5 pt-5">
-        <Performan />
-        <Recentcomment />
-      </div>
+      
     </div>
   );
 };
