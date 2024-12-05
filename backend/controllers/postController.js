@@ -42,6 +42,36 @@ const getPosts = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Fetch posts by search query
+// @route   GET /api/posts/search/:q
+// @access  Public
+
+const getSearchedPosts = asyncHandler(async (req, res) => {
+  const { q } = req.query;  
+
+  if (!q || typeof q !== 'string') {
+    return res.status(400).json({ message: "Query parameter 'q' must be a valid string" });
+  }
+
+
+  const posts = await Post.find({
+    $or: [
+      { title: { $regex: q, $options: "i" } },
+      { content: { $regex: q, $options: "i" } },
+    ],
+  });
+
+  if (posts.length === 0) {
+    return res.status(404).json({ message: "No posts found for the query" });
+  }
+  
+
+  res.json(posts);
+});
+
+
+
+
 // @desc    Fetch a post by ID
 // @route   GET /api/posts/:id
 // @access  Public
@@ -354,4 +384,8 @@ const likedPost = asyncHandler(async (req, res) => {
 
 
 
-export { getPosts, getPostsById, getPostByCategory,updatePost, createPost, deletePost ,likePost, dislikePost, likedPost};
+
+
+
+
+export { getPosts, getPostsById, getPostByCategory,updatePost, createPost, deletePost ,likePost, dislikePost, likedPost, getSearchedPosts};

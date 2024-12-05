@@ -24,11 +24,7 @@ export default function FilterableBlog() {
       try {
         const token = localStorage.getItem("token");
 
-        if (!token) {
-          setError("No token found.");
-          setLoading(false);
-          return;
-        }
+      
 
         const response = await apiClient.get("/posts", {
           headers: {

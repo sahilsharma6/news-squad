@@ -64,12 +64,12 @@ const NewsLayout2 = () => {
       {/* Top Navigation */}
       <div className="flex flex-col md:flex-row lg:flex-row items-center justify-between border-b pb-3 mb-6">
         <h1 className="text-sm text-white bg-green-800 p-2">LIFESTYLE NEWS</h1>
-        <nav className="flex  items-center space-x-2 sm:text-sm bg-gray-100 p-2">
+        <nav className="flex  items-center space-x-2 sm:text-sm bg-gray-100 rounded-sm p-2">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
-              className={`text-gray-600 bg-white hover:bg-gray-300 px-4 py-2 text-sm md:text-lg lg:text-lg hover:text-green-600 ${
+              className={`text-gray-600 rounded-md bg-white hover:bg-gray-300 px-4 py-2 text-sm md:text-lg lg:text-lg hover:text-green-600 ${
                 activeCategory === category ? "font-bold text-green-600" : ""
               }`}
             >
