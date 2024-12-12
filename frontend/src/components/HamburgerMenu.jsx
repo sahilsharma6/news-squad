@@ -46,7 +46,7 @@ export default function HamburgerMenu() {
 
     try {
       const response = await apiClient.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/posts/search?q=${searchQuery}`
+        `/posts/search?q=${searchQuery}`
       );
       setSearchResults(response.data);
     } catch (error) {

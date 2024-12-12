@@ -3,7 +3,6 @@ import { useRef } from "react";
 import DOMPurify from "dompurify";
 import apiClient from "@/services/apiClient";
 
-
 export default function ContentEditor({ content, handleContentChange }) {
   const editorRef = useRef(null);
 
@@ -51,11 +50,10 @@ export default function ContentEditor({ content, handleContentChange }) {
             imageFile.append("file", blobInfo.blob());
 
             try {
-         
-              const response = await apiClient.post(`${import.meta.env.VITE_BACKEND_URL}/api/upload-image`, imageFile);
+              const response = await apiClient.post(`/upload-image`, imageFile);
               const imageUrl = response.data.imageUrl;
-              console.log("Image uploaded successfully:", imageUrl);
-              return imageUrl;  
+              // console.log("Image uploaded successfully:", imageUrl);
+              return imageUrl;
             } catch (error) {
               console.error("Image upload failed:", error);
               throw new Error("Image upload failed: " + error.message);
