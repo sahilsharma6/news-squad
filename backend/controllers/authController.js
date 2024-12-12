@@ -33,7 +33,7 @@ export const signIn = async (req, res) => {
         message: "Wrong Password",
       });
     }
-
+  
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET,
@@ -41,6 +41,13 @@ export const signIn = async (req, res) => {
         expiresIn: "1d",
       }
     );
+
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
+      maxAge: 3600000,
+      sameSite: "Strict",
+    });
 
     return res.status(200).json({
       status: "success",

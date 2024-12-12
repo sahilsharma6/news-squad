@@ -83,9 +83,9 @@ export default function NavigationMenu() {
       setIsLoading(true);
       try {
         const response = await apiClient.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/posts/search?q=${query}`
+          `/posts/search?q=${query}`
         );
-        console.log("Search Results:", response.data);
+       
         if (response.data && response.data.length > 0) {
           setSearchResults(response.data.slice(0, 3));
         } else {

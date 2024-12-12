@@ -23,7 +23,7 @@ const protect = asyncHandler(async (req, res, next) => {
       console.log("User not found.");
       return res.status(401).json({ message: "User not found" });
     }
-    console.log("User found:", req.user);  
+   
 
     next();
 
