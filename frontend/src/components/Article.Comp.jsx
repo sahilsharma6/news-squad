@@ -45,7 +45,7 @@ const ArticleItem = ({ article }) => {
             <span>{formattedDate}</span>
           </div>
           <div className="flex  items-center text-sm text-gray-700">
-            <spa className="flex items-center gap-1"><FaEye /> {article.views || 0}</spa>
+            <span className="flex items-center gap-1"><FaEye /> {article.views || 0}</span>
           </div>
         </div>
       </div>

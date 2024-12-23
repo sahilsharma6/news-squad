@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Category from "./models/categoryModel.js"; // Adjust the path as needed
+import Category from "./models/categoryModel.js"; 
 
 // Database URI
 const dbURI = "mongodb://localhost:27017/newssquad";
@@ -14,7 +14,7 @@ const connectToDatabase = async () => {
     console.log("Database connected successfully!");
   } catch (error) {
     console.error("Error connecting to database:", error);
-    process.exit(1); // Exit process if the connection fails
+    process.exit(1); 
   }
 };
 
