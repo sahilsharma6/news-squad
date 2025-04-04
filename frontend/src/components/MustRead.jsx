@@ -1,7 +1,7 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import apiClient from "@/services/apiClient"; 
 
 const Mustread = () => {
   const [articles, setArticles] = useState([]);
@@ -15,7 +15,7 @@ const Mustread = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/posts");
+        const response = await apiClient.get("/posts");
         if (response.data && Array.isArray(response.data.posts)) {
           setArticles(response.data.posts);
         } else {
@@ -38,6 +38,7 @@ const Mustread = () => {
   if (error) {
     return <p className="text-black m-10">{error}</p>;
   }
+
 
   const sortedArticles = Array.isArray(articles)
     ? [...articles].sort((a, b) => b.views - a.views)
@@ -79,16 +80,16 @@ const Mustread = () => {
                 onClick={() => handleArticleClick(article._id)}
               >
                 <img
-                  src={article.imgSrc || "default-image.jpg"}
+                  src={import.meta.env.VITE_BACKEND_URL + article.image || "https://via.placeholder.com/150"}
                   alt={article.title}
                   className="w-80 h-40 object-cover"
                 />
                 <div className="text-left">
-                  <h2 className="text-xl md:text-xl font-semibold mb-2 hover:text-blue-500 pt-4">
+                  <h2 className="text-xl md:text-xl font-semibold hover:text-blue-500 pt-4">
                     {article.title}
                   </h2>
                   <span className="text-xs mb-2 text-black">
-                    By {article.author} - {formattedDate}
+                      {formattedDate}
                   </span>
                 </div>
               </div>
@@ -97,21 +98,27 @@ const Mustread = () => {
         </div>
       )}
 
-      <div className="flex justify-center mt-6">
+      {/* Pagination */}
+      <div className="flex items-center justify-center mt-6">
+        {/* Previous Button */}
         <button
-          className="px-4 py-2 bg-gray-700 text-white rounded-l-md"
+          className="px-4 py-2 bg-white text-gray-700 rounded-l-md border border-gray-300 hover:bg-gray-100"
           onClick={() => paginate(currentPage - 1)}
           disabled={currentPage === 1}
         >
           Previous
         </button>
 
+        {/* Page Number */}
+        <span className="px-4 py-2 text-lg text-gray-700">
+          {currentPage} of {Math.ceil(sortedArticles.length / postsPerPage)}
+        </span>
+
+        {/* Next Button */}
         <button
-          className="px-4 py-2 bg-gray-700 text-white rounded-r-md"
+          className="px-4 py-2 bg-white text-gray-700 rounded-r-md border border-gray-300 hover:bg-gray-100"
           onClick={() => paginate(currentPage + 1)}
-          disabled={
-            currentPage === Math.ceil(sortedArticles.length / postsPerPage)
-          }
+          disabled={currentPage === Math.ceil(sortedArticles.length / postsPerPage)}
         >
           Next
         </button>

@@ -28,12 +28,12 @@ export const signIn = async (req, res) => {
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return res.status(400).json({
+      return res.status(401).json({
         status: "fail",
         message: "Wrong Password",
       });
     }
-
+  
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET,
@@ -41,6 +41,13 @@ export const signIn = async (req, res) => {
         expiresIn: "1d",
       }
     );
+
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
+      maxAge: 3600000,
+      sameSite: "Strict",
+    });
 
     return res.status(200).json({
       status: "success",
@@ -82,7 +89,7 @@ export const register = async (req, res) => {
       username,
       email,
       password,
-      phone,
+      phoneNumber: phone,
     });
 
     return res.status(201).json({
@@ -92,7 +99,7 @@ export const register = async (req, res) => {
         id: newUser.id,
         email: newUser.email,
         username: newUser.username,
-        phone: newUser.phone,
+        phone: newUser.phoneNumber,
       },
     });
   } catch (err) {

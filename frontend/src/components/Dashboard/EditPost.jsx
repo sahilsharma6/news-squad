@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import ContentEditor from "../Editor.jsx";
 import { Button } from "../ui/button.jsx";
-import { Toast, ToastTitle, ToastDescription, ToastClose, ToastViewport } from "../ui/toast.jsx"; // Import the Toast components
+import { Toast, ToastTitle, ToastDescription, ToastClose, ToastViewport } from "../ui/toast.jsx"; 
 
 const EditPost = () => {
   const { id } = useParams();
@@ -38,7 +38,7 @@ const EditPost = () => {
 
   const fetchCategories = async () => {
     try {
-      const result = await apiClient.get("/api/categories");
+      const result = await apiClient.get("/categories");
       setCategories(result.data || []);
     } catch (error) {
       alert("Failed to load categories.");
@@ -52,7 +52,7 @@ const EditPost = () => {
     }
 
     try {
-      const response = await apiClient.get(`/api/posts/${postId}`);
+      const response = await apiClient.get(`/posts/${postId}`);
       const post = response.data;
       setPostData({
         title: post.title,
@@ -101,7 +101,7 @@ const EditPost = () => {
     e.preventDefault();
 
     try {
-      await apiClient.put(`/api/posts/${postId}`, postData, {
+      await apiClient.put(`/posts/${postId}`, postData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -128,7 +128,7 @@ const EditPost = () => {
 
       setTimeout(() => {
         setToast((prevToast) => ({ ...prevToast, open: false }));
-      }, 4000);
+      }, 1000);
     }
   };
 

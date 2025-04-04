@@ -48,7 +48,7 @@ const Register = () => {
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiClient.post("/api/auth/register", {
+      const response = await apiClient.post("/auth/register", {
         username,
         email,
         password,
@@ -57,7 +57,7 @@ const Register = () => {
 
       if (response.data.status === "success") {
         showToast("success", "Success", "Registered successfully! Redirecting...");
-        setTimeout(() => navigateTo("/signin"), 4000);
+        setTimeout(() => navigateTo("/signin"), 1000);
       } else {
         showToast("error", "Error", response.data.message);
       }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Toast, ToastTitle, ToastDescription, ToastClose, ToastViewport } from "@/components/ui/toast"; // Import Toast component
+import apiClient from "@/services/apiClient";
 
 const AddCategory = () => {
   const [categoryName, setCategoryName] = useState("");
@@ -22,7 +23,7 @@ const AddCategory = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/categories", {
+      const response = await apiClient.post("/categories", {
         name: categoryName,
       });
 

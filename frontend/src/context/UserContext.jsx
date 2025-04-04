@@ -12,7 +12,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const { data } = await apiClient.get("/api/profile", {
+        const { data } = await apiClient.get("/profile", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

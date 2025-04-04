@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import img1 from '../assets/article1.jpg';
+import apiClient from "@/services/apiClient";
 
 const NewsLayout = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(""); 
+  const [error, setError] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const categories = ["All", "Style Hunter", "Vogue", "Health & Fitness", "Travel", "Gadgets"];
@@ -19,9 +19,9 @@ const NewsLayout = () => {
 
   useEffect(() => {
     const fetchNews = async () => {
-      setLoading(true); // Reset loading to true whenever we refetch data
+      setLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/api/posts");
+        const response = await apiClient.get("/posts");
         if (response.data && response.data.posts) {
           setNewsData(response.data.posts);
         } else {
@@ -29,15 +29,11 @@ const NewsLayout = () => {
         }
       } catch (error) {
         console.error("Error fetching news:", error);
-        // Handle different types of errors
         if (error.response) {
-          // Server responded with a status other than 200
           setError(`Error: ${error.response.status} - ${error.response.data.message || "Failed to fetch posts"}`);
         } else if (error.request) {
-          // No response from the server
           setError("Network error: No response from the server");
         } else {
-          // Other errors
           setError(`Error: ${error.message}`);
         }
       } finally {
@@ -52,15 +48,22 @@ const NewsLayout = () => {
     ? newsData
     : newsData.filter(newsItem => newsItem.category?.name === selectedCategory);
 
-  const displayedArticles = filteredNewsData?.slice(0, 4);
+  const displayedArticles = filteredNewsData?.slice(0, 5);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="h-full flex justify-center items-center">
+        <div className="spinner"></div> {/* Custom Spinner */}
+      </div>
+    );
   }
 
   if (error) {
-    return <p className="text-red-500">{error}</p>;
+    return <p className="text-black">{error}</p>;
   }
+
+  // Get the main article (first article)
+  const mainArticle = displayedArticles && displayedArticles[0];
 
   return (
     <div className="h-full flex flex-col">
@@ -102,34 +105,17 @@ const NewsLayout = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Main article */}
-          <Link to={`/post/1`} className="md:col-span-1">
-            <img
-              src={img1}
-              alt="Main article"
-              className="w-full h-auto rounded-md"
-            />
-            <h2 className="text-lg font-bold mt-2 hover:text-yellow-400">
-              Interior Designer and Maude Interiors by Yvonne Designs
-            </h2>
-            <p className="text-gray-500 mb-1">Armin Vans - August 7, 2019</p>
-            <p className="text-gray-700">
-              We woke reasonably late following the feast and free-flowing wine the night before...
-            </p>
-          </Link>
-
-          {/* Side articles */}
           <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:flex-wrap md:gap-4">
             {displayedArticles && displayedArticles.length > 0 ? (
-              displayedArticles.map((article, index) => {
+              displayedArticles.slice(1).map((article, index) => {
                 const formattedDate = article.createdAt
                   ? format(new Date(article.createdAt), "MMMM dd, yyyy")
                   : "No Date Available";
 
                 return (
-                  <Link key={index} to={`/post/${article._id}`} className="flex">
+                  <Link key={index} to={`/post/${article._id}`} className="flex items-center h-fit transition-all duration-200">
                     <img
-                      src={article.image || "default-image.jpg"}
+                      src={import.meta.env.VITE_BACKEND_URL + article.image || "default-image.jpg"}
                       alt={article.title}
                       className="w-16 h-16 object-cover rounded-md mr-2"
                     />
@@ -144,6 +130,21 @@ const NewsLayout = () => {
               <p>No articles available in this category</p>
             )}
           </div>
+
+          {/* Main article on the right */}
+          {mainArticle && (
+            <div className="md:col-span-1">
+              <Link to={`/post/${mainArticle._id}`}>
+                <img
+                  src={import.meta.env.VITE_BACKEND_URL + mainArticle.image || img1}
+                  alt="Main article"
+                  className="w-full h-auto rounded-md mb-4"
+                />
+                <h2 className="text-lg font-bold hover:text-yellow-400">{mainArticle.title}</h2>
+                <p className="text-gray-500 mb-1">{format(new Date(mainArticle.createdAt), "MMMM dd, yyyy")}</p>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>

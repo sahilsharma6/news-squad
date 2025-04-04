@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
+
+import apiClient from "@/services/apiClient";
+import { Link } from "react-router-dom";
 
 
 const categories = [
@@ -22,13 +24,9 @@ export default function FilterableBlog() {
       try {
         const token = localStorage.getItem("token");
 
-        if (!token) {
-          setError("No token found.");
-          setLoading(false);
-          return;
-        }
+      
 
-        const response = await axios.get("http://localhost:5000/api/posts", {
+        const response = await apiClient.get("/posts", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -38,7 +36,7 @@ export default function FilterableBlog() {
         if (response.data && Array.isArray(response.data.posts)) {
           setBlogPosts(response.data.posts);
         } else {
-          setError("Received data is not in expected format.");
+          setError("No posts available.");
         }
         setLoading(false);
       } catch (error) {
@@ -59,10 +57,10 @@ export default function FilterableBlog() {
           (post) => post.category && post.category.name === activeCategory
         );
 
-  const postsToDisplay = filteredPosts.slice(0, 5);
+  const postsToDisplay = filteredPosts.slice(0, 4);
 
   return (
-    <div className="w-full max-h-fit bg-white z-[999999]">
+    <div className="w-full max-h-[55vh] bg-white z-[999999]">
       <div className="flex">
         <Sidebar
           categories={categories}
@@ -121,14 +119,15 @@ Sidebar.propTypes = {
 const HorizontalBlogPosts = ({ post }) => {
 
   const categoryName = post.category && post.category.name ? post.category.name : "No Category";
-  const authorName = post.author || "Unknown"; 
+  const authorName = post.author || "Admin"; 
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
+    <Link
+     to={`/post/${post._id}`} className="bg-white p-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
       <img
-        src={post.image}
+        src={import.meta.env.VITE_BACKEND_URL + post.image}
         alt={post.title}
-        className="w-full h-48 object-cover rounded-md mb-4"
+        className="w-32 rounded-md object-cover mb-4"
       />
       <div className="flex justify-between items-center mb-2">
         <span className="bg-blue-100 text-blue-600 text-sm font-semibold px-3 py-1 rounded-full">
@@ -136,9 +135,9 @@ const HorizontalBlogPosts = ({ post }) => {
         </span>
        
       </div>
-      <h3 className="text-lg font-bold text-gray-800 mb-2">{post.title}</h3>
+      <h4 className="text-sm font-bold text-gray-800 mb-2">{post.title}</h4>
      
-    </div>
+    </Link>
   );
 };
 

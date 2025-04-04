@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { User } from "lucide-react"; 
+import apiClient from "@/services/apiClient";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -12,7 +13,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/users/profile", {
+        const { data } = await apiClient.get("/user/profile", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -38,7 +39,7 @@ const UserProfile = () => {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen text-red-500">
+      <div className="flex justify-center items-center h-screen text-black">
         <div>{error}</div>
       </div>
     );
@@ -75,7 +76,7 @@ const UserProfile = () => {
           </div>
           <div className="flex justify-between">
             <span className="font-medium text-gray-700">Phone Number:</span>
-            <span className="text-gray-600">{user.phoneNumber || "Not provided"}</span>
+            <span className="text-gray-600">{user.phone || "Not provided"}</span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium text-gray-700">Role:</span>

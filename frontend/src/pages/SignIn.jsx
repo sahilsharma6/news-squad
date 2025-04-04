@@ -34,7 +34,7 @@ const SignIn = () => {
   const handleSignInSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiClient.post("/api/auth/signin", {
+      const response = await apiClient.post("/auth/signin", {
         email,
         password,
       });
@@ -47,8 +47,9 @@ const SignIn = () => {
           title: "Success",
           description: "Sign In successful, Redirecting...",
         });
-        setTimeout(() => navigateTo("/"), 4000);
+        setTimeout(() => navigateTo("/"), 1000);
       } else {
+        
         setToast({
           open: true,
           variant: "error",
@@ -64,6 +65,7 @@ const SignIn = () => {
       setEmail("");
       setPassword("");
       setFocusedInput("");
+      
       setToast({
         open: true,
         variant: "error",
