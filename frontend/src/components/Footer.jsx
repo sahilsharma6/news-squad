@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import apiClient from "@/services/apiClient";
 import footer_bg from "../assets/footer-bg1.jpg";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -13,6 +14,7 @@ const Footer = () => {
       try {
         const response = await apiClient.get("/posts");
         const posts = response.data.posts;
+console.log(posts);
 
      
         const popular = posts.sort((a, b) => b.views - a.views);
@@ -158,12 +160,12 @@ const Footer = () => {
           </p>
 
           <div className="hidden lg:flex flex-col md:flex-row gap-4 justify-center items-center">
-            <a href="#" className="hover:text-gray-200">
+            <Link to={'/policy'} className="hover:text-gray-200">
               Privacy Policy
-            </a>
-            <a href="#" className="hover:text-gray-200">
+            </Link>
+            <Link to="/disclaimer" className="hover:text-gray-200">
               Disclaimer
-            </a>
+            </Link>
             <a href="#" className="hover:text-gray-200">
               Advertisement
             </a>

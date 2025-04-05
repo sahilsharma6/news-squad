@@ -20,6 +20,8 @@ import AllCategories from "./components/Dashboard/AllCategories.jsx";
 import EditCategory from "./components/Dashboard/EditCategory.jsx";
 import UserProfile from "./components/UserProfile.jsx";
 import AllUsers from "./components/Dashboard/AllUsers.jsx";
+import Policy from "./pages/Policy.jsx";
+import Disclaimer from "./pages/Disclaimer.jsx";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,8 @@ const router = createBrowserRouter([
       { path: "/post/:id", element: <ArticlePage /> },
       { path: "/category/fashion", element: <FashionPosts /> },
       { path: "/category/lifestyle", element: <LifeStyle /> },
+      {path:'/policy',element:<Policy />},
+      {path:'/disclaimer',element:<Disclaimer />},
       {
         path: "category/gadgets",
         element: <Gadgets param="Gadgets" />,
