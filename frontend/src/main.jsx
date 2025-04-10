@@ -22,6 +22,7 @@ import UserProfile from "./components/UserProfile.jsx";
 import AllUsers from "./components/Dashboard/AllUsers.jsx";
 import Policy from "./pages/Policy.jsx";
 import Disclaimer from "./pages/Disclaimer.jsx";
+import Terms from "./pages/Terms.jsx";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       { path: "/category/lifestyle", element: <LifeStyle /> },
       {path:'/policy',element:<Policy />},
       {path:'/disclaimer',element:<Disclaimer />},
+      {path:'/terms',element:<Terms />},
       {
         path: "category/gadgets",
         element: <Gadgets param="Gadgets" />,
