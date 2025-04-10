@@ -166,6 +166,9 @@ console.log(posts);
             <Link to="/disclaimer" className="hover:text-gray-200">
               Disclaimer
             </Link>
+            <Link to="/terms" className="hover:text-gray-200">
+              Terms & Conditions
+            </Link>
             <a href="#" className="hover:text-gray-200">
               Advertisement
             </a>
