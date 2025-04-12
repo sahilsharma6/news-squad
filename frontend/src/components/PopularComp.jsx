@@ -50,7 +50,7 @@ const Performan = () => {
             <div
               key={article._id}
               className="flex items-start bg-white p-2"
-              onClick={() => navigate(`/post/${article._id}`)} 
+              onClick={() => navigate(`/post/${article.param}`)} 
               style={{ cursor: 'pointer' }}
             >
               <img

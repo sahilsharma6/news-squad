@@ -216,7 +216,7 @@ export default function NavigationMenu() {
                         className="p-2 border-b rounded-md shadow-sm"
                       >
                         <Link
-                          to={`/post/${post._id}`}
+                          to={`/post/${post.param}`}
                           className="flex items-center space-x-4"
                         >
                           <img

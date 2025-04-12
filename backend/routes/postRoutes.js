@@ -11,6 +11,7 @@ import {
   dislikePost,
   getSearchedPosts,
   likedPost,
+  findPostByTitle,
 } from "../controllers/postController.js";
 import upload from "../utils/thumbnailImgmulter.js";
 
@@ -34,5 +35,7 @@ router.route("/category/:category").get(getPostByCategory);
 router.route("/like/:id").put(protect, likePost);
 router.route("/dislike/:id").put(protect, dislikePost);
 router.route("/liked/:id").get(protect, likedPost);
+
+router.get('/post/:slug',findPostByTitle)
 
 export default router;

@@ -57,7 +57,7 @@ const Holiday = () => {
               <div
                 key={recipe._id}
                 className="cursor-pointer hover:shadow-xl transition-all duration-300 rounded-lg border border-gray-200 bg-white"
-                onClick={() => handleClick(recipe._id)}
+                onClick={() => handleClick(recipe.param)}
               >
                 <div className="flex justify-between items-center p-4 border-b border-gray-200">
                   <h3 className="text-sm text-white bg-purple-500 inline-block py-1 px-3 rounded-md">

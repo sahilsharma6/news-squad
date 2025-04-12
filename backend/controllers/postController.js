@@ -378,6 +378,30 @@ const likedPost = asyncHandler(async (req, res) => {
 
 );
 
+//find post by title
+
+const findPostByTitle = asyncHandler(async (req, res) => {
+  try {
+    
+    const slug = req.params.slug;
+    const post = await Post.findOne({param:slug}) .populate("category", "name").populate("userId", "username");
+    if (post) {
+      post.views = (post.views || 0) + 1;
+
+      await post.save();
+
+      return res.json(post);
+    } else {
+      res.status(404).json({ message: "Post not found" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while getting the post",
+      error: error.message,
+    });
+  }
+})
 
 
 
@@ -386,6 +410,4 @@ const likedPost = asyncHandler(async (req, res) => {
 
 
 
-
-
-export { getPosts, getPostsById, getPostByCategory,updatePost, createPost, deletePost ,likePost, dislikePost, likedPost, getSearchedPosts};
+export { getPosts, getPostsById, getPostByCategory,updatePost, createPost, deletePost ,likePost, dislikePost, likedPost, getSearchedPosts,findPostByTitle};

@@ -92,7 +92,7 @@ const LatestNews = () => {
               : "No Date Available";
 
             return (
-              <Link key={newsItem._id} to={`/post/${newsItem._id}`}>
+              <Link key={newsItem._id} to={`/post/${newsItem.param}`}>
                 <div className="flex flex-col">
                   <div className="relative">
                     <img
