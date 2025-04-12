@@ -191,7 +191,7 @@ export default function HamburgerMenu() {
                         />
                       )}
                       <Link
-                        to={`/post/${post._id}`}
+                        to={`/post/${post.param}`}
                         className="text-gray-700 hover:text-blue-600"
                       >
                         {post.title}

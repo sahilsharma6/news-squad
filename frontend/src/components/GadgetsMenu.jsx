@@ -61,7 +61,7 @@ const GadgetsMenu = ({ param }) => {
               <div className="p-6 sm:w-2/5 bg-white">
                 <span className="text-blue-400 text-sm font-semibold">{param.toUpperCase()}</span>
                 <h4 className="font-bold mt-2 hover:text-blue-400">
-                  <a href={`/post/${article._id}`}>{article.title}</a>
+                  <a href={`/post/${article.param}`}>{article.title}</a>
                 </h4>
                 <p className="mt-4 text-gray-600 text-xs" dangerouslySetInnerHTML={{ __html: contentWithoutImages }}></p>
                 <span className="text-gray-500 text-xs mt-4 block">

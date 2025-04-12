@@ -85,7 +85,7 @@ const NewsLayout2 = () => {
           <div
             key={index}
             className="flex flex-col"
-            onClick={() => handlePostClick(post._id)}
+            onClick={() => handlePostClick(post.param)}
             style={{ cursor: "pointer" }}
           >
             <div className="relative">
@@ -127,7 +127,7 @@ const NewsLayout2 = () => {
           <div
             key={index}
             className="flex items-center"
-            onClick={() => handlePostClick(post._id)}
+            onClick={() => handlePostClick(post.param)}
             style={{ cursor: "pointer" }}
           >
             <img

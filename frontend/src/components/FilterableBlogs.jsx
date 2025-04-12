@@ -123,7 +123,7 @@ const HorizontalBlogPosts = ({ post }) => {
 
   return (
     <Link
-     to={`/post/${post._id}`} className="bg-white p-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
+     to={`/post/${post.param}`} className="bg-white p-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
       <img
         src={import.meta.env.VITE_BACKEND_URL + post.image}
         alt={post.title}

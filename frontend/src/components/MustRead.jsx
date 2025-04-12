@@ -77,7 +77,7 @@ const Mustread = () => {
               <div
                 key={index}
                 className="items-start bg-white hover:text-blue-500 cursor-pointer"
-                onClick={() => handleArticleClick(article._id)}
+                onClick={() => handleArticleClick(article.param)}
               >
                 <img
                   src={import.meta.env.VITE_BACKEND_URL + article.image || "https://via.placeholder.com/150"}

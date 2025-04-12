@@ -51,7 +51,7 @@ const ModernSection = () => {
             <div
               key={article._id}
               className="flex flex-col relative"
-              onClick={() => navigate(`/post/${article._id}`)}
+              onClick={() => navigate(`/post/${article.param}`)}
               style={{ cursor: 'pointer' }}
             >
               <div className="relative">

@@ -79,7 +79,7 @@ const ArticleList = () => {
             <div
               key={index}
               className="flex items-start bg-white p-4 border rounded-md shadow-md cursor-pointer"
-              onClick={() => navigate(`/post/${article._id}`)}
+              onClick={() => navigate(`/post/${article.param}`)}
             >
               <img
                 src={

@@ -113,7 +113,7 @@ const NewsLayout = () => {
                   : "No Date Available";
 
                 return (
-                  <Link key={index} to={`/post/${article._id}`} className="flex items-center h-fit transition-all duration-200">
+                  <Link key={index} to={`/post/${article.param}`} className="flex items-center h-fit transition-all duration-200">
                     <img
                       src={import.meta.env.VITE_BACKEND_URL + article.image || "default-image.jpg"}
                       alt={article.title}
@@ -134,7 +134,7 @@ const NewsLayout = () => {
           {/* Main article on the right */}
           {mainArticle && (
             <div className="md:col-span-1">
-              <Link to={`/post/${mainArticle._id}`}>
+              <Link to={`/post/${mainArticle.param}`}>
                 <img
                   src={import.meta.env.VITE_BACKEND_URL + mainArticle.image || img1}
                   alt="Main article"

@@ -27,13 +27,17 @@ const ArticlePage = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await apiClient.get(`/posts/${id}`);
+        console.log('dsakj');
+        
+        const response = await apiClient.get(`/posts/post/${id}`);
         setPostData(response.data);
         setLikes(response.data.likes);  
 
         const token = localStorage.getItem("token");
         if (token) {
-          const likedResponse = await apiClient.get(`/posts/liked/${id}`, {
+          console.log(postData);
+          
+          const likedResponse = await apiClient.get(`/posts/liked/${response?.data?._id}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           setLikedByUser(likedResponse.data.isLiked);  
@@ -57,8 +61,8 @@ const ArticlePage = () => {
       }
 
       const url = likedByUser 
-        ? `${import.meta.env.VITE_BACKEND_URL}/api/posts/dislike/${id}` 
-        : `${import.meta.env.VITE_BACKEND_URL}/api/posts/like/${id}`; 
+        ? `${import.meta.env.VITE_BACKEND_URL}/api/posts/dislike/${postData?._id}` 
+        : `${import.meta.env.VITE_BACKEND_URL}/api/posts/like/${postData?._id}`; 
 
       const headers = { Authorization: `Bearer ${token}` };
 

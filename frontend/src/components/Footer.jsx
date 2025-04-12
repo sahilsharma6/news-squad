@@ -83,7 +83,7 @@ console.log(posts);
                     />
                     <div>
                       <h4 className="hover:text-blue-500">
-                        <a href={`/post/${post._id}`}>{post.title}</a>
+                        <a href={`/post/${post.param}`}>{post.title}</a>
                       </h4>
                       <p className="text-sm text-gray-400">
                         {new Date(post.createdAt).toLocaleDateString()}
@@ -113,7 +113,7 @@ console.log(posts);
                     />
                     <div>
                       <h4 className="hover:text-blue-500">
-                        <a href={`/post/${post._id}`}>{post.title}</a>
+                        <a href={`/post/${post.param}`}>{post.title}</a>
                       </h4>
                       <p className="text-sm text-gray-400">
                         {new Date(post.createdAt).toLocaleDateString()}

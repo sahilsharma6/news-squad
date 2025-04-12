@@ -24,7 +24,7 @@ const ArticleItem = ({ article }) => {
     : "No Date Available";
 
   return (
-    <Link to={`/post/${article._id}`} key={article._id}>
+    <Link to={`/post/${article.param}`} key={article._id}>
       <div className="flex flex-col bg-white shadow-md hover:shadow-lg transition-shadow duration-200 rounded-lg overflow-hidden">
         <div className="relative">
           <img

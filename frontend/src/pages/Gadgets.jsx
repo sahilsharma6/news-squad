@@ -96,7 +96,7 @@ const Gadgets = ({ param }) => {
 
                       return (
                         <li key={article._id} className="flex gap-4 items-center">
-                          <Link to={`/post/${article._id}`} className="hover:text-blue-800 p-2 w-full flex items-center">
+                          <Link to={`/post/${article.param}`} className="hover:text-blue-800 p-2 w-full flex items-center">
                             <img
                               src={import.meta.env.VITE_BACKEND_URL + article.image || 'https://via.placeholder.com/150'}
                               alt={article.title}
