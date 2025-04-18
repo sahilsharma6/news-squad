@@ -1,8 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async"; // 👈 ADD THIS
+
 import App from "./App.jsx";
 import "./index.css";
+
+// pages and components
 import ArticlePage from "./pages/ArticlePage.jsx";
 import Home from "./pages/Home.jsx";
 import DashboardLayout from "./pages/Dashboard.jsx";
@@ -30,14 +34,13 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <div>Error</div>,
     children: [
-     
       { path: "/", element: <Home /> },
       { path: "/post/:id", element: <ArticlePage /> },
       { path: "/category/fashion", element: <FashionPosts /> },
       { path: "/category/lifestyle", element: <LifeStyle /> },
-      {path:'/policy',element:<Policy />},
-      {path:'/disclaimer',element:<Disclaimer />},
-      {path:'/terms',element:<Terms />},
+      { path: "/policy", element: <Policy /> },
+      { path: "/disclaimer", element: <Disclaimer /> },
+      { path: "/terms", element: <Terms /> },
       {
         path: "category/gadgets",
         element: <Gadgets param="Gadgets" />,
@@ -57,56 +60,28 @@ const router = createBrowserRouter([
     ],
   },
   { path: "/profile", element: <UserProfile /> },
-  {
-    path: "/signin",
-    element: <SignIn />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-
+  { path: "/signin", element: <SignIn /> },
+  { path: "/register", element: <Register /> },
   {
     path: "/dashboard",
     element: <DashboardLayout />,
     children: [
       { path: "/dashboard", element: <DashboardHome /> },
-      {
-        path: "/dashboard/create-article",
-        element: <AddPost />,
-      },
-      {
-        path: "/dashboard/AllPosts",
-        element: <AllPosts />,
-      },
-      {
-        path: "/dashboard/AllUsers",
-        element: <AllUsers />,
-        
-      },
-      {
-        path: "/dashboard/EditPost/:id",
-        element: <EditPost />,
-      },
-
-      {
-        path: "/dashboard/EditCategory/:id",
-        element: <EditCategory />,
-      },
-
-      {
-        path: "/dashboard/AddCategory",
-        element: <AddCategory />,
-      },
-      {
-        path: "/dashboard/AllCategories",
-        element: <AllCategories />,
-      },
+      { path: "/dashboard/create-article", element: <AddPost /> },
+      { path: "/dashboard/AllPosts", element: <AllPosts /> },
+      { path: "/dashboard/AllUsers", element: <AllUsers /> },
+      { path: "/dashboard/EditPost/:id", element: <EditPost /> },
+      { path: "/dashboard/EditCategory/:id", element: <EditCategory /> },
+      { path: "/dashboard/AddCategory", element: <AddCategory /> },
+      { path: "/dashboard/AllCategories", element: <AllCategories /> },
     ],
   },
 ]);
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} future={{ v7_startTransition: true }} />
+    <HelmetProvider> 
+      <RouterProvider router={router} future={{ v7_startTransition: true }} />
+    </HelmetProvider>
   </StrictMode>
 );
